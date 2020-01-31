@@ -1,4 +1,4 @@
-# Events.py
+# events.py
 # Author: Fanny Avila (Fa-Avila),
 # Marcos Avila (DaiconV),
 # and Jacky Zhang (jackyeightzhang)
