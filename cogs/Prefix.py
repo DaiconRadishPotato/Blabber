@@ -2,7 +2,7 @@
 # Author: Fanny Avila (Fa-Avila),
 # Marcos Avila (DaiconV),
 # and Jacky Zhang (jackyeightzhang)
-# Date created: 12/16/2019
+# Date created: 1/30/2020
 # Date last modified: 1/30/2020
 # Python Version: 3.8.1
 # License: "MIT"
@@ -11,7 +11,7 @@ from discord.ext import commands
 import json
 
 async def is_guild_owner(ctx):
-    return ctx.author.id == ctx.guild.owner.id    
+    return ctx.author.id == ctx.guild.owner.id  
                          
 class Prefix(commands.Cog):
     def __init__(self, bot):

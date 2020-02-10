@@ -2,12 +2,13 @@
 # Author: Fanny Avila (Fa-Avila),
 # Marcos Avila (DaiconV),
 # and Jacky Zhang (jackyeightzhang)
-# Date created: 12/16/2019
-# Date last modified: 1/30/2020
+# Date created: 1/30/2020
+# Date last modified: 2/4/2020
 # Python Version: 3.8.1
 # License: "MIT"
 
 from discord.ext import commands
+from discord import Embed
 
 class Help(commands.Cog):
     def __init__(self, bot):
@@ -36,7 +37,7 @@ class Help(commands.Cog):
                         inline=False)
         await ctx.send(embed=embed)
 
-        
+
 def setup(bot):
     bot.remove_command('help')
     bot.add_cog(Help(bot))

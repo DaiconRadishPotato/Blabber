@@ -3,7 +3,7 @@
 # Marcos Avila (DaiconV),
 # and Jacky Zhang (jackyeightzhang)
 # Date created: 12/16/2019
-# Date last modified: 1/30/2020
+# Date last modified: 2/6/2020
 # Python Version: 3.8.1
 # License: "MIT"
 
@@ -11,15 +11,16 @@ from discord import Embed, Activity, ActivityType
 from discord.ext import commands
 from multiprocessing import Process, Queue
 from google.cloud import texttospeech
-
-
+       
 class Blabber(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self._message_queue = Queue()
         self._audio_queue = Queue()
 
+    
     @commands.command(name='disconnect', aliases=['dc'])
+    @commands.has_role("Blabby")
     async def disconnect_from_voice_channel(self, ctx):
         await self.bot.change_presence(activity=Activity(name="outside the Voice Chat",
                                                          type=ActivityType.playing))
@@ -41,6 +42,7 @@ class Blabber(commands.Cog):
                            "channel to use this command.")
 
     @commands.command(name='connect', aliases=['c'])
+    @commands.has_role("Blabby")
     async def connect_to_voice_channel(self, ctx):
         await self.bot.change_presence(activity=Activity(name="in the Voice Chat",
                                                          type=ActivityType.playing))                
@@ -66,6 +68,7 @@ class Blabber(commands.Cog):
                            "different channel right now")
         
     @commands.command(name='say', aliases=['s'])
+    @commands.has_role("Blabby")
     async def say_message(self, ctx, *message: str):
         await self.bot.change_presence(activity=Activity(name="what people have to say",
                                                          type=ActivityType.listening))
@@ -87,10 +90,12 @@ class Blabber(commands.Cog):
             await ctx.send("Blabber::say_message Please input a message")        
 
     @commands.command(name='list', aliases=['l'])
+    @commands.has_role("Blabby")
     async def display_voice_profile(self, ctx, *flags: str):
         await ctx.send("Blabber::display_voice_profile")
 
     @commands.command(name='voice', aliases=['v'])
+    @commands.has_role("Blabby")
     async def make_voice_profile(self, ctx):
         await ctx.send("Blabber::make_voice_profile")
 
