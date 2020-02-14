@@ -1,3 +1,12 @@
+# tts_request.py
+# Author: Fanny Avila (Fa-Avila),
+#         Marcos Avila (DaiconV),
+#         Jacky Zhang (jackyeightzhang)
+# Date created: 1/6/2019
+# Date last modified: 2/14/2020
+# Python Version: 3.8.1
+# License: "MIT"
+
 from discord.oggparse import OggStream
 from google.auth.transport.requests import AuthorizedSession
 from google.oauth2 import service_account
