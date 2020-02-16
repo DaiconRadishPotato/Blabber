@@ -1,11 +1,13 @@
 # tts_request.py
-# Author: Fanny Avila (Fa-Avila),
-#         Marcos Avila (DaiconV),
-#         Jacky Zhang (jackyeightzhang)
+#
+# Author: Marcos Avila (DaiconV)
+# Contributors: Fanny Avila (Fa-Avila),
+#               Marcos Avila (DaiconV),
+#               Jacky Zhang (jackyeightzhang)
 # Date created: 1/6/2019
 # Date last modified: 2/14/2020
 # Python Version: 3.8.1
-# License: "MIT"
+# License: MIT License
 
 from discord.oggparse import OggStream
 from google.auth.transport.requests import AuthorizedSession
@@ -219,7 +221,7 @@ class TTSRequestHandler():
 
         quote_count = 0
         def extract_b64_audio(data):
-            """Generator to extract base64-encoded audio from API response."""
+            """Generator to extract base64-encoded audio from response."""
             nonlocal quote_count
             for byte in data:
                 # Count number of times a quote character is read
