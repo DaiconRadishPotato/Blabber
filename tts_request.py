@@ -9,16 +9,18 @@
 # Python Version: 3.8.1
 # License: MIT License
 
-from discord.oggparse import OggStream
-from google.auth.transport.requests import AuthorizedSession
-from google.oauth2 import service_account
-from dotenv import load_dotenv
-import time
-import threading
-import queue
-import os
 import base64
 import json
+import os
+import queue
+import threading
+import time
+
+from google.auth.transport.requests import AuthorizedSession
+from google.oauth2 import service_account
+
+from discord.oggparse import OggStream
+from dotenv import load_dotenv
 
 
 # Retrieve Google API credentials
