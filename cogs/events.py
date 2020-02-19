@@ -3,7 +3,7 @@
 # Marcos Avila (DaiconV),
 # and Jacky Zhang (jackyeightzhang)
 # Date created: 1/27/2020
-# Date last modified: 1/30/2020
+# Date last modified: 2/18/2020
 # Python Version: 3.8.1
 # License: "MIT"
 
@@ -11,11 +11,28 @@ from discord.ext import commands
 
 
 class Events(commands.Cog):
+    """
+    Events Cog that handles unexpected erros and prints in the python shell.
+
+    attributes:
+        bot [discord.Bot]: discord Bot object
+    """
     def __init__(self, bot):
         self.bot = bot
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
+        """
+        Checks whenever there is a command error and prints information to the 
+        guild chat room.
+        If command does not exist, let user know in chat and what the bot saw as
+        input.
+        If error is something else, let the user know for debugging purposes.
+
+        paramters:
+            ctx [commands.Context]: discord Context object
+            error [Error]: general Error object
+        """
         if isinstance(error, commands.errors.CommandNotFound):
             await ctx.send('Blabber::on_command_error '
                            f'"{ctx.message.content}" '
@@ -25,4 +42,10 @@ class Events(commands.Cog):
 
 
 def setup(bot):
+    """
+    Adds Events Cog to bot.
+
+    parameter: 
+        bot [discord.Bot]: discord Bot object
+    """
     bot.add_cog(Events(bot))

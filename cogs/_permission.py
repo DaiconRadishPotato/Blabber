@@ -3,7 +3,7 @@
 # Marcos Avila (DaiconV),
 # and Jacky Zhang (jackyeightzhang)
 # Date created: 2/3/2019
-# Date last modified: 2/6/2020
+# Date last modified: 2/19/2020
 # Python Version: 3.8.1
 # License: "MIT"
 
@@ -12,15 +12,36 @@ import json
 import asyncio
 
 async def is_guild_owner(ctx):
+    """
+    Checks whether the invoker is the owner of the guild
+
+    parameters:
+        ctx [commands.Context]: discord Context object
+    returns:
+        boolean
+    """
     return ctx.author.id == ctx.guild.owner.id
 
 class _Permission(commands.Cog):
+    """
+    Private Permission Cog that allows role managers to give permission for 
+    certain users to use blabber
+    """
     def __init__(self, bot):
         self.bot = bot
 
     @commands.command(name="give_blabby", aliases=['gb'])
     @commands.has_permissions(manage_roles=True)
     async def give_permission(self, ctx, user: str):
+        """
+        Creates Blabby role if it does not already exist in guild.
+        Gives Blabby role to inputted user, which allows user to invoke blabber
+        bot commands.
+
+        parameters:
+            ctx [commands.Context]: discord Context object
+            user [str]: username or nickname of user
+        """
         if(len(user) == 0):
             await ctx.send("Blabber::Permissions you need to include a "
                            "username/nickname as a parameter")
@@ -40,4 +61,10 @@ class _Permission(commands.Cog):
         await ctx.send(f"Blabber::Permissions User {user} has Blabby now")
 
 def setup(bot):
+    """
+    Adds private _Permission Cog to bot.
+
+    parameter: 
+        bot [discord.Bot]: discord Bot object
+    """
     bot.add_cog(_Permission(bot))

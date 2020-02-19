@@ -3,7 +3,7 @@
 # Marcos Avila (DaiconV),
 # and Jacky Zhang (jackyeightzhang)
 # Date created: 1/30/2020
-# Date last modified: 2/4/2020
+# Date last modified: 2/19/2020
 # Python Version: 3.8.1
 # License: "MIT"
 
@@ -11,11 +11,24 @@ from discord.ext import commands
 from discord import Embed
 
 class Help(commands.Cog):
+    """
+    Help Cog that handles the formatting of help command
+
+    attributes:
+        bot [discord.Bot]: discord Bot object
+    """
     def __init__(self, bot):
         self.bot = bot
 
     @commands.command()
     async def help(self, ctx):
+        """
+        Prints out description of all available commands that blabber to the 
+        text channel where the bot is invoked.
+
+        paramters:
+            ctx [commands.Context]: discord Context object
+        """
         embed = Embed(colour=ctx.author.color)
         embed.set_author(name="Help Directory", icon_url=self.bot.user.avatar_url)
         embed.add_field(name=">help",
@@ -39,5 +52,11 @@ class Help(commands.Cog):
 
 
 def setup(bot):
+    """
+    Removes templated help function and adds Help Cog to bot.
+
+    parameter: 
+        bot [discord.Bot]: discord Bot object
+    """
     bot.remove_command('help')
     bot.add_cog(Help(bot))
