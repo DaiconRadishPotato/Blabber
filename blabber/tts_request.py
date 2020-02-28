@@ -81,9 +81,9 @@ class SimplexStreamReader():
 
     def read(self, size=-1):
         """
-        Read at most size bytes from stream. 
+        Reads at most size bytes from stream. 
         If the size argument is negative, read until EOF is reached. 
-        Return an empty bytes object at EOF.
+        Returns an empty bytes object at EOF.
 
         parameters:
             size [int] (default=-1): number of bytes objects to return 
