@@ -1,4 +1,4 @@
-# help.py
+# info.py
 # Author: Fanny Avila (Fa-Avila),
 # Marcos Avila (DaiconV),
 # and Jacky Zhang (jackyeightzhang)
@@ -10,9 +10,9 @@
 from discord.ext import commands
 from discord import Embed
 
-class Help(commands.Cog):
+class Info(commands.Cog):
     """
-    Help Cog that handles the formatting of help command
+    Info Cog that handles the formatting of help command
 
     attributes:
         bot [discord.Bot]: discord Bot object
@@ -59,4 +59,4 @@ def setup(bot):
         bot [discord.Bot]: discord Bot object
     """
     bot.remove_command('help')
-    bot.add_cog(Help(bot))
+    bot.add_cog(Info(bot))

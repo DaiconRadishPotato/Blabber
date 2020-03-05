@@ -1,4 +1,4 @@
-# blabber.py
+# voice.py
 # Author: Fanny Avila (Fa-Avila),
 # Marcos Avila (DaiconV),
 # and Jacky Zhang (jackyeightzhang)
@@ -23,26 +23,24 @@ async def is_guild_owner(ctx):
     return ctx.author == ctx.guild.owner
 
 @commands.check
-async def is_blabber_alone(ctx):
+async def is_bot_alone(ctx):
     """
-    Checks if blabber is not in use.
+    Checks if bot is not in use.
 
     parameter:
         ctx [commands.Context]: discord Context object
     returns:
         boolean
     """
-    # checks if blabber is not even connected
+    # checks if voice is not even connected
     return ctx.voice_client == None or \
-        # checks if blabber is the only one in the channel
         len(ctx.voice_client.channel.members) == 1 or \
-            # checks if blabber is in the same channel as the invoker
             (len(ctx.voice_client.channel.members) == 2 and \
                 ctx.author.voice.channel == ctx.voice_client.channel)
 
-class Blabber(commands.Cog):
+class Voice(commands.Cog):
     """
-    Blabber Cog object that handles connection, disconnection, and voice client
+    Voice Cog object that handles connection, disconnection, and voice client
 
     attributes:
         bot [discord.Bot]: discord Bot object
@@ -52,7 +50,7 @@ class Blabber(commands.Cog):
 
     @commands.command(name='disconnect', aliases=['dc'])
     @commands.check_any(is_guild_owner, commands.has_role("Blabby"), 
-    is_blabber_alone)
+    is_bot_alone)
     async def disconnect_from_voice_channel(self, ctx):
         """
         Disconnects bot's voice client from it's current voice channel.
@@ -62,14 +60,14 @@ class Blabber(commands.Cog):
         parameters:
             ctx [commands.Context]: discord Context object
         """
-        await ctx.send("Blabber::disconnect_from_VC disconnecting from "
+        await ctx.send("Voice::disconnect_from_VC disconnecting from "
         f"{ctx.voice_client.channel}")
         await ctx.voice_client.disconnect()
         
 
     @commands.command(name='connect', aliases=['c'])
     @commands.check_any(is_guild_owner, commands.has_role("Blabby"),
-    is_blabber_alone)
+    is_bot_alone)
     async def connect_to_voice_channel(self, ctx):
         """
         Creates a voice client with voice channel for discord bot to speak 
@@ -84,7 +82,7 @@ class Blabber(commands.Cog):
         """
         # Check if voice client is alone and is requested to another channel
         await ctx.author.voice.channel.connect()
-        await ctx.send("Blabber::connect_to_VC connecting to "
+        await ctx.send("Voice::connect_to_VC connecting to "
         f"{ctx.author.voice.channel.name}.")
 
     @commands.command(name='say', aliases=['s'])
@@ -103,23 +101,23 @@ class Blabber(commands.Cog):
         if ctx.voice_client is not None and len(message) != 0:
             message = ' '.join(message)
             if len(message) > 600:
-                await ctx.send("Blabber::say_message Please make your message "
+                await ctx.send("Voice::say_message Please make your message "
                                "shorter. We have set the character limit to"
                                "600 to be considerate for others.")
                 return
             print(message)
         else:
-            await ctx.send("Blabber::say_message Please input a message")
+            await ctx.send("Voice::say_message Please input a message")
 
     @disconnect_from_voice_channel.error
     async def disconnect_error(self, ctx, error):
         # If bot is not connected to any voice channel in the guild
         if isinstance(error, commands.CheckAnyFailure):
-            await ctx.send("Blabber::disconnect_from_voice_channel Blabber is "
+            await ctx.send("Voice::disconnect_from_voice_channel Bot is "
             "in use right now in a different channel. You require the blabby "
             "role or you need to try again later when it is not in use")
         elif isinstance(error.original, AttributeError):
-            await ctx.send("Blabber::disconnect_from_VC Blabber is not "
+            await ctx.send("Voice::disconnect_from_VC Bot is not "
             "connected")
 
     @connect_to_voice_channel.error
@@ -127,22 +125,22 @@ class Blabber(commands.Cog):
         # If author is not in a voice channel to join
         if isinstance(error, commands.CheckAnyFailure):
             if ctx.voice_client.channel == ctx.author.voice.channel:
-                await ctx.send("Blabber::connect_to_VC already connected to "
+                await ctx.send("Voice::connect_to_VC already connected to "
                 f"{ctx.voice_client.channel.name}")
             else:
-                await ctx.send("Blabber::connect_to_VC Blabber is in use right "
+                await ctx.send("Voice::connect_to_VC Voice is in use right "
                 "now in a different channel. You require the blabby role or you"
                 " need to try again later when it is not in use")
         elif isinstance(error.original, AttributeError):
-            await ctx.send("Blabber::connect_to_VC You need to be connected to "
+            await ctx.send("Voice::connect_to_VC You need to be connected to "
             "a voice channel to use this command.")
         # If bot is already connected to the same voice channel as author
         elif isinstance(error.original, ClientException):
             if ctx.voice_client.channel == ctx.author.voice.channel:
-                await ctx.send("Blabber::connect_to_VC already connected to "
+                await ctx.send("Voice::connect_to_VC already connected to "
                 f"{ctx.voice_client.channel.name}")
             else:
-                await ctx.send("Blabber::connect_to_VC swaping from "
+                await ctx.send("Voice::connect_to_VC swaping from "
                 f"{ctx.voice_client.channel.name} to "
                 f"{ctx.author.voice.channel.name}")
                 await ctx.voice_client.move_to(ctx.author.voice.channel)
@@ -150,9 +148,9 @@ class Blabber(commands.Cog):
 
 def setup(bot):
     """
-    Adds Blabber Cog to bot.
+    Adds Voice Cog to bot.
 
     parameter: 
         bot [discord.Bot]: discord Bot object
     """
-    bot.add_cog(Blabber(bot))
+    bot.add_cog(Voice(bot))

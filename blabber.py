@@ -1,9 +1,9 @@
-# main.py
+# blabber.py
 # Author: Fanny Avila (Fa-Avila),
 # Marcos Avila (DaiconV),
 # and Jacky Zhang (jackyeightzhang)
 # Date created: 12/16/2019
-# Date last modified: 2/26/2020
+# Date last modified: 3/4/2020
 # Python Version: 3.8.1
 # License: "MIT"
 

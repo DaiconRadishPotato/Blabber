@@ -1,9 +1,9 @@
-# prefix.py
+# settings.py
 # Author: Fanny Avila (Fa-Avila),
 # Marcos Avila (DaiconV),
 # and Jacky Zhang (jackyeightzhang)
 # Date created: 1/30/2020
-# Date last modified: 1/19/2020
+# Date last modified: 3/4/2020
 # Python Version: 3.8.1
 # License: "MIT"
 
@@ -21,9 +21,9 @@ async def is_guild_owner(ctx):
     """
     return ctx.author.id == ctx.guild.owner.id  
                          
-class Prefix(commands.Cog):
+class Settings(commands.Cog):
     """
-    Prefix Cog Object used to alter the guild's blabber bot prefix
+    Settings Cog Object used to alter the guild's blabber bot prefix
 
     attributes:
         bot [discord.Bot]: discord Bot object
@@ -58,4 +58,4 @@ def setup(bot):
     parameter: 
         bot [discord.Bot]: discord Bot object
     """
-    bot.add_cog(Prefix(bot))
+    bot.add_cog(Settings(bot))
