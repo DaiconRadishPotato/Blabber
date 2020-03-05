@@ -1,4 +1,4 @@
-# tts_request.py
+# request.py
 #
 # Author: Marcos Avila (DaiconV)
 # Contributors: Fanny Avila (Fa-Avila),
@@ -9,6 +9,7 @@
 # Python Version: 3.8.1
 # License: MIT License
 
+import asyncio
 import base64
 import json
 import os
@@ -27,7 +28,7 @@ from dotenv import load_dotenv
 load_dotenv()
 GOOGLE_APPLICATION_CREDENTIALS = os.getenv('google_application_credentials')
 
-# Google TTS synthesize speech service url
+# Google TTS synthesize speech service endpoint url
 SYNTHESIZE_SPEECH = 'https://texttospeech.googleapis.com/v1/text:synthesize'
 
 # Chunk size for response streaming
@@ -158,7 +159,7 @@ class SimplexStreamWriter():
 
 class TTSRequest(dict):
     """
-    Request object used to represent a TTS request.
+    Request object that represents a Google Cloud API TTS request.
 
     attributes:
         message     [str]: text to be converted into audio
@@ -169,13 +170,15 @@ class TTSRequest(dict):
     def __init__(
             self,
             message,
-            encoding="OGG_OPUS",
-            gender="NEUTRAL",
-            region_code="en-US"):
+            encoding='OGG_OPUS',
+            gender='NEUTRAL',
+            region_code='en-US'):
         self['audioConfig'] = dict()
         self['input'] = dict()
         self['voice'] = dict()
-        self['audioConfig']['audioEncoding'] = encoding
+        # TODO Add support for other audio encodings
+        self['audioConfig']['audioEncoding'] = 'OGG_OPUS'
+        # self['audioConfig']['audioEncoding'] = encoding
         self['input']['text'] = message
         self['voice']['ssmlGender'] = gender
         self['voice']['languageCode'] = region_code
@@ -183,47 +186,57 @@ class TTSRequest(dict):
 
 class TTSRequestHandler():
     """
-    Handler object to send a TTS request and process the response.
+    Handler object used for sending and processing a TTS request.
     
     attributes:
-        tts_request [TTSRequest]: request object to send
+        request [TTSRequest]: request object that will be sent
     """
-    def __init__(self, tts_request):
-        self.tts_request = tts_request
-
+    def __init__(self, request):
         # Initiate a Google Cloud API session
         credentials = service_account.Credentials.from_service_account_file(
             GOOGLE_APPLICATION_CREDENTIALS)
         scoped_credentials = credentials.with_scopes(
             ['https://www.googleapis.com/auth/cloud-platform'])
-        self._session = AuthorizedSession(scoped_credentials)
+        session = AuthorizedSession(scoped_credentials)
 
         # Create stream objects to send data between threads
         self._ostream, self._istream = SimplexStream().open()
 
-        # Start thread to download and process request
-        handle = threading.Thread(
-            target=self._tts_request_handler, daemon=True)
-        handle.start()
+        # Send TTS request through initialized Google Cloud API session
+        self._response = session.post(
+            SYNTHESIZE_SPEECH, data=json.dumps(request), stream=True)
+
+        # Start thread to extract audio data as it downloads
+        audio_producer = threading.Thread(
+            target=self._audio_producer, daemon=True)
+        audio_producer.start()
 
     def iter_packets(self):
-        """Generator for producing Opus-encoded audio packets."""
+        """
+        Generator used for producing Opus encoded audio packets.
+
+        yields:
+            bytes: Opus encoded audio packet
+        """
         # Send output stream to OggStream object for Opus packet extraction
         yield from OggStream(self._ostream).iter_packets()
 
         # Close output stream after processing audio content
         self._ostream.close()
 
-    def _tts_request_handler(self):
-        """Worker function to send request and extract audio from response."""
-        # Send TTS request through initialized Google Cloud API session
-        response = self._session.post(
-            SYNTHESIZE_SPEECH, data=json.dumps(
-                self.tts_request), stream=True)
-
+    def _audio_producer(self):
+        """Extracts Opus encoded audio data from Google Cloud API response."""
         quote_count = 0
         def extract_b64_audio(data):
-            """Generator to extract base64-encoded audio from response."""
+            """
+            Generator used for extracting base64 encoded audio from a Google
+            Cloud API response.
+            
+            parameters:
+                data [bytes]: chunk of raw response data from Google Cloud API
+            yields:
+                bytes: chunk of extracted base64 encoded audio data
+            """
             nonlocal quote_count
             for byte in data:
                 # Count number of times a quote character is read
@@ -236,7 +249,7 @@ class TTSRequestHandler():
 
         # Iterate through response in chunks for processing
         b64_encoded_prefix = b''
-        for chunk in response.iter_lines(chunk_size=CHUNK_SIZE):
+        for chunk in self._response.iter_lines(chunk_size=CHUNK_SIZE):
             b64_encoded_chunk = b64_encoded_prefix + \
                 bytes(extract_b64_audio(chunk))
 
