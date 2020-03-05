@@ -3,7 +3,7 @@
 # Marcos Avila (DaiconV),
 # and Jacky Zhang (jackyeightzhang)
 # Date created: 12/16/2019
-# Date last modified: 2/18/2020
+# Date last modified: 2/26/2020
 # Python Version: 3.8.1
 # License: "MIT"
 
@@ -34,9 +34,6 @@ def get_prefix(bot, message): # add async when retrieving from database
     returns:
         prefix: string that is used to call commands from the bot client
     """
-    # Checks if guild exists
-    if not message.guild:
-        return commands.when_mentioned_or(">")(bot, message)
     try:
         with open("prefixes.json", "r") as file:
             prefixes = json.load(file)

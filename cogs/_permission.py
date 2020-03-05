@@ -11,17 +11,6 @@ from discord.ext import commands
 import json
 import asyncio
 
-async def is_guild_owner(ctx):
-    """
-    Checks whether the invoker is the owner of the guild
-
-    parameters:
-        ctx [commands.Context]: discord Context object
-    returns:
-        boolean
-    """
-    return ctx.author.id == ctx.guild.owner.id
-
 class _Permission(commands.Cog):
     """
     Private Permission Cog that allows role managers to give permission for 
@@ -42,11 +31,12 @@ class _Permission(commands.Cog):
             ctx [commands.Context]: discord Context object
             user [str]: username or nickname of user
         """
-        if(len(user) == 0):
+        if user == '':
             await ctx.send("Blabber::Permissions you need to include a "
                            "username/nickname as a parameter")
             return
-        blabby = next((role for role in await ctx.guild.fetch_roles()
+        #discord utils get to get blabby role
+        role_blabby = next((role for role in await ctx.guild.fetch_roles()
                   if "Blabby" == str(role)), None)
         if(blabby is None):
             blabby = await ctx.guild.create_role(name='Blabby', reason="To allow certain"

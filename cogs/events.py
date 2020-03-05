@@ -12,7 +12,7 @@ from discord.ext import commands
 
 class Events(commands.Cog):
     """
-    Events Cog that handles unexpected erros and prints in the python shell.
+    Events Cog that handles events prints in the python shell.
 
     attributes:
         bot [discord.Bot]: discord Bot object
@@ -21,24 +21,12 @@ class Events(commands.Cog):
         self.bot = bot
 
     @commands.Cog.listener()
-    async def on_command_error(self, ctx, error):
+    async def on_message(self, message):
         """
-        Checks whenever there is a command error and prints information to the 
-        guild chat room.
-        If command does not exist, let user know in chat and what the bot saw as
-        input.
-        If error is something else, let the user know for debugging purposes.
-
-        paramters:
-            ctx [commands.Context]: discord Context object
-            error [Error]: general Error object
+        Checks the author of the message and sees if they use blabber start.
         """
-        if isinstance(error, commands.errors.CommandNotFound):
-            await ctx.send('Blabber::on_command_error '
-                           f'"{ctx.message.content}" '
-                           'is not a command for Blabber.')
-        else:
-            await ctx.send(error)
+        if message.author == self.bot:
+            return
 
 
 def setup(bot):
