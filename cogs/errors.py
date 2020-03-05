@@ -37,9 +37,9 @@ class Errors(commands.Cog):
             await ctx.send('Blabber::on_command_error '
                            f'"{ctx.message.content}" '
                            'is not a command for Blabber.')
-        # else:
+        else:
         #     await ctx.send(error)
-        #     raise error
+            raise error
 
 
 def setup(bot):

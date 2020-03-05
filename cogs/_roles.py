@@ -7,9 +7,12 @@
 # Python Version: 3.8.1
 # License: "MIT"
 
-from discord.ext import commands
 import json
 import asyncio
+import discord
+
+from discord.ext import commands
+
 
 class _Roles(commands.Cog):
     """
@@ -21,34 +24,52 @@ class _Roles(commands.Cog):
 
     @commands.command(name="give_blabby", aliases=['gb'])
     @commands.has_permissions(manage_roles=True)
-    async def give_permission(self, ctx, user: str):
+    async def give_blabby(self, ctx, *,user: str):
         """
-        Creates Blabby role if it does not already exist in guild.
         Gives Blabby role to inputted user, which allows user to invoke blabber
         bot commands.
 
         parameters:
             ctx [commands.Context]: discord Context object
             user [str]: username or nickname of user
+        raises:
+            MissingRequiredArgument: raised when no user is given
+            AttributeError: raised when user or blabby role does not exist 
         """
-        if user == '':
-            await ctx.send("Blabber::Roles you need to include a "
-                           "username/nickname as a parameter")
-            return
-        #discord utils get to get blabby role
-        role_blabby = next((role for role in await ctx.guild.fetch_roles()
-                  if "Blabby" == str(role)), None)
-        if(blabby is None):
-            blabby = await ctx.guild.create_role(name='Blabby', reason="To allow certain"
-                                 " people to use Blabber Bot.")
-            await ctx.send("Blabber::Roles Created Blabby role "
-                           "for users of Blabber")
+        blabby_role = discord.utils.get(ctx.guild.roles, name="Blabby")
         member = ctx.guild.get_member_named(user)
-        if (member is None):
-            await ctx.send(f"Blabber::Roles User {user} doesn't exist")
-            return
-        await member.add_roles(blabby)
+        await member.add_roles(blabby_role)
         await ctx.send(f"Blabber::Roles User {user} has Blabby now")
+    
+    @give_blabby.error
+    async def give_blabby_error(self, ctx, error):
+        """
+        Local On_Error Function for give_blabby
+
+        parameters:
+            ctx [commands.Context]: discord Context object
+            error [commands.CommandError]: discord Command Error object
+        """
+        # If user arguement was not passed to the command, warn invoker of this
+        # parameter requirement
+        if isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send("Roles::give_blabby You need to include a username/"
+            "nickname as a parameter to assign the \"blabby\" role to someone")
+        elif isinstance(error.original, AttributeError):
+            # If user does not exist, warns invoker that the user does not
+            # exist or that they have mispelled the name.
+            if(discord.utils.get(ctx.guild.roles, name="Blabby") is not None):
+                await ctx.send(f"Roles::give_blabby User {ctx.args[2]} does not"
+                " exist")
+            # If Blabby role does not exist, creates Blabby role for guild and
+            # adds role to invoker
+            else:
+                blabby = await ctx.guild.create_role(name='Blabby', reason="To "
+                "allow certain people to use Blabber Bot.")
+                await ctx.send("Roles::give_blabby Created Blabby role for "
+                "users of Blabber")
+                await self.give_blabby(ctx, ctx.args[2])
+
 
 def setup(bot):
     """

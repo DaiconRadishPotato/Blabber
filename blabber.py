@@ -12,7 +12,6 @@ import logging
 import json
 import asyncio
 
-from discord import Activity, ActivityType
 from discord.ext import commands
 from dotenv import load_dotenv
 
@@ -45,25 +44,6 @@ def get_prefix(bot, message): # add async when retrieving from database
 
     prefix = prefixes[str(message.guild.id)]
     return commands.when_mentioned_or(prefix)(bot, message)
-
-async def change_presence(bot):    
-    """
-    Sets up the bot's rich presence when it is online.
-    Sets its rich presence to a ready and waiting message.
-    Checks every 15 seconds in the background if bot is in use.
-    If so, then the rich presence does not change.
-    If not, rich presence message is changed back to ready and waiting.
-
-    parameter:
-        bot [discord.Bot]: discord Bot object
-    """
-    await bot.wait_until_ready()
-    while not bot.is_closed():
-        await bot.change_presence(activity=Activity(
-            name=">help | Join a voice channel and use >say [message] to make "
-            "me say something",
-            type=ActivityType.listening))
-        await asyncio.sleep(15)
 
 def load_cog_files(bot):
     """
@@ -101,11 +81,5 @@ if __name__ == "__main__":
 
     bot = commands.Bot(command_prefix=get_prefix)
 
-    @bot.event
-    async def on_ready():
-        print(f"{bot.user.name} logged in")
-        print("------------------")
-    
     load_cog_files(bot)
-    bot.loop.create_task(change_presence(bot))
     bot.run(DISCORD_TOKEN)
