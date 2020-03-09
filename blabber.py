@@ -1,11 +1,12 @@
 # blabber.py
-# Author: Fanny Avila (Fa-Avila),
-# Marcos Avila (DaiconV),
-# and Jacky Zhang (jackyeightzhang)
+#
+# Author: Jacky Zhang (jackyeightzhang)
+# Contributor:  Fanny Avila (Fa-Avila),
+#               Marcos Avila (DaiconV)
 # Date created: 12/16/2019
 # Date last modified: 3/4/2020
 # Python Version: 3.8.1
-# License: "MIT"
+# License: MIT License
 
 import os
 import logging

@@ -1,11 +1,12 @@
 # events.py
-# Author: Fanny Avila (Fa-Avila),
-# Marcos Avila (DaiconV),
-# and Jacky Zhang (jackyeightzhang)
+#
+# Author: Jacky Zhang (jackyeightzhang)
+# Contributor:  Fanny Avila (Fa-Avila),
+#               Marcos Avila (DaiconV)
 # Date created: 1/27/2020
 # Date last modified: 3/4/2020
 # Python Version: 3.8.1
-# License: "MIT"
+# License: MIT License
 
 import asyncio
 

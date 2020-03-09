@@ -1,7 +1,8 @@
 # info.py
-# Author: Fanny Avila (Fa-Avila),
-# Marcos Avila (DaiconV),
-# and Jacky Zhang (jackyeightzhang)
+#
+# Author: Jacky Zhang (jackyeightzhang)
+# Contributor:  Fanny Avila (Fa-Avila),
+#               Marcos Avila (DaiconV)
 # Date created: 1/30/2020
 # Date last modified: 2/19/2020
 # Python Version: 3.8.1

@@ -1,29 +1,23 @@
 # settings.py
-# Author: Fanny Avila (Fa-Avila),
-# Marcos Avila (DaiconV),
-# and Jacky Zhang (jackyeightzhang)
+#
+# Author: Jacky Zhang (jackyeightzhang)
+# Contributor:  Fanny Avila (Fa-Avila),
+#               Marcos Avila (DaiconV)
 # Date created: 1/30/2020
-# Date last modified: 3/4/2020
+# Date last modified: 3/9/2020
 # Python Version: 3.8.1
-# License: "MIT"
+# License: MIT License
 
 from discord.ext import commands
-import json
+from blabber.checks import is_guild_owner
 
-async def is_guild_owner(ctx):
-    """
-    Checks if invoker is the owner of the guild.
+import json 
 
-    parameter:
-        ctx [commands.Context]: discord Context object
-    returns:
-        boolean
-    """
-    return ctx.author.id == ctx.guild.owner.id  
-                         
+
 class Settings(commands.Cog):
     """
-    Settings Cog Object used to alter the guild's blabber bot prefix
+    Settings Cog Object that is a collection of commands for managing 
+    Blabber's settings for a specific guild
 
     attributes:
         bot [discord.Bot]: discord Bot object

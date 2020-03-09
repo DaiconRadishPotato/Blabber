@@ -1,41 +1,16 @@
 # voice.py
-# Author: Fanny Avila (Fa-Avila),
-# Marcos Avila (DaiconV),
-# and Jacky Zhang (jackyeightzhang)
-# Date created: 12/16/2019
-# Date last modified: 3/4/2020
+#
+# Author: Jacky Zhang (jackyeightzhang)
+# Contributor:  Fanny Avila (Fa-Avila),
+#               Marcos Avila (DaiconV)
+# # Date created: 12/16/2019
+# Date last modified: 3/9/2020
 # Python Version: 3.8.1
-# License: "MIT"
+# License: MIT License
 
 from discord import Embed, Activity, ActivityType, ClientException, utils
 from discord.ext import commands
-
-@commands.check
-async def is_guild_owner(ctx):
-    """
-    Checks if invoker is the owner of the guild.
-
-    parameter:
-        ctx [commands.Context]: discord Context object
-    returns:
-        boolean
-    """
-    return ctx.author == ctx.guild.owner
-
-@commands.check
-async def is_bot_alone(ctx):
-    """
-    Checks if bot is not in use.
-
-    parameter:
-        ctx [commands.Context]: discord Context object
-    returns:
-        boolean
-    """
-    return ctx.voice_client == None or \
-        len(ctx.voice_client.channel.members) == 1 or \
-            (len(ctx.voice_client.channel.members) == 2 and \
-                ctx.author.voice.channel == ctx.voice_client.channel)
+from blabber.checks import is_guild_owner, is_bot_alone
 
 class Voice(commands.Cog):
     """
