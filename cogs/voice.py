@@ -3,18 +3,22 @@
 # Author: Jacky Zhang (jackyeightzhang)
 # Contributor:  Fanny Avila (Fa-Avila),
 #               Marcos Avila (DaiconV)
-# # Date created: 12/16/2019
+# Date created: 12/16/2019
 # Date last modified: 3/9/2020
 # Python Version: 3.8.1
 # License: MIT License
 
 from discord import Embed, Activity, ActivityType, ClientException, utils
 from discord.ext import commands
+
 from blabber.checks import is_guild_owner, is_bot_alone
+from blabber.request import TTSRequest, TTSRequestHandler
+from blabber.player import TTSAudio
+
 
 class Voice(commands.Cog):
     """
-    Voice Cog object that handles connection, disconnection, and voice client
+    Collection of commands for handling connection to Discord voice channel.
 
     attributes:
         bot [discord.Bot]: discord Bot object
@@ -71,7 +75,7 @@ class Voice(commands.Cog):
 
     @commands.command(name='say', aliases=['s'])
     @commands.has_role("Blabby")
-    async def say_message(self, ctx, *message: str):
+    async def say_message(self, ctx, *, message:str):
         """
         To be created
 
@@ -83,13 +87,15 @@ class Voice(commands.Cog):
             await self.connect_to_voice_channel(ctx)
             
         if ctx.voice_client is not None and len(message) != 0:
-            message = ' '.join(message)
-            if len(message) > 600:
+            if len(message) <= 600:
+                request = TTSRequest(message)
+                handle = TTSRequestHandler(request)
+                source = TTSAudio(handle)
+                ctx.voice_client.play(source)
+            else:
                 await ctx.send("Voice::say_message Please make your message "
                                "shorter. We have set the character limit to"
                                "600 to be considerate for others.")
-                return
-            print(message)
         else:
             await ctx.send("Voice::say_message Please input a message")
 

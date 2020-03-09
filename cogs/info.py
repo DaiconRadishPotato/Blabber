@@ -4,16 +4,17 @@
 # Contributor:  Fanny Avila (Fa-Avila),
 #               Marcos Avila (DaiconV)
 # Date created: 1/30/2020
-# Date last modified: 2/19/2020
+# Date last modified: 3/9/2020
 # Python Version: 3.8.1
-# License: "MIT"
+# License: MIT License
 
 from discord.ext import commands
 from discord import Embed
 
 class Info(commands.Cog):
     """
-    Info Cog that handles the formatting of help command
+    Collection of commands for displaying information about Blabber for each 
+    guild.
 
     attributes:
         bot [discord.Bot]: discord Bot object
@@ -24,8 +25,8 @@ class Info(commands.Cog):
     @commands.command()
     async def help(self, ctx):
         """
-        Prints out description of all available commands that blabber to the 
-        text channel where the bot is invoked.
+        Prints out description of all available commands for Blabber to the 
+        text channel where the bot was invoked.
 
         paramters:
             ctx [commands.Context]: discord Context object

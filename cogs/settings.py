@@ -29,7 +29,7 @@ class Settings(commands.Cog):
     @commands.check(is_guild_owner)
     async def prefix(self, ctx, *, prefix):
         """
-        Changes prefix of blabber bot for a particular guild.
+        Changes prefix of Blabber for a particular guild.
 
         parameter:
             ctx [commands.Context]: discord Contxt object
@@ -47,7 +47,7 @@ class Settings(commands.Cog):
 
 def setup(bot):
     """
-    Adds Prefix Cog to bot.
+    Adds Settings Cog to bot.
 
     parameter: 
         bot [discord.Bot]: discord Bot object
