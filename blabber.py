@@ -10,7 +10,6 @@
 
 import os
 import logging
-import json
 import asyncio
 
 from discord.ext import commands
@@ -18,33 +17,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 DISCORD_TOKEN = os.getenv('discord_token')
-
-
-def get_prefix(bot, message): # add async when retrieving from database
-    """
-    Checks a json file to see if guild has a different prefix and return it.
-    Return the original prefix if guild is not in json file.
-
-    parameters:
-        bot [discord.Bot]: discord Bot object
-        message [discord.Message]: the message or context from the guild that 
-        called the bot.
-    raises:
-        IOError: raised when file does not exist
-    returns:
-        prefix: string that is used to call commands from the bot client
-    """
-    try:
-        with open("prefixes.json", "r") as file:
-            prefixes = json.load(file)
-        # Checks if guild from the context exists within json file.
-        if str(message.guild.id) not in prefixes:
-            return commands.when_mentioned_or(">")(bot, message)
-    except:
-        return commands.when_mentioned_or(">")(bot, message)
-
-    prefix = prefixes[str(message.guild.id)]
-    return commands.when_mentioned_or(prefix)(bot, message)
 
 def load_cog_files(bot):
     """
@@ -80,7 +52,7 @@ if __name__ == "__main__":
         '%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
     logger.addHandler(handler)
 
-    bot = commands.Bot(command_prefix=get_prefix)
+    bot = commands.Bot(command_prefix=None, help_command=None)
 
     load_cog_files(bot)
     bot.run(DISCORD_TOKEN)

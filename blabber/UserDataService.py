@@ -141,6 +141,7 @@ class UserDataService:
 				cursor.close()
 		else:
 			print('no connection found') # for debugging
+
 	def set_voice_profile(self, user_id, channel_id, voice_alias):
 		'''adds new user if user profile not in database, updates user profile if it is'''
 		
