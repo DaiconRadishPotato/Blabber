@@ -121,7 +121,7 @@ class UserDataService:
 			print('no connection found')
 			
 	def add_user(self, user_id, username):
-	
+
 		insert_user_query = '''INSERT IGNORE INTO users (user_id, user_name) 
 		VALUES (%s, %s)'''
 		
