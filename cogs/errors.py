@@ -35,13 +35,7 @@ class Errors(commands.Cog):
             error [Error]: general Error object
         """
         if isinstance(error, commands.errors.CommandNotFound):
-            await ctx.send('Blabber::on_command_error '
-                           f'"{ctx.message.content}" '
-                           'is not a command for Blabber.')
-        else:
-        #     await ctx.send(error)
-            raise error
-
+            None
 
 def setup(bot):
     """

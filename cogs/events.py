@@ -50,8 +50,9 @@ class Events(commands.Cog):
         parameters:
             message [discord.Message]: discord Message object
         """
-        if message.author == self.bot:
-            return
+        if message.author.id != self.bot.user.id:
+            return None
+            # await message.channel.send(message.content)
             
     @commands.Cog.listener()
     async def on_ready(self):
