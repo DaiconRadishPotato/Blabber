@@ -6,13 +6,13 @@
 # Date created: 3/9/2020
 # Date last modified: 3/9/2020
 # Python Version: 3.8.1
-# License: "MIT"
+# License: MIT License
 
-import discord
 from discord.ext import commands
 
-@commands.check
-async def is_guild_owner(ctx):
+from blabber.errors import *
+
+def is_guild_owner(ctx):
     """
     Checks if invoker is the owner of the guild.
 
@@ -23,9 +23,24 @@ async def is_guild_owner(ctx):
     """
     return ctx.author == ctx.guild.owner
 
+def can_disconnect_bot():
+    async def predicate(ctx):
+        blabby = commands.has_role('Blabby').predicate
+        manage_channels = commands.has_permissions(manage_channels=True).predicate
+        if not ctx.voice_client:
+            raise BotNotConnected()
 
-def has_role(ctx, role):
-    return discord.utils.get(ctx.author.roles, name=role) != None
+        # Count number of users in voice channel excluding context author and bots
+        user_count = 0
+        for member in ctx.voice_client.channel.members:
+            user_count += (not member.bot and member.id != ctx.author.id)
 
-def has_permission(ctx, permission):
-    return getattr(ctx.author.permissions_in(ctx.channel), permission, False)
+        try:
+            return user_count == 0 or await blabby(ctx) or await manage_channels(ctx)
+        except (commands.MissingRole, commands.MissingPermissions):
+            raise MissingCredentials() 
+
+    return commands.check(predicate)
+
+def bot_can_connect():
+    pass
