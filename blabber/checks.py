@@ -23,7 +23,7 @@ def is_guild_owner(ctx):
     """
     return ctx.author == ctx.guild.owner
 
-def can_disconnect_bot():
+def bot_can_disconnect():
     async def predicate(ctx):
         blabby = commands.has_role('Blabby').predicate
         manage_channels = commands.has_permissions(manage_channels=True).predicate
@@ -43,4 +43,16 @@ def can_disconnect_bot():
     return commands.check(predicate)
 
 def bot_can_connect():
-    pass
+    async def predicate(ctx):
+        if not ctx.author.voice:
+            raise NotConnected()
+
+        bot = ctx.guild.get_member(ctx.bot.user.id)
+        bot_permissions = ctx.author.voice.channel.permissions_for(bot)
+
+        if bot_permissions.connect and bot_permissions.speak:
+            return True
+        else:
+            raise BotMissingVoicePermissions(ctx.author.voice.channel.name)
+
+    return commands.check(predicate)

@@ -13,7 +13,7 @@ import functools
 from discord import Embed, Activity, ActivityType, ClientException, utils
 from discord.ext import commands
 
-from blabber.checks import can_disconnect_bot
+from blabber.checks import bot_can_connect, bot_can_disconnect
 from blabber.errors import *
 from blabber.request import TTSRequest, TTSRequestHandler
 from blabber.player import TTSAudio
@@ -30,7 +30,7 @@ class Voice(commands.Cog):
         self.bot = bot
 
     @commands.command(name='disconnect', aliases=['dc'])
-    @can_disconnect_bot()
+    @bot_can_disconnect()
     async def disconnect(self, ctx):
         """
         Disconnects Blabber from the voice channel it's currently in.
@@ -54,9 +54,10 @@ class Voice(commands.Cog):
             error [Exception]: error object thrown by command
         """
         # Check if error was caused by an uninitialized voice client
-        await ctx.send(":x: **Unable to disconnect**\n" + str(error))
+        await ctx.send(f":x: **Unable to disconnect**\n{error}")
 
     @commands.command(name='connect', aliases=['c'])
+    @bot_can_connect()
     async def connect(self, ctx):
         """
         Creates a voice client with voice channel for discord bot to speak
@@ -70,22 +71,19 @@ class Voice(commands.Cog):
             AttributeError: Invoker is not in a voice channel.
             ClientException: Bot is already connected to a voice channel.
         """
-        if ctx.voice_client:
-            if can_disconnect(ctx):
-                await ctx.voice_client.move_to(ctx.author.voice.channel)
-                await ctx.send(f":white_check_mark: **Moved to** `{ctx.author.voice.channel.name}`")
+        voice_channel = ctx.author.voice.channel
+
+        if ctx.voice_client: 
+            if ctx.voice_client.channel == voice_channel:
+                await ctx.send(":information_source: **Blabber is already in this voice channel**")
             else:
-                await ctx.send(":x: **Unable to move**\n`Blabby` role or `Manage Channels` permission required when others are in voice channel")
+                await bot_can_disconnect().predicate(ctx)
+                await ctx.voice_client.move_to(ctx.author.voice.channel)
+                await ctx.send(f":white_check_mark: **Moved to** `{voice_channel.name}`")
         else:
             await ctx.author.voice.channel.connect()
-            await ctx.send(f":white_check_mark: **Connected to** `{ctx.author.voice.channel.name}`")
-
-        print(ctx.author.voice.channel)
-        #for member in ctx.voice_client.channel.members:
-        #    print(member)
-        #    for perm in member.permissions_in(ctx.author.voice.channel):
-        #        print(perm)
-    
+            await ctx.send(f":white_check_mark: **Connected to** `{voice_channel.name}`")
+ 
     @connect.error
     async def connect_error(self, ctx, error):
         """
@@ -95,10 +93,12 @@ class Voice(commands.Cog):
             ctx [commands.Context]: discord Context object
             error [Exception]: error object thrown by command function
         """
-        print(error)
         # Check if error was caused by a context author that wasn't in a voice channel
-        if isinstance(error.original, AttributeError):
-            await ctx.send(":x: **Unable to connect**\nActive voice channel required for Blabber to connect")
+        operation = 'connect'
+        if ctx.voice_client:
+            operation = 'move'
+
+        await ctx.send(f":x: **Unable to {operation}**\n{error}")
 
     @commands.command(name='say', aliases=['s'])
     async def say(self, ctx, *, message):
@@ -127,7 +127,7 @@ class Voice(commands.Cog):
     
     @say.error
     async def say_error(self, ctx, error):
-        None
+        pass
 
 def setup(bot):
     """
