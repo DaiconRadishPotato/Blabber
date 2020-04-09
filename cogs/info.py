@@ -4,7 +4,7 @@
 # Contributor:  Fanny Avila (Fa-Avila),
 #               Marcos Avila (DaiconV)
 # Date created: 1/30/2020
-# Date last modified: 3/31/2020
+# Date last modified: 4/1/2020
 # Python Version: 3.8.1
 # License: MIT License
 
@@ -22,6 +22,39 @@ class Info(commands.Cog):
     """
     def __init__(self, bot):
         self.bot = bot
+        self._genders = {
+            "male": "male", 
+            "female": "female", 
+            "neutral": "neutral"}
+        self._languages = {
+            "de": "de",
+            "es": "es",
+            "ar": "ar",
+            "fr": "fr",
+            "it": "it",
+            "ru": "ru",
+            "cmn": "cmn",
+            "ko": "ko",
+            "ja": "ja",
+            "vi": "vi",
+            "fil": "fil",
+            "id": "id",
+            "nl": "nl",
+            "cs": "cs",
+            "el": "el",
+            "pt": "pt",
+            "hu": "hu",
+            "pl": "pl", 
+            "sk": "sk",
+            "tr": "tr",
+            "uk": "uk",
+            "en": "en",
+            "hi": "hi",
+            "da": "da", 
+            "fi": "fi",
+            "nb": "nb",
+            "sv": "sv"
+        }
 
     @commands.command(name='help', aliases=['h'])
     async def help(self, ctx):
@@ -41,30 +74,30 @@ class Info(commands.Cog):
         value=f"Displays this message.",
         inline=False)
 
-        embed.add_field(name=f"{prefix}connect or {prefix}c",
+        embed.add_field(name=f"`{prefix}connect` or `{prefix}c`",
         value='Connect Blabber to the voice channel you\'re in',
         inline=False)
         
-        embed.add_field(name=f"{prefix}disconnect or {prefix}dc",
+        embed.add_field(name=f"`{prefix}disconnect` or `{prefix}dc`",
         value='Disconnect Blabber from its voice channel',
         inline=False)
 
-        embed.add_field(name=f"{prefix}say [message] or {prefix}s "
-        "[message]",
+        embed.add_field(name=f"`{prefix}say [message]` or `{prefix}s "
+        "[message]`",
         value="Tell Blabber to say something. If Blabber is not in the same "
         "voice channel, then it will join.",
         inline=False)
 
-        embed.add_field(name=f"{prefix}settings or {prefix}s", 
+        embed.add_field(name=f"`{prefix}settings` or `{prefix}s`", 
         value="Displays settings menu, which allows the certain users to "
         "change Blabber Bot settings such as the prefix",
         inline=False)
 
-        embed.add_field(name=f"{prefix}settings prefix or {prefix}settings p", 
-        value="Displays current guild prefix.",
+        embed.add_field(name=f"`{prefix}settings prefix` or `{prefix}settings "
+        "p`", value="Displays current guild prefix.",
         inline=False)
 
-        embed.add_field(name=f"{prefix}list or {prefix}l", 
+        embed.add_field(name=f"`{prefix}list` or `{prefix}l`", 
         value="Displays the Voice Directory and voices.",
         inline=False)
 
@@ -98,22 +131,22 @@ class Info(commands.Cog):
             value=f"`{prefix}list language [language]`", inline=False)
             await ctx.send(embed=embed)
 
-    @list_available_voices.command(name='all')
-    async def voice_no_filter(self, ctx):
-        """
-        Displays all available voices for the user to choose from to set as
-        their voice profile. 
+    # @list_available_voices.command(name='all')
+    # async def voice_no_filter(self, ctx):
+    #     """
+    #     Displays all available voices for the user to choose from to set as
+    #     their voice profile. 
 
-        parameters:
-            ctx [commands.Context]: discord Context object
-        """
-        # db = UserDataService()
-        # aliases = db.get_available_voices()
-        embed = Embed(title="Voice Directory - List of all Voices", 
-        colour=Colour.green())
-        # for alias in aliases:
-        #     embed.add_field(name=f"`{alias}`", inline=False)
-        await ctx.send(embed=embed)
+    #     parameters:
+    #         ctx [commands.Context]: discord Context object
+    #     """
+    #     # db = UserDataService()
+    #     # aliases = db.get_available_voices()
+    #     embed = Embed(title="Voice Directory - List of all Voices", 
+    #     colour=Colour.green())
+    #     # for alias in aliases:
+    #     #     embed.add_field(name=f"`{alias}`", inline=False)
+    #     await ctx.send(embed=embed)
 
     @list_available_voices.command(name='gender', aliases=['g'])
     async def voice_gender_filter(self, ctx, gender:str):
@@ -128,14 +161,14 @@ class Info(commands.Cog):
         """
         embed = Embed(title="Voice Directory - List of Voices - Gender "
         "Filter", colour=Colour.green())
-        # db = UserDataService()
-        # available_voices = db.get_voice_profile_gender(dict[gender])
-        # for alias in available_voices:
-        #     embed.add_field(name=f"`{alias}`", inline=False)
-        await ctx.send(embed=embed)
+        if(self._genders[gender]):
+            # db = UserDataService()
+            # available_voices = db.get_voice_profile_gender(dict[gender])
+            # for alias in available_voices:
+            #     embed.add_field(name=f"`{alias}`", inline=False)
+            await ctx.send(embed=embed)
 
-
-    @list_available_voices.command(name='lanaguage', aliases=['lang'])
+    @list_available_voices.command(name='language', aliases=['lang'])
     async def voice_language_filter(self, ctx, language:str):
         """
         Subcommand of list that displays all available voices that have the 
@@ -148,30 +181,50 @@ class Info(commands.Cog):
         """
         embed = Embed(title="Voice Directory - List of Voices - Language "
         "Filter", colour=Colour.green())
-        # db = UserDataService()
-        # available_voices = db.get_voice_profile_lang(dict[lang])
-        # for alias in available_voices:
-        #     embed.add_field(name=f"`{alias}`", inline=False)
-        await ctx.send(embed=embed)
+        if(self._languages[language]):
+            # db = UserDataService()
+            # available_voices = db.get_voice_profile_lang(dict[lang])
+            # for alias in available_voices:
+            #     embed.add_field(name=f"`{alias}`", inline=False)
+            await ctx.send(embed=embed)
 
     @voice_gender_filter.error
     async def voice_gender_filter_error(self, ctx, error):
-        if isinstance(error, commands.MissingRequiredArgument):
-            embed = Embed(title="Voice Directory - List of Voices - Gender"
+        embed = Embed(title="Voice Directory - List of Voices - Gender"
             " Filter", colour=Colour.green())
-            embed.add_field(name="male")
-            embed.add_field(name="female")
-            embed.add_field(name="neutral")
+        prefix = await self.bot.get_cog("Settings"
+            )._get_prefix(ctx.guild.id)
+        if isinstance(error, commands.MissingRequiredArgument):
+            embed.add_field(name="show male voices only", 
+            value=f"{prefix}list gender male")
+            embed.add_field(name="show female voices only", 
+            value=f"{prefix}list gender female")
+            embed.add_field(name="show neutral voices", 
+            value=f"{prefix}list gender neutral")
+            await ctx.send(embed=embed)
+        elif isinstance(error.original, KeyError):
+            embed.add_field(name="Input Gender:", 
+            value=f"`{ctx.args[2]}` is not available.")
+            embed.add_field(name="Available Genders:", 
+            value="`male`, `female`, and `neutral`")
             await ctx.send(embed=embed)
 
     @voice_language_filter.error
     async def voice_language_filter_error(self, ctx, error):
-        if isinstance(error, commands.MissingRequiredArgument):
-            embed = Embed(title="Voice Directory - List of Voices - "
+        embed = Embed(title="Voice Directory - List of Voices - "
             "Language Filter", colour=Colour.green())
+        prefix = await self.bot.get_cog("Settings"
+            )._get_prefix(ctx.guild.id)
+        if isinstance(error, commands.MissingRequiredArgument):
             # available_voices = db.get_voice_profile_lang()
             # for alias in available_voices:
             #     embed.add_field(name=f"`{alias}`", inline=False)
+            await ctx.send(embed=embed)
+        elif isinstance(error.original, KeyError):
+            embed.add_field(name="Input Language:", 
+            value=f"`{ctx.args[2]}` is not available.")
+            embed.add_field(name="To get available languages use:", 
+            value=f"`{prefix}list lang`")
             await ctx.send(embed=embed)
 
 

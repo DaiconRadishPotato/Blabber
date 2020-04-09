@@ -4,7 +4,7 @@
 # Contributor:  Fanny Avila (Fa-Avila),
 #               Marcos Avila (DaiconV)
 # Date created: 1/30/2020
-# Date last modified: 3/31/2020
+# Date last modified: 4/1/2020
 # Python Version: 3.8.1
 # License: MIT License
 
@@ -119,7 +119,7 @@ class Settings(commands.Cog):
         # if invoker does not pass a prefix, then send current prefix, show 
         # set_prefix command format, and describe prefix requirement. 
         if isinstance(error, commands.MissingRequiredArgument):
-            prefix = self.bot._get_prefix(ctx.guild.id)
+            prefix = await self._get_prefix(ctx.guild.id)
 
             embed = Embed(title="Blabber Settings - Prefix",
             description="Changes the prefix used to command Blabber bot. You "
