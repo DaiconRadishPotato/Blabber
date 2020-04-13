@@ -1,0 +1,524 @@
+{
+    "voices": [
+        {
+            "alias": "voice_1",
+            "language": "de",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_2",
+            "language": "es",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_3",
+            "language": "ar",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_4",
+            "language": "ar",
+            "gender": "MALE"
+        },
+        {
+            "alias": "voice_5",
+            "language": "ar",
+            "gender": "MALE"
+        },
+        {
+            "alias": "voice_6",
+            "language": "ar",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_7",
+            "language": "fr",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_8",
+            "language": "it",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_9",
+            "language": "ru",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_10",
+            "language": "ru",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_11",
+            "language": "ru",
+            "gender": "MALE"
+        },
+        {
+            "alias": "voice_12",
+            "language": "ru",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_13",
+            "language": "ru",
+            "gender": "MALE"
+        },
+        {
+            "alias": "voice_14",
+            "language": "cmn",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_15",
+            "language": "cmn",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_16",
+            "language": "cmn",
+            "gender": "MALE"
+        },
+        {
+            "alias": "voice_17",
+            "language": "cmn",
+            "gender": "MALE"
+        },
+        {
+            "alias": "voice_18",
+            "language": "cmn",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_19",
+            "language": "cmn",
+            "gender": "MALE"
+        },
+        {
+            "alias": "voice_20",
+            "language": "cmn",
+            "gender": "MALE"
+        },
+        {
+            "alias": "voice_21",
+            "language": "ko",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_22",
+            "language": "ko",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_23",
+            "language": "ko",
+            "gender": "MALE"
+        },
+        {
+            "alias": "voice_24",
+            "language": "ko",
+            "gender": "MALE"
+        },
+        {
+            "alias": "voice_25",
+            "language": "ja",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_26",
+            "language": "ja",
+            "gender": "MALE"
+        },
+        {
+            "alias": "voice_27",
+            "language": "ja",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_28",
+            "language": "ja",
+            "gender": "MALE"
+        },
+        {
+            "alias": "voice_29",
+            "language": "vi",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_30",
+            "language": "vi",
+            "gender": "MALE"
+        },
+        {
+            "alias": "voice_31",
+            "language": "vi",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_32",
+            "language": "vi",
+            "gender": "MALE"
+        },
+        {
+            "alias": "voice_33",
+            "language": "fil",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_34",
+            "language": "id",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_35",
+            "language": "id",
+            "gender": "MALE"
+        },
+        {
+            "alias": "voice_36",
+            "language": "id",
+            "gender": "MALE"
+        },
+        {
+            "alias": "voice_37",
+            "language": "id",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_38",
+            "language": "nl",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_39",
+            "language": "nl",
+            "gender": "MALE"
+        },
+        {
+            "alias": "voice_40",
+            "language": "nl",
+            "gender": "MALE"
+        },
+        {
+            "alias": "voice_41",
+            "language": "nl",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_42",
+            "language": "nl",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_43",
+            "language": "cs",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_44",
+            "language": "el",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_45",
+            "language": "pt",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_46",
+            "language": "hu",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_47",
+            "language": "pl",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_48",
+            "language": "pl",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_49",
+            "language": "pl",
+            "gender": "MALE"
+        },
+        {
+            "alias": "voice_50",
+            "language": "pl",
+            "gender": "MALE"
+        },
+        {
+            "alias": "voice_51",
+            "language": "pl",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_52",
+            "language": "sk",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_53",
+            "language": "tr",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_54",
+            "language": "tr",
+            "gender": "MALE"
+        },
+        {
+            "alias": "voice_55",
+            "language": "tr",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_56",
+            "language": "tr",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_57",
+            "language": "tr",
+            "gender": "MALE"
+        },
+        {
+            "alias": "voice_58",
+            "language": "uk",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_59",
+            "language": "en",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_60",
+            "language": "en",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_61",
+            "language": "en",
+            "gender": "MALE"
+        },
+        {
+            "alias": "voice_62",
+            "language": "en",
+            "gender": "MALE"
+        },
+        {
+            "alias": "voice_63",
+            "language": "hi",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_64",
+            "language": "hi",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_65",
+            "language": "hi",
+            "gender": "MALE"
+        },
+        {
+            "alias": "voice_66",
+            "language": "hi",
+            "gender": "MALE"
+        },
+        {
+            "alias": "voice_67",
+            "language": "da",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_68",
+            "language": "fi",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_69",
+            "language": "pt",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_70",
+            "language": "pt",
+            "gender": "MALE"
+        },
+        {
+            "alias": "voice_71",
+            "language": "pt",
+            "gender": "MALE"
+        },
+        {
+            "alias": "voice_72",
+            "language": "pt",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_73",
+            "language": "nb",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_74",
+            "language": "nb",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_75",
+            "language": "nb",
+            "gender": "MALE"
+        },
+        {
+            "alias": "voice_76",
+            "language": "nb",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_77",
+            "language": "nb",
+            "gender": "MALE"
+        },
+        {
+            "alias": "voice_78",
+            "language": "sv",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_79",
+            "language": "en",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_80",
+            "language": "en",
+            "gender": "MALE"
+        },
+        {
+            "alias": "voice_81",
+            "language": "en",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_82",
+            "language": "en",
+            "gender": "MALE"
+        },
+        {
+            "alias": "voice_83",
+            "language": "en",
+            "gender": "MALE"
+        },
+        {
+            "alias": "voice_84",
+            "language": "en",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_85",
+            "language": "en",
+            "gender": "MALE"
+        },
+        {
+            "alias": "voice_86",
+            "language": "en",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_87",
+            "language": "de",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_88",
+            "language": "de",
+            "gender": "MALE"
+        },
+        {
+            "alias": "voice_89",
+            "language": "de",
+            "gender": "MALE"
+        },
+        {
+            "alias": "voice_90",
+            "language": "en",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_91",
+            "language": "en",
+            "gender": "MALE"
+        },
+        {
+            "alias": "voice_92",
+            "language": "en",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_93",
+            "language": "en",
+            "gender": "MALE"
+        },
+        {
+            "alias": "voice_94",
+            "language": "fr",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_95",
+            "language": "fr",
+            "gender": "MALE"
+        },
+        {
+            "alias": "voice_96",
+            "language": "fr",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_97",
+            "language": "fr",
+            "gender": "MALE"
+        },
+        {
+            "alias": "voice_98",
+            "language": "fr",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_99",
+            "language": "fr",
+            "gender": "MALE"
+        },
+        {
+            "alias": "voice_100",
+            "language": "fr",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_101",
+            "language": "fr",
+            "gender": "MALE"
+        },
+        {
+            "alias": "voice_102",
+            "language": "it",
+            "gender": "FEMALE"
+        },
+        {
+            "alias": "voice_103",
+            "language": "it",
+            "gender": "MALE"
+        },
+        {
+            "alias": "voice_104",
+            "language": "it",
+            "gender": "MALE"
+        }
+    ]
+}
