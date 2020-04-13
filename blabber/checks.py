@@ -23,29 +23,47 @@ def is_guild_owner(ctx):
     """
     return ctx.author == ctx.guild.owner
 
+def is_connected():
+    async def predicate(ctx):
+        if ctx.author.voice:
+            return True
+        else:
+            raise NotConnected()
+    return commands.check(predicate)
+
+def bot_is_connected():
+    async def predicate(ctx):
+        if ctx.voice_client:
+            return True
+        else:
+            raise BotNotConnected()
+    return commands.check(predicate)
+
 def bot_can_disconnect():
     async def predicate(ctx):
-        blabby = commands.has_role('Blabby').predicate
-        manage_channels = commands.has_permissions(manage_channels=True).predicate
-        if not ctx.voice_client:
-            raise BotNotConnected()
+        await bot_is_connected().predicate(ctx)
 
         # Count number of users in voice channel excluding context author and bots
         user_count = 0
         for member in ctx.voice_client.channel.members:
             user_count += (not member.bot and member.id != ctx.author.id)
 
+        if user_count == 0:
+            return True
+
         try:
-            return user_count == 0 or await blabby(ctx) or await manage_channels(ctx)
-        except (commands.MissingRole, commands.MissingPermissions):
-            raise MissingCredentials() 
+            await commands.has_role('Blabby').predicate(ctx)
+            await commands.has_permissions(manage_channels=True).predicate(ctx)
+        except:
+            raise MissingCredentials()
+        else:
+            return True
 
     return commands.check(predicate)
 
 def bot_can_connect():
     async def predicate(ctx):
-        if not ctx.author.voice:
-            raise NotConnected()
+        await is_connected().predicate(ctx)
 
         bot = ctx.guild.get_member(ctx.bot.user.id)
         bot_permissions = ctx.author.voice.channel.permissions_for(bot)
@@ -53,6 +71,22 @@ def bot_can_connect():
         if bot_permissions.connect and bot_permissions.speak:
             return True
         else:
-            raise BotMissingVoicePermissions(ctx.author.voice.channel.name)
+            raise BotMissingVoiceChannelPermissions(ctx.author.voice.channel.name)
 
     return commands.check(predicate)
+
+def bot_can_move():
+    async def predicate(ctx):
+        await is_connected().predicate(ctx)
+
+        try:
+            await bot_can_connect().predicate(ctx)
+            await bot_can_disconnect().predicate(ctx)
+        except BotMissingVoiceChannelPermissions as e:
+            raise e
+        except:
+            raise BotConnectedToAnotherChannel()
+        else:
+            return True
+
+    return commands.check(predicate) 

@@ -13,7 +13,7 @@ import functools
 from discord import Embed, Activity, ActivityType, ClientException, utils
 from discord.ext import commands
 
-from blabber.checks import bot_can_connect, bot_can_disconnect
+from blabber.checks import *
 from blabber.errors import *
 from blabber.request import TTSRequest, TTSRequestHandler
 from blabber.player import TTSAudio
@@ -28,9 +28,22 @@ class Voice(commands.Cog):
     """
     def __init__(self, bot):
         self.bot = bot
+    
+    async def _connect_handler(self, ctx):
+        await bot_can_connect().predicate(ctx)
+        await ctx.author.voice.channel.connect()
+
+    async def _disconnect_handler(self, ctx):
+        await bot_can_disconnect().predicate(ctx)
+        await ctx.voice_client.disconnect()
+
+    async def _move_handler(self, ctx):
+        await bot_can_move().predicate(ctx)
+        await ctx.voice_client.move_to(ctx.author.voice.channel)
+
+
 
     @commands.command(name='disconnect', aliases=['dc'])
-    @bot_can_disconnect()
     async def disconnect(self, ctx):
         """
         Disconnects Blabber from the voice channel it's currently in.
@@ -40,7 +53,7 @@ class Voice(commands.Cog):
         raises:
             AttributeError: when Blabber is not connected to a voice channel
         """
-        await ctx.voice_client.disconnect()
+        await self._disconnect_handler(ctx)
         await ctx.send(":white_check_mark: **Successfully disconnected**")
             
         
@@ -57,7 +70,7 @@ class Voice(commands.Cog):
         await ctx.send(f":x: **Unable to disconnect**\n{error}")
 
     @commands.command(name='connect', aliases=['c'])
-    @bot_can_connect()
+    @is_connected()
     async def connect(self, ctx):
         """
         Creates a voice client with voice channel for discord bot to speak
@@ -71,18 +84,16 @@ class Voice(commands.Cog):
             AttributeError: Invoker is not in a voice channel.
             ClientException: Bot is already connected to a voice channel.
         """
-        voice_channel = ctx.author.voice.channel
 
-        if ctx.voice_client: 
-            if ctx.voice_client.channel == voice_channel:
+        if ctx.voice_client:
+            if ctx.voice_client.channel == ctx.author.voice.channel:
                 await ctx.send(":information_source: **Blabber is already in this voice channel**")
             else:
-                await bot_can_disconnect().predicate(ctx)
-                await ctx.voice_client.move_to(ctx.author.voice.channel)
-                await ctx.send(f":white_check_mark: **Moved to** `{voice_channel.name}`")
+                await self._move_handler(ctx)
+                await ctx.send(f":white_check_mark: **Moved to** `{ctx.author.voice.channel.name}`")
         else:
-            await ctx.author.voice.channel.connect()
-            await ctx.send(f":white_check_mark: **Connected to** `{voice_channel.name}`")
+            await self._connect_handler(ctx)
+            await ctx.send(f":white_check_mark: **Connected to** `{ctx.author.voice.channel.name}`")
  
     @connect.error
     async def connect_error(self, ctx, error):
@@ -101,33 +112,32 @@ class Voice(commands.Cog):
         await ctx.send(f":x: **Unable to {operation}**\n{error}")
 
     @commands.command(name='say', aliases=['s'])
-    async def say(self, ctx, *, message):
+    @is_connected()
+    async def say(self, ctx, *, message:str):
         """
         To be created
 
         parameters:
             ctx [commands.Context]: discord Context object
-            *message [str]: array of words to be joined
+            message [str]: message
         """
-        if ctx.voice_client is None:
-            await self.connect_to_voice_channel(ctx)
-            
-        if ctx.voice_client is not None and len(message) != 0:
-            if len(message) <= 600:
-                request = TTSRequest(message)
-                handle = TTSRequestHandler(request)
-                source = TTSAudio(handle)
-                ctx.voice_client.play(source)
-            else:
-                await ctx.send("Voice::say_message Please make your message "
-                               "shorter. We have set the character limit to"
-                               "600 to be considerate for others.")
+        
+        if ctx.voice_client:
+            if ctx.voice_client.channel != ctx.author.voice.channel:
+                await self._move_handler(ctx)
         else:
-            await ctx.send("Voice::say_message Please input a message")
+            await self._connect_handler(ctx)
+
+        request = TTSRequest(message)
+        handle = TTSRequestHandler(request)
+        source = TTSAudio(handle)
+        ctx.voice_client.play(source)
+            
+        await ctx.message.add_reaction('📣')
     
     @say.error
     async def say_error(self, ctx, error):
-        pass
+        await ctx.send(f":x: **Unable to convert to speech**\n{error}")
 
 def setup(bot):
     """
