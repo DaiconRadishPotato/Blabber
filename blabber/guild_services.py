@@ -1,3 +1,12 @@
+# user_service.py
+# Author: Fanny Avila (Fa-Avila),
+# Contributor:  Jacky Zhang (jackyeightzhang),
+#               Marcos Avila (DaiconV)
+# Date created: 3/10/2020
+# Date last modified: 3/24/2020
+# Python Version: 3.8.1
+# License: "MIT"
+
 import os
 import mysql.connector
 from dotenv import load_dotenv

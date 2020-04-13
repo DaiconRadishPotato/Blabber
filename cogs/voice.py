@@ -4,17 +4,16 @@
 # Contributor:  Fanny Avila (Fa-Avila),
 #               Marcos Avila (DaiconV)
 # Date created: 12/16/2019
-# Date last modified: 3/9/2020
+# Date last modified: 3/29/2020
 # Python Version: 3.8.1
 # License: MIT License
 
-from discord import Embed, Activity, ActivityType, ClientException, utils
+from discord import ClientException
 from discord.ext import commands
 
 from blabber.checks import is_guild_owner, is_bot_alone
 from blabber.request import TTSRequest, TTSRequestHandler
 from blabber.player import TTSAudio
-
 
 class Voice(commands.Cog):
     """
@@ -140,8 +139,7 @@ class Voice(commands.Cog):
                 f"{ctx.voice_client.channel.name} to "
                 f"{ctx.author.voice.channel.name}")
                 await ctx.voice_client.move_to(ctx.author.voice.channel)
-        
-
+                
 def setup(bot):
     """
     Adds Voice Cog to bot.

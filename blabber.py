@@ -21,7 +21,7 @@ DISCORD_TOKEN = os.getenv('discord_token')
 def load_cog_files(bot):
     """
     Traverse through cogs directory and loads each cog module in the directory.
-
+    
     parameter:
         bot [discord.Bot]: discord Bot object
     raises:
@@ -40,7 +40,7 @@ def load_cog_files(bot):
             except Exception as exception:
                 print(f"{cog} can not be loaded: ")
                 raise exception
-
+                
 if __name__ == "__main__":
     logger = logging.getLogger('discord')
     logger.setLevel(logging.DEBUG)
@@ -51,8 +51,8 @@ if __name__ == "__main__":
     handler.setFormatter(logging.Formatter(
         '%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
     logger.addHandler(handler)
-
+    
     bot = commands.Bot(command_prefix=None, help_command=None)
-
+    
     load_cog_files(bot)
     bot.run(DISCORD_TOKEN)

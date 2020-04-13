@@ -78,6 +78,7 @@ class Profiles(commands.Cog):
         if isinstance(error, commands.MissingRequiredArgument):
             voice = (await self._get_voice(ctx.author.id, ctx.channel.id))[0] #cache?
             prefix=ctx.prefix
+            member=ctx.message.author
             embed = Embed(title="Blabber Voice",
             description="Changes the voice used to send messages in "
             "Blabber bot. You can also use the bot by @mentioning it " 
@@ -85,7 +86,7 @@ class Profiles(commands.Cog):
             "voices",
             colour=Colour.blue())
             
-            embed.add_field(name="Current Voice:", value=f"`{voice}`")
+            embed.add_field(name=f"{member}'s current Voice:", value=f"`{voice}`")
             embed.add_field(name="Update Voice:", 
             value=f"`{prefix} voice [new voice or DEFAULT]`")
             await ctx.send(embed=embed)
