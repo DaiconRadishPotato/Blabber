@@ -9,9 +9,9 @@ from user_services import UserDataService
 from guild_services import GuildDataService
 
 def create_blabber_db():
-"""
-One time facilitator to create the database and add mock data
-"""
+    """
+    One time facilitator to create the database and add mock data
+    """
     try:
         cnx = mysql.connector.connect(
             user = os.getenv("db_user"),
@@ -52,7 +52,7 @@ One time facilitator to create the database and add mock data
     except mysql.connector.Error as err:
         print(err)
         
-    finally:    
+    finally:
         cursor.close()
         cnx.close()
         
