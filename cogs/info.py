@@ -10,7 +10,7 @@
 
 from discord.ext import commands
 from discord import Embed, Colour
-from blabber.user_services import UserDataService
+from blabber.filter_services import FilterServices
 
 class Info(commands.Cog):
     """
@@ -147,7 +147,6 @@ class Info(commands.Cog):
     #     # for alias in aliases:
     #     #     embed.add_field(name=f"`{alias}`", inline=False)
     #     await ctx.send(embed=embed)
-
     @list_available_voices.command(name='gender', aliases=['g'])
     async def voice_gender_filter(self, ctx, gender:str):
         """
@@ -159,15 +158,16 @@ class Info(commands.Cog):
             ctx [commands.Context]: discord Context object
             gender [str]: string object used to represent the gender to filter
         """
+        #TODO implement Pagination
         embed = Embed(title="Voice Directory - List of Voices - Gender "
         "Filter", colour=Colour.green())
         if(self._genders[gender]):
-            # db = UserDataService()
-            # available_voices = db.get_voice_profile_gender(dict[gender])
-            # for alias in available_voices:
-            #     embed.add_field(name=f"`{alias}`", inline=False)
+            fs = FilterServices()
+            voices = fs.filter_by_gender(genders[gender])
+            for alias in voices:
+                embed.add_field(name=f"{alias[0]}", value=f"language: {alias[1]}\ngender: {alias[2]}", inline=True)
             await ctx.send(embed=embed)
-
+            
     @list_available_voices.command(name='language', aliases=['lang'])
     async def voice_language_filter(self, ctx, language:str):
         """
@@ -179,13 +179,14 @@ class Info(commands.Cog):
             ctx [commands.Context]: discord Context object
             language [str]: string object used to represent the gender to filter
         """
+        #TODO implement Pagination
         embed = Embed(title="Voice Directory - List of Voices - Language "
         "Filter", colour=Colour.green())
         if(self._languages[language]):
-            # db = UserDataService()
-            # available_voices = db.get_voice_profile_lang(dict[lang])
-            # for alias in available_voices:
-            #     embed.add_field(name=f"`{alias}`", inline=False)
+            fs = FilterServices()
+            voices = fs.filter_by_lang(languages[language])
+            for alias in voices:
+                embed.add_field(name=f"{alias[0]}", value=f"language: {alias[1]}\ngender: {alias[2]}", inline=True)
             await ctx.send(embed=embed)
 
     @voice_gender_filter.error

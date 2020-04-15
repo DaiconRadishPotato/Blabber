@@ -39,7 +39,7 @@ class FilterServices():
             records: a list of tuples
         """
         if self._cnx.is_connected():
-            query = '''SELECT voice_alias FROM available_voices WHERE gender=%s'''
+            query = '''SELECT voice_alias, language, gender FROM available_voices WHERE gender=%s'''
             data=(gender,)
             cursor=self._cnx.cursor()
             cursor.execute(query, data)
@@ -59,7 +59,7 @@ class FilterServices():
             records: a list of tuples
         """
         if self._cnx.is_connected():
-            query = '''SELECT voice_alias FROM available_voices WHERE language=%s'''
+            query = '''SELECT voice_alias, language, gender FROM available_voices WHERE language=%s'''
             data=(lang,)
             cursor=self._cnx.cursor()
             cursor.execute(query, data)
