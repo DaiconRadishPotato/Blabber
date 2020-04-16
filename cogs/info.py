@@ -8,6 +8,8 @@
 # Python Version: 3.8.1
 # License: MIT License
 
+import json
+
 from discord.ext import commands
 from discord import Embed, Colour
 from blabber.filter_services import FilterServices
@@ -22,39 +24,10 @@ class Info(commands.Cog):
     """
     def __init__(self, bot):
         self.bot = bot
-        self._genders = {
-            "male": "male", 
-            "female": "female", 
-            "neutral": "neutral"}
-        self._languages = {
-            "de": "de",
-            "es": "es",
-            "ar": "ar",
-            "fr": "fr",
-            "it": "it",
-            "ru": "ru",
-            "cmn": "cmn",
-            "ko": "ko",
-            "ja": "ja",
-            "vi": "vi",
-            "fil": "fil",
-            "id": "id",
-            "nl": "nl",
-            "cs": "cs",
-            "el": "el",
-            "pt": "pt",
-            "hu": "hu",
-            "pl": "pl", 
-            "sk": "sk",
-            "tr": "tr",
-            "uk": "uk",
-            "en": "en",
-            "hi": "hi",
-            "da": "da", 
-            "fi": "fi",
-            "nb": "nb",
-            "sv": "sv"
-        }
+        with open(r'./blabber/genders.json', 'r') as gender_f:
+            self._genders = json.load(gender_f)
+        with open(r'./blabber/languages.json', 'r') as lang_f:
+            self._languages = json.load(lang_f)
 
     @commands.command(name='help', aliases=['h'])
     async def help(self, ctx):
