@@ -125,7 +125,7 @@ def populate_available_voice_table():
 def populate_tables_test_data():
     print('TODO: POPULATE user table with test data')
     
-    with open('./test/MOCK_DATA.json', 'r') as f:
+    with open('blabber/test/MOCK_DATA.json', 'r') as f:
         mock_data_dict = json.load(f)
         
         uds = UserDataService()
