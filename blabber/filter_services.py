@@ -25,35 +25,30 @@ class FilterServices():
             host = os.getenv('db_host'),
             database = os.getenv('db_name')
         )
-        self.EMBED_MAX_FIELDS = 25
         
     def __del__(self):
         self._cnx.close()
         
     def filter_by_gender(self, gender):
-        """
-        Filters available voices by gender
-        
-        arguments:
-            gender:[str] string that represents gender
-        returns:
-            formatted_records: a list of tuples of 25 tuples
-        """
-        if self._cnx.is_connected():
-            query = '''SELECT voice_alias, language, gender FROM available_voices WHERE gender=%s'''
-            data=(gender,)
-            cursor=self._cnx.cursor()
-            cursor.execute(query, data)
-            formatted_records = []
-            while True:
-                records = cursor.fetchmany(size=self.EMBED_MAX_FIELDS)
-                if not records:
-                    break
-                formatted_records.append(records)
-            cursor.close()
-            return formatted_records
-        else:
-            print("No Connection Found")
+            """
+            Filters available voices by gender
+            
+            arguments:
+                gender:[str] string that represents gender
+            returns:
+                records: a list of tuples
+            """
+            if self._cnx.is_connected():
+                query = '''SELECT voice_alias, language, gender FROM 
+                available_voices WHERE gender=%s'''
+                data=(gender,)
+                cursor=self._cnx.cursor()
+                cursor.execute(query, data)
+                records = cursor.fetchall()
+                cursor.close()
+                return records
+            else:
+                print("No Connection Found")
             
     def filter_by_lang(self, lang):
         """
@@ -62,20 +57,16 @@ class FilterServices():
         arguments:
             language:[str] string that represents language
         returns:
-            formatted_records: a list of tuples of 25 tuples
+            records: a list of tuples
         """
         if self._cnx.is_connected():
-            query = '''SELECT voice_alias, language, gender FROM available_voices WHERE language=%s'''
+            query = '''SELECT voice_alias, language, gender FROM 
+            available_voices WHERE language=%s'''
             data=(lang,)
             cursor=self._cnx.cursor()
             cursor.execute(query, data)
-            formatted_records = []
-            while True:
-                records = cursor.fetchmany(size=self.EMBED_MAX_FIELDS)
-                if not records:
-                    break
-                formatted_records.append(records)
+            records = cursor.fetchall()
             cursor.close()
-            return formatted_records
+            return records
         else:
             print("No Connection Found")
