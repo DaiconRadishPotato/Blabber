@@ -52,7 +52,7 @@ def create_blabber_db():
     except mysql.connector.Error as err:
         print(err)
         
-    finally:
+    else:
         cursor.close()
         cnx.close()
         
@@ -118,12 +118,11 @@ def populate_available_voice_table():
         print(err)
         print("ERROR CODE: ", err.errno)
         print("MESSAGE: ", err.msg)
-    finally:    
+    else:    
         cursor.close()
         cnx.close()
         
 def populate_tables_test_data():
-    print('TODO: POPULATE user table with test data')
     
     with open('./test/MOCK_DATA.json', 'r') as f:
         mock_data_dict = json.load(f)
