@@ -4,9 +4,11 @@
 # Contributor:  Fanny Avila (Fa-Avila),
 #               Marcos Avila (DaiconV)
 # Date created: 1/30/2020
-# Date last modified: 4/1/2020
+# Date last modified: 4/15/2020
 # Python Version: 3.8.1
 # License: MIT License
+
+import json
 
 from discord.ext import commands
 from discord import Embed, Colour
@@ -22,39 +24,10 @@ class Info(commands.Cog):
     """
     def __init__(self, bot):
         self.bot = bot
-        self._genders = {
-            "male": "male", 
-            "female": "female", 
-            "neutral": "neutral"}
-        self._languages = {
-            "de": "de",
-            "es": "es",
-            "ar": "ar",
-            "fr": "fr",
-            "it": "it",
-            "ru": "ru",
-            "cmn": "cmn",
-            "ko": "ko",
-            "ja": "ja",
-            "vi": "vi",
-            "fil": "fil",
-            "id": "id",
-            "nl": "nl",
-            "cs": "cs",
-            "el": "el",
-            "pt": "pt",
-            "hu": "hu",
-            "pl": "pl", 
-            "sk": "sk",
-            "tr": "tr",
-            "uk": "uk",
-            "en": "en",
-            "hi": "hi",
-            "da": "da", 
-            "fi": "fi",
-            "nb": "nb",
-            "sv": "sv"
-        }
+        with open(r'./blabber/genders.json', 'r') as gender_f:
+            self._genders = json.load(gender_f)
+        with open(r'./blabber/language_codes.json', 'r') as lang_code_f:
+            self._languages = json.load(lang_code_f)
 
     @commands.command(name='help', aliases=['h'])
     async def help(self, ctx):
@@ -131,22 +104,6 @@ class Info(commands.Cog):
             value=f"`{prefix}list language [language]`", inline=False)
             await ctx.send(embed=embed)
 
-    # @list_available_voices.command(name='all')
-    # async def voice_no_filter(self, ctx):
-    #     """
-    #     Displays all available voices for the user to choose from to set as
-    #     their voice profile. 
-
-    #     parameters:
-    #         ctx [commands.Context]: discord Context object
-    #     """
-    #     # db = UserDataService()
-    #     # aliases = db.get_available_voices()
-    #     embed = Embed(title="Voice Directory - List of all Voices", 
-    #     colour=Colour.green())
-    #     # for alias in aliases:
-    #     #     embed.add_field(name=f"`{alias}`", inline=False)
-    #     await ctx.send(embed=embed)
     @list_available_voices.command(name='gender', aliases=['g'])
     async def voice_gender_filter(self, ctx, gender:str):
         """
@@ -158,15 +115,17 @@ class Info(commands.Cog):
             ctx [commands.Context]: discord Context object
             gender [str]: string object used to represent the gender to filter
         """
-        #TODO implement Pagination
-        embed = Embed(title="Voice Directory - List of Voices - Gender "
-        "Filter", colour=Colour.green())
         if(self._genders[gender]):
             fs = FilterServices()
-            voices = fs.filter_by_gender(genders[gender])
-            for alias in voices:
-                embed.add_field(name=f"{alias[0]}", value=f"language: {alias[1]}\ngender: {alias[2]}", inline=True)
-            await ctx.send(embed=embed)
+            voices = fs.filter_by_gender(self._genders[gender])
+            for page_number in range(len(voices)):
+                embed = Embed(title="Voice Directory - List of Voices - Gender "
+                "Filter - Page " + str(page_number+1), colour=Colour.green())
+                for alias in voices[page_number]:
+                    embed.add_field(name=f"{alias[0]}", 
+                    value=f"language: {alias[1]}\ngender: {alias[2]}",
+                    inline=True)
+                await ctx.send(embed=embed)
             
     @list_available_voices.command(name='language', aliases=['lang'])
     async def voice_language_filter(self, ctx, language:str):
@@ -179,14 +138,16 @@ class Info(commands.Cog):
             ctx [commands.Context]: discord Context object
             language [str]: string object used to represent the gender to filter
         """
-        #TODO implement Pagination
-        embed = Embed(title="Voice Directory - List of Voices - Language "
-        "Filter", colour=Colour.green())
         if(self._languages[language]):
             fs = FilterServices()
-            voices = fs.filter_by_lang(languages[language])
-            for alias in voices:
-                embed.add_field(name=f"{alias[0]}", value=f"language: {alias[1]}\ngender: {alias[2]}", inline=True)
+            voices = fs.filter_by_lang(self._languages[language])
+            for page_number in range(len(voices)):
+                embed = Embed(title="Voice Directory - List of Voices - Language "
+                "Filter - Page " + str(page_number+1), colour=Colour.green())
+                for alias in voices[page_number]:
+                    embed.add_field(name=f"{alias[0]}", 
+                    value=f"language: {alias[1]}\ngender: {alias[2]}",
+                    inline=True)
             await ctx.send(embed=embed)
 
     @voice_gender_filter.error

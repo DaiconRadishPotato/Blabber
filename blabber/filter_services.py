@@ -3,7 +3,7 @@
 # Contributor:  Jacky Zhang (jackyeightzhang),
 #               Marcos Avila (DaiconV)
 # Date created: 3/10/2020
-# Date last modified: 3/24/2020
+# Date last modified: 4/15/2020
 # Python Version: 3.8.1
 # License: "MIT"
 
@@ -25,6 +25,7 @@ class FilterServices():
             host = os.getenv('db_host'),
             database = os.getenv('db_name')
         )
+        self.EMBED_MAX_FIELDS = 25
         
     def __del__(self):
         self._cnx.close()
@@ -36,16 +37,21 @@ class FilterServices():
         arguments:
             gender:[str] string that represents gender
         returns:
-            records: a list of tuples
+            formatted_records: a list of tuples of 25 tuples
         """
         if self._cnx.is_connected():
             query = '''SELECT voice_alias, language, gender FROM available_voices WHERE gender=%s'''
             data=(gender,)
             cursor=self._cnx.cursor()
             cursor.execute(query, data)
-            records = cursor.fetchall()
+            formatted_records = []
+            while True:
+                records = cursor.fetchmany(size=self.EMBED_MAX_FIELDS)
+                if not records:
+                    break
+                formatted_records.append(records)
             cursor.close()
-            return records
+            return formatted_records
         else:
             print("No Connection Found")
             
@@ -56,15 +62,20 @@ class FilterServices():
         arguments:
             language:[str] string that represents language
         returns:
-            records: a list of tuples
+            formatted_records: a list of tuples of 25 tuples
         """
         if self._cnx.is_connected():
             query = '''SELECT voice_alias, language, gender FROM available_voices WHERE language=%s'''
             data=(lang,)
             cursor=self._cnx.cursor()
             cursor.execute(query, data)
-            records = cursor.fetchall()
+            formatted_records = []
+            while True:
+                records = cursor.fetchmany(size=self.EMBED_MAX_FIELDS)
+                if not records:
+                    break
+                formatted_records.append(records)
             cursor.close()
-            return records
+            return formatted_records
         else:
             print("No Connection Found")
