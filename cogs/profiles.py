@@ -4,7 +4,7 @@
 # Contributor:  Jacky Zhang (jackyeightzhang),
 #               Marcos Avila (DaiconV)
 # Date created: 3/27/2020
-# Date last modified: 3/30/2020
+# Date last modified: 4/17/2020
 # Python Version: 3.8.1
 # License: MIT License
 
@@ -14,43 +14,68 @@ from discord import Embed, Colour
 from blabber.user_services import UserDataService
 from blabber.guild_services import GuildDataService
 
+
 class Profiles(commands.Cog):
     """
-    Settings Cog Object that is a collection of commands for managing 
-    Blabber's settings for a specific guild
+    Profiles Cog Object that is a collection of commands for managing 
+    user's voice profiles
     
     attributes:
         bot [discord.Bot]: discord Bot object
     """
     def __init__(self, bot):
+        self.DEFAULT_VOICE = (
+            'voice_1', 
+            'de-DE-Standard-F', 
+            'FEMALE', 
+            'de', 
+            'de-DE'
+        )
         self.bot = bot
-        self.default_voice=('voice_1', 'de-DE-Standard-F', 'FEMALE', 'de', 'de-DE')
-        self.aliases=set()
+        self.aliases = set()
+        
+        #reading in voice aliases from json into set
         with open(r'./blabber/voices.json', 'r') as f:
             voice_dict=json.load(f)
+            
             for voice in voice_dict['voices']:
                 self.aliases.add(voice['alias'])
                 
-    @commands.command(name='set_voice', aliases=['sv'])
-    async def set_voice(self, ctx, *, voice):
+    @commands.command(name='voice', aliases=['v'])
+    async def set_voice(self, ctx, *, alias):
         """
         Sets up and updates a user voice profile.
         
         parameter:
             ctx [commands.Context]: discord Contxt object
-            voice [str]: string representing a specific voice
+            alias [str]: string representing a specific alias
         """
-        voice=voice.lower()
-        try:
-            if voice is 'default':
-                await ctx.send(f"Using DEFAULT voice")
-            elif (voice in self.aliases):
+        alias=alias.lower()
+        
+        if alias == self.DEFAULT_VOICE[0]:
+            try:
                 uds=UserDataService()
-                uds.set_voice(ctx.author.id, ctx.channel.id, voice)
-                await ctx.send(f"The new voice is '{voice}'")
-        except:
-            await ctx.send(f"Had trouble setting up the new voice.")
-            await ctx.send(f"'{voice} is not valid voice.")
+                uds.remove_voice(ctx.author.id, ctx.channel.id)
+                await ctx.send(f":white_check_mark: "
+                    f"**The new voice is** '{alias}'")
+            except:
+                await ctx.send(f":x: "
+                    f"**Had trouble setting up the new voice.**")
+                await ctx.send(f"Try again at a later time")
+                
+        elif (alias in self.aliases):
+            try:
+                uds=UserDataService()
+                uds.set_voice(ctx.author.id, ctx.channel.id, alias)
+                await ctx.send(f":white_check_mark: "
+                    f"**The new voice is **'{alias}'")
+            except:
+                await ctx.send(f":x: "
+                    f"**Had trouble setting up the new voice.**")
+                await ctx.send(f"Try again at a later time")
+                
+        else:
+            await ctx.send(f":x: **`{alias}` is not a valid voice**")
             
     async def _get_voice(self, user_id, channel_id):
         """
@@ -58,26 +83,27 @@ class Profiles(commands.Cog):
         
         parameter:
             ctx [commands.Context]: discord Contxt object
+        returns:
+            voice [tuple]: of voice information from database
         """
         try:
             uds = UserDataService()
-            return uds.get_voice(user_id, channel_id)
+            voice = uds.get_voice(user_id, channel_id)
+            if voice is None:
+                voice = self.DEFAULT_VOICE
+            return voice
         except:
-            return self.default_voice
+            pass
             
     @set_voice.error
     async def set_voice_error(self, ctx, error):
         """
-        sends informational embed to be displayed if set voice command
-        is being missused
-        
-        arguments:
-            ctx:
-            error:
+        Sends informational embed to be displayed if set voice command
+        is being missing arguments
         """
         if isinstance(error, commands.MissingRequiredArgument):
             voice = (await self._get_voice(ctx.author.id, ctx.channel.id))[0] #cache?
-            prefix=ctx.prefix
+            prefix= (await self.bot.get_cog("Settings")._get_prefix(ctx.guild.id))
             member=ctx.message.author
             embed = Embed(title="Blabber Voice",
             description="Changes the voice used to send messages in "
@@ -86,9 +112,10 @@ class Profiles(commands.Cog):
             "voices",
             colour=Colour.blue())
             
-            embed.add_field(name=f"{member}'s current Voice:", value=f"`{voice}`")
+            embed.add_field(name=f"{member}'s current Voice:", 
+            value=f"`{voice}`")
             embed.add_field(name="Update Voice:", 
-            value=f"`{prefix} voice [new voice or DEFAULT]`")
+            value=f"`{prefix}v [new voice]`")
             await ctx.send(embed=embed)
             
 def setup(bot):

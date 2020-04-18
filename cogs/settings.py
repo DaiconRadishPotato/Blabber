@@ -4,11 +4,9 @@
 # Contributor:  Fanny Avila (Fa-Avila),
 #               Marcos Avila (DaiconV)
 # Date created: 1/30/2020
-# Date last modified: 4/1/2020
+# Date last modified: 4/17/2020
 # Python Version: 3.8.1
 # License: MIT License
-
-import json
 
 from discord.ext import commands
 from discord import Embed, Colour
@@ -26,6 +24,7 @@ class Settings(commands.Cog):
     """
     def __init__(self, bot):
         self.bot = bot
+        self.DEFAULT_PREFIX='>'
 
     @commands.group(name='settings')
     async def settings(self, ctx):
@@ -48,7 +47,7 @@ class Settings(commands.Cog):
 
     @settings.command(name='prefix', aliases=['p'])
     @commands.check(is_guild_owner)
-    async def set_prefix(self, ctx, *, prefix):
+    async def set_prefix(self, ctx, prefix):
         """
         Changes prefix of Blabber for a particular guild.
 
@@ -57,70 +56,73 @@ class Settings(commands.Cog):
             prefix [str]: string used before command names to 
             invoke blabber bot
         raises:
-            IOError: raised when file does not exist
             MissingRequiredArgument: New prefix was not passed as an argument
         """
-        try:
-            with open(r"prefixes.json",'r') as f:
-                prefixes = json.load(f)
-
-            prefixes[str(ctx.guild.id)] = prefix
-
-            with open(r"prefixes.json",'w') as f:
-                json.dump(prefixes, f, indent = 4)
-            await ctx.send(f"The new prefix is '{prefix}'")
-        except:
-            await ctx.send(f"New prefix had trouble setting. "
-            "Try again at a later time")
-
+        if prefix == self.DEFAULT_PREFIX:
+            try:
+                gds=GuildDataService()
+                gds.remove_guild_prefix(ctx.guild.id)
+                await ctx.send(f":white_check_mark: "
+                    f"**The new prefix is** '>'")
+            except:
+                await ctx.send(f":x: "
+                    "**Had trouble setting up default prefix.**")
+                await ctx.send(f"Try again at a later time")
+        else:
+            try:
+                gds=GuildDataService()
+                gds.set_guild_prefix(ctx.guild.id, prefix)
+                await ctx.send(f":white_check_mark: "
+                    f"**The new prefix is **'{prefix}'")
+            except:
+                await ctx.send(f":x: "
+                    f"**Had trouble setting up the new prefix.**")
+                await ctx.send(f"Try again at a later time")
     async def check_prefix(self, bot, message):
         """
         Determines whether a user message is a command by checking if it has a
         specified prefix or @mention
-
+        
         parameters:
             bot [discord.Bot]: discord Bot object
             message [discord.Message]: the message or context from the guild 
             that called the bot.
         returns:
-            prefix: string that is used to call commands from the bot client
+            prefix [str]: that is used to call commands from the bot client
         """
         return commands.when_mentioned_or(
             await self._get_prefix(message.guild.id))(bot, message)
-
+            
     async def _get_prefix(self, guild_id):
         """
-        Checks a json file to see if guild has a different prefix 
-        and return it.
-        Return the original prefix if guild is not in json file.
-
-        raises:
-            IOError: raised when file does not exist
+        Checks database to see if guild has a different prefix.
+        Returns DEFAULT_PREFIX if record not found on the database
+        
         returns:
-            prefix: string that is used to call commands from the bot client
+            prefix [str]: that is used to call commands from the bot client
         """
         try:
-            with open(r"prefixes.json", "r") as f:
-                prefixes = json.load(f)
+            gds = GuildDataService()
+            prefix = gds.get_guild_prefix(guild_id)
+            if prefix is None:
+                prefix = self.DEFAULT_PREFIX
+            else:
+                prefix = prefix[0]
+            return prefix
         except:
-            return ">"
-        
-        # Checks if guild from the context exists within json file.
-        if str(guild_id) not in prefixes:
-            return ">"
-        else:
-            return prefixes[str(guild_id)]
-
+            pass
+            
     @set_prefix.error
     async def set_prefix_error(self, ctx, error):
         """
-
+        Sends informational embed to be displayed if set prefix command
+        is missing arguments
         """
         # if invoker does not pass a prefix, then send current prefix, show 
         # set_prefix command format, and describe prefix requirement. 
         if isinstance(error, commands.MissingRequiredArgument):
             prefix = await self._get_prefix(ctx.guild.id)
-
+            
             embed = Embed(title="Blabber Settings - Prefix",
             description="Changes the prefix used to command Blabber bot. You "
             "can also use the bot by @mentioning it instead of using the"
@@ -133,13 +135,11 @@ class Settings(commands.Cog):
             embed.add_field(name="Valid Prefix Reqs:", 
             value=f"`Any text, max 5 characters`")
             await ctx.send(embed=embed)
-
-
+            
 def setup(bot):
     """
     Adds Settings Cog to bot.
-
-    parameter: 
+        parameter: 
         bot [discord.Bot]: discord Bot object
     """
     bot.add_cog(Settings(bot))
