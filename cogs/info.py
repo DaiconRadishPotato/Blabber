@@ -4,7 +4,7 @@
 # Contributor:  Fanny Avila (Fa-Avila),
 #               Marcos Avila (DaiconV)
 # Date created: 1/30/2020
-# Date last modified: 4/17/2020
+# Date last modified: 4/18/2020
 # Python Version: 3.8.1
 # License: MIT License
 
@@ -16,11 +16,15 @@ from blabber.filter_services import FilterServices
 
 class Info(commands.Cog):
     """
-    Collection of commands for displaying information about Blabber for each 
-    guild.
+    Collection of commands for displaying information about Blabber Bot for the 
+    particular guild.
 
     attributes:
         bot [discord.Bot]: discord Bot object
+        MAX_EMBED_FIELDS [int]: maximum amount of fields that will be shown in
+        an embed
+        _genders [dict]: dictionary of genders used as a whitelist map
+        _lang_codes [dict]: dictionary of languages used as a whitelist map
     """
     def __init__(self, bot):
         self.bot = bot
@@ -28,7 +32,7 @@ class Info(commands.Cog):
         with open(r'./blabber/genders.json', 'r') as gender_f:
             self._genders = json.load(gender_f)
         with open(r'./blabber/language_codes.json', 'r') as lang_code_f:
-            self._languages = json.load(lang_code_f)
+            self._lang_codes = json.load(lang_code_f)
 
     @commands.command(name='help', aliases=['h'])
     async def help(self, ctx):
@@ -80,8 +84,8 @@ class Info(commands.Cog):
     @commands.group(name='list', aliases=['l','ls'])
     async def list_available_voices(self, ctx):
         """
-        Displays list voice options for the user to either display a filter 
-        version or all their voice options.
+        Displays list voice options for the user to display a filter 
+        version based on either gender or language.
 
         parameters:
             ctx [commands.Context]: discord Context object
@@ -93,16 +97,15 @@ class Info(commands.Cog):
             embed = Embed(title="Voice Directory", description="Use the "
             f"command {prefix}list [option] to filter the available voices.",
             colour=Colour.green())
-
-            embed.add_field(name="all", value=f"`{prefix}list all`", 
-            inline=False)
             
             embed.add_field(name="gender", 
-            value=f"`{prefix}list gender [male, female, neutral]`", 
+            value=f"`{prefix}list gender [male, female]`", 
             inline=False)
             
             embed.add_field(name="language", 
-            value=f"`{prefix}list language [language]`", inline=False)
+            value=f"`{prefix}list language [language]`",
+            inline=False)
+            
             await ctx.send(embed=embed)
 
     @list_available_voices.command(name='gender', aliases=['g'])
@@ -110,34 +113,41 @@ class Info(commands.Cog):
         """
         Subcommand of list that displays all available voices that have the 
         specified gender.
-        If a gender is not specified, then display available genders.
 
         parameters:
             ctx [commands.Context]: discord Context object
             gender [str]: string object used to represent the gender to filter
+        raises:
+            MissingRequiredArgument: gender was not passed as an argument
+            KeyError: gender was not avaiable or there was incorrectly inputted
         """
         if self._genders[gender]:
             fs = FilterServices()
             records = fs.filter_by_gender(self._genders[gender])
+
             if not records:
                 await ctx.send("database has a problem")
             else:
                 page_num = 1
-                embed = Embed(title="Voice Directory - List of Voices - Gender"
-                " Filter - Page "+ str(page_num),
+                embed = Embed(title="Voice Directory - List of Voices"
+                " - Gender Filter - Page " + str(page_num),
                 colour=Colour.green())
+
                 for record_num in range(len(records)):
                     alias = records[record_num]
-                    if (record_num % (self.MAX_EMBED_FIELDS+1)
-                    == self.MAX_EMBED_FIELDS):
+                    
+                    if (record_num % (self.MAX_EMBED_FIELDS + 1) == 
+                    self.MAX_EMBED_FIELDS):
                         await ctx.send(embed=embed)
                         page_num += 1
-                        embed = Embed(title="Voice Directory - List of Voices "
-                        "- Gender Filter - Page "+ str(page_num), 
+                        embed = Embed(title="Voice Directory - List of Voices"
+                        " - Gender Filter - Page " + str(page_num), 
                         colour=Colour.green())
-                    embed.add_field(name=f"{alias[0]}", 
-                    value=f"language: {alias[1]}\ngender: {alias[2]}", 
+                    
+                    embed.add_field(name=f"{alias[0]}",
+                    value = f"language: {alias[1]}\ngender: {alias[2]}", 
                     inline=True)
+                
                 await ctx.send(embed=embed)
 
     @list_available_voices.command(name='language', aliases=['lang'])
@@ -145,15 +155,18 @@ class Info(commands.Cog):
         """
         Subcommand of list that displays all available voices that have the 
         specified language.
-        If a language is not specified, then display available language.
          
         parameters:
             ctx [commands.Context]: discord Context object
-            language [str]: string object used to represent the gender to filter
+            language [str]: string object used to represent the gender to
+            filter
+        raises:
+            MissingRequiredArgument: language was not passed as an argument
+            KeyError: language was not avaiable or was incorrectly inputted
         """
-        if(self._languages[language]):
+        if(self._lang_codes[language]):
             fs = FilterServices()
-            records = fs.filter_by_lang(self._languages[language])
+            records = fs.filter_by_lang(self._lang_codes[language])
 
             if not records:
                 await ctx.send("database has a problem")
@@ -162,43 +175,66 @@ class Info(commands.Cog):
                 embed = Embed(title="Voice Directory - List of Voices - "
                 "Language Filter - Page " + str(page_num), 
                 colour=Colour.green())
+                
                 for record_num in range(len(records)):
                     alias = records[record_num]
-                    if (record_num % (self.MAX_EMBED_FIELDS+1)
-                    == self.MAX_EMBED_FIELDS):
+                    
+                    if (record_num % (self.MAX_EMBED_FIELDS + 1 ) == 
+                    self.MAX_EMBED_FIELDS):
                         await ctx.send(embed=embed)
                         page_num += 1
                         embed = Embed(title="Voice Directory - List of Voices"
                         " - Language Filter - Page " + str(page_num),
                         colour=Colour.green())
+                    
                     embed.add_field(name=f"{alias[0]}",
                     value=f"language: {alias[1]}\ngender: {alias[2]}", 
                     inline=True)
+
                 await ctx.send(embed=embed)
 
     @voice_gender_filter.error
     async def voice_gender_filter_error(self, ctx, error):
-        embed = Embed(title="Voice Directory - List of Voices - Gender"
-            " Filter", colour=Colour.green())
-        prefix = await self.bot.get_cog("Settings"
-            )._get_prefix(ctx.guild.id)
+        """
+        Local error handler for subcommand list gender.
+        If no gender argument, display how to invoke command.
+        If key error, display the invalid argument and valid arguments.
+
+        parameters:
+            ctx [commands.Context]: discord Context object
+            error [Error]: general Error object
+        """
+        embed = Embed(title="Voice Directory - List of Voices"
+        " - Gender Filter", colour=Colour.green())
+        prefix = await self.bot.get_cog("Settings")._get_prefix(ctx.guild.id)
         if isinstance(error, commands.MissingRequiredArgument):
             embed.add_field(name="show male voices only", 
             value=f"{prefix}list gender male")
+
             embed.add_field(name="show female voices only", 
             value=f"{prefix}list gender female")
-            embed.add_field(name="show neutral voices", 
-            value=f"{prefix}list gender neutral")
+
             await ctx.send(embed=embed)
         elif isinstance(error.original, KeyError):
             embed.add_field(name="Input Gender:", 
             value=f"`{ctx.args[2]}` is not available.")
+            
             embed.add_field(name="Available Genders:", 
-            value="`male`, `female`, and `neutral`")
+            value="`male` and `female`")
+            
             await ctx.send(embed=embed)
 
     @voice_language_filter.error
     async def voice_language_filter_error(self, ctx, error):
+        """
+        Local error handler for subcommand list language.
+        If no language argument, display how to invoke command.
+        If key error, display the invalid argument and valid languages.
+
+        parameters:
+            ctx [commands.Context]: discord Context object
+            error [Error]: general Error object
+        """
         embed = Embed(title="Voice Directory - List of Voices - "
             "Language Filter", colour=Colour.green())
         prefix = await self.bot.get_cog("Settings"
