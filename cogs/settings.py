@@ -66,20 +66,22 @@ class Settings(commands.Cog):
                 gds.remove_guild_prefix(ctx.guild.id)
                 await ctx.send(f":white_check_mark: "
                     f"**The new prefix is** '>'")
-            except:
+            except Exception as e:
                 await ctx.send(f":x: "
                     "**Had trouble setting up default prefix.**")
                 await ctx.send(f"Try again at a later time")
+                raise e
         else:
             try:
                 gds = GuildDataService()
                 gds.set_guild_prefix(ctx.guild.id, prefix)
                 await ctx.send(f":white_check_mark: "
                     f"**The new prefix is **'{prefix}'")
-            except:
+            except Exception as e:
                 await ctx.send(f":x: "
                     f"**Had trouble setting up the new prefix.**")
                 await ctx.send(f"Try again at a later time")
+                raise e
 
     async def check_prefix(self, bot, message):
         """
@@ -112,8 +114,8 @@ class Settings(commands.Cog):
             else:
                 prefix = prefix[0]
             return prefix
-        except:
-            pass
+        except Exception as e:
+            raise e
 
     @set_prefix.error
     async def set_prefix_error(self, ctx, error):
