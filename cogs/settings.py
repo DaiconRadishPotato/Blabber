@@ -4,7 +4,7 @@
 # Contributor:  Fanny Avila (Fa-Avila),
 #               Marcos Avila (DaiconV)
 # Date created: 1/30/2020
-# Date last modified: 4/17/2020
+# Date last modified: 4/18/2020
 # Python Version: 3.8.1
 # License: MIT License
 
@@ -37,10 +37,12 @@ class Settings(commands.Cog):
         """
         if ctx.invoked_subcommand is None:
             prefix = await self._get_prefix(ctx.guild.id)
+            
             embed = Embed(title="Blabber Settings - Menu", 
             description=f"Use the command format `{prefix}settings [option]` "
             "to view more info about an option.",
             colour=Colour.blue())
+            
             embed.add_field(name="Prefix", value=f"`{prefix}settings prefix`")
 
             await ctx.send(embed=embed)
@@ -60,7 +62,7 @@ class Settings(commands.Cog):
         """
         if prefix == self.DEFAULT_PREFIX:
             try:
-                gds=GuildDataService()
+                gds = GuildDataService()
                 gds.remove_guild_prefix(ctx.guild.id)
                 await ctx.send(f":white_check_mark: "
                     f"**The new prefix is** '>'")
@@ -70,7 +72,7 @@ class Settings(commands.Cog):
                 await ctx.send(f"Try again at a later time")
         else:
             try:
-                gds=GuildDataService()
+                gds = GuildDataService()
                 gds.set_guild_prefix(ctx.guild.id, prefix)
                 await ctx.send(f":white_check_mark: "
                     f"**The new prefix is **'{prefix}'")
@@ -78,6 +80,7 @@ class Settings(commands.Cog):
                 await ctx.send(f":x: "
                     f"**Had trouble setting up the new prefix.**")
                 await ctx.send(f"Try again at a later time")
+
     async def check_prefix(self, bot, message):
         """
         Determines whether a user message is a command by checking if it has a
@@ -92,10 +95,10 @@ class Settings(commands.Cog):
         """
         return commands.when_mentioned_or(
             await self._get_prefix(message.guild.id))(bot, message)
-            
+
     async def _get_prefix(self, guild_id):
         """
-        Checks database to see if guild has a different prefix.
+        Checks database to see if guild has a different prefix than the default.
         Returns DEFAULT_PREFIX if record not found on the database
         
         returns:
@@ -111,12 +114,16 @@ class Settings(commands.Cog):
             return prefix
         except:
             pass
-            
+
     @set_prefix.error
     async def set_prefix_error(self, ctx, error):
         """
         Sends informational embed to be displayed if set prefix command
         is missing arguments
+
+        parameters:
+            ctx [commands.Context]: discord Context object
+            error [Error]: general Error object
         """
         # if invoker does not pass a prefix, then send current prefix, show 
         # set_prefix command format, and describe prefix requirement. 
@@ -129,13 +136,17 @@ class Settings(commands.Cog):
             " prefix.",
             colour=Colour.blue())
             
-            embed.add_field(name="Current Prefix:", value=f"`{prefix}`")
+            embed.add_field(name="Current Prefix:",
+            value=f"`{prefix}`")
+            
             embed.add_field(name="Update Prefix:", 
             value=f"`{prefix}settings prefix [new prefix]`")
+            
             embed.add_field(name="Valid Prefix Reqs:", 
             value=f"`Any text, max 5 characters`")
+
             await ctx.send(embed=embed)
-            
+
 def setup(bot):
     """
     Adds Settings Cog to bot.
