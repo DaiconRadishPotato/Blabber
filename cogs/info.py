@@ -53,8 +53,8 @@ class Info(commands.Cog):
         value=f"Displays this message.",
         inline=False)
 
-        embed.add_field(name=f"`{prefix}connect` or `{prefix}c`",
-        value='Connect Blabber to the voice channel you\'re in',
+        embed.add_field(name=f"`{prefix}voice [alias]` or `{prefix}v [alias]`",
+        value='Set a specific voice for your say commands when for the guild',
         inline=False)
         
         embed.add_field(name=f"`{prefix}disconnect` or `{prefix}dc`",
@@ -65,6 +65,10 @@ class Info(commands.Cog):
         "[message]`",
         value="Tell Blabber to say something. If Blabber is not in the same "
         "voice channel, then it will join.",
+        inline=False)
+
+        embed.add_field(name=f"`{prefix}list` or `{prefix}l`", 
+        value="Displays the Voice Directory and voices.",
         inline=False)
 
         embed.add_field(name=f"`{prefix}settings`", 
