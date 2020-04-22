@@ -34,12 +34,7 @@ class Info(commands.Cog):
             data=json.load(f)
             self._languages=data['languages']
             self._genders=data['genders']
-        """
-        with open(r'./blabber/genders.json', 'r') as gender_f:
-            self._genders = json.load(gender_f)
-        with open(r'./blabber/language_codes.json', 'r') as lang_code_f:
-            self._lang_codes = json.load(lang_code_f)
-        """
+
     @commands.command(name='help', aliases=['h'])
     async def help(self, ctx):
         """
