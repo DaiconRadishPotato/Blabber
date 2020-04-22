@@ -67,7 +67,7 @@ class Info(commands.Cog):
         "voice channel, then it will join.",
         inline=False)
 
-        embed.add_field(name=f"`{prefix}settings` or `{prefix}s`", 
+        embed.add_field(name=f"`{prefix}settings`", 
         value="Displays settings menu, which allows the certain users to "
         "change Blabber Bot settings such as the prefix",
         inline=False)
