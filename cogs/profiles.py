@@ -4,15 +4,14 @@
 # Contributor:  Jacky Zhang (jackyeightzhang),
 #               Marcos Avila (DaiconV)
 # Date created: 3/27/2020
-# Date last modified: 4/18/2020
+# Date last modified: 4/22/2020
 # Python Version: 3.8.1
 # License: MIT License
 
 import json
 from discord.ext import commands
 from discord import Embed, Colour
-from blabber.user_services import UserDataService
-from blabber.guild_services import GuildDataService
+from blabber.services import DataServices
 
 
 class Profiles(commands.Cog):
@@ -34,19 +33,17 @@ class Profiles(commands.Cog):
             'de-DE'
         )
         self.bot = bot
-        self.aliases = set()
         
         #reading in voice aliases from json into set
-        with open(r'./blabber/voices.json', 'r') as f:
-            voice_dict=json.load(f)
-            
-            for voice in voice_dict['voices']:
-                self.aliases.add(voice['alias'])
+        with open(r'./blabber/data.json', 'r') as f:
+            data=json.load(f)
+            self._aliases=data['voices']
                 
     @commands.command(name='voice', aliases=['v'])
     async def set_voice(self, ctx, *, alias):
         """
-        Sets up and updates a user voice profile.
+        Sets up and updates a user voice profile in the database. Displays a 
+        message to user if set was successful or failed.
         
         parameter:
             ctx [commands.Context]: discord Contxt object
@@ -54,34 +51,28 @@ class Profiles(commands.Cog):
         raises:
             MissingRequiredArgument: an alias was not passed as an argument
         """
-        alias=alias.lower()
-        
-        if alias == self.DEFAULT_VOICE[0]:
-            try:
-                uds = UserDataService()
-                uds.remove_voice(ctx.author.id, ctx.channel.id)
-                await ctx.send(f":white_check_mark: "
-                    f"**The new voice is** '{alias}'")
-            except Exception as e:
-                await ctx.send(f":x: "
-                "**Had trouble setting up the new voice.**")
-                await ctx.send(f"Try again at a later time")
-                raise e
+        if alias in self._aliases:
+            ds = DataServices()
+            
+            if self._aliases[alias] == self.DEFAULT_VOICE[0]:
+                query = ("DELETE FROM voice_profiles "
+                    "WHERE user_id = %s AND channel_id = %s")
+                ds.write(query, (int(ctx.author.id), int(ctx.channel.id)))
                 
-        elif alias in self.aliases:
-            try:
-                uds = UserDataService()
-                uds.set_voice(ctx.author.id, ctx.channel.id, alias)
-                await ctx.send(f":white_check_mark: "
+            else:
+                query = ("INSERT INTO voice_profiles " 
+                    "(user_id, channel_id, voice_alias) "
+                    "VALUES (%s, %s, %s) " 
+                    "ON DUPLICATE KEY UPDATE voice_alias = %s")
+                ds.write(query, (int(ctx.author.id), int(ctx.channel.id), 
+                    self._aliases[alias], self._aliases[alias]))
+                
+            await ctx.send(f":white_check_mark: "
                 f"**The new voice is **'{alias}'")
-            except Exception as e:
-                await ctx.send(f":x: "
-                f"**Had trouble setting up the new voice.**")
-                await ctx.send(f"Try again at a later time")
-                raise e
+                
         else:
             await ctx.send(f":x: **`{alias}` is not a valid voice**")
-
+            
     async def _get_voice(self, user_id, channel_id):
         """
         Prints current users current voice profile.
@@ -91,15 +82,16 @@ class Profiles(commands.Cog):
         returns:
             voice [tuple]: of voice information from database
         """
-        try:
-            uds = UserDataService()
-            voice = uds.get_voice(user_id, channel_id)
-            if voice is None:
-                voice = self.DEFAULT_VOICE
-            return voice
-        except Exception as e:
-            raise e
-            
+        query = ("SELECT * FROM available_voices "
+            "WHERE voice_alias IN (SELECT voice_alias FROM voice_profiles "
+            "WHERE user_id = %s AND channel_id = %s)")
+        ds=DataServices()
+        
+        voice=ds.read(query,(int(user_id), int(channel_id)))
+        if voice is None:
+            voice = self.DEFAULT_VOICE
+        return voice
+        
     @set_voice.error
     async def set_voice_error(self, ctx, error):
         """

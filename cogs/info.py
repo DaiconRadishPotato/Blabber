@@ -12,7 +12,7 @@ import json
 
 from discord.ext import commands
 from discord import Embed, Colour
-from blabber.filter_services import FilterServices
+from blabber.services import FilterServices
 
 class Info(commands.Cog):
     """
@@ -26,14 +26,20 @@ class Info(commands.Cog):
         _genders [dict]: dictionary of genders used as a whitelist map
         _lang_codes [dict]: dictionary of languages used as a whitelist map
     """
+    
     def __init__(self, bot):
         self.bot = bot
         self.MAX_EMBED_FIELDS = 25
+        with open(r'./blabber/data.json', 'r') as f:
+            data=json.load(f)
+            self._languages=data['languages']
+            self._genders=data['genders']
+        """
         with open(r'./blabber/genders.json', 'r') as gender_f:
             self._genders = json.load(gender_f)
         with open(r'./blabber/language_codes.json', 'r') as lang_code_f:
             self._lang_codes = json.load(lang_code_f)
-
+        """
     @commands.command(name='help', aliases=['h'])
     async def help(self, ctx):
         """
@@ -121,9 +127,11 @@ class Info(commands.Cog):
             MissingRequiredArgument: gender was not passed as an argument
             KeyError: gender was not avaiable or there was incorrectly inputted
         """
+        query='''SELECT voice_alias, language, gender FROM 
+                available_voices WHERE gender=%s'''
         if self._genders[gender]:
             fs = FilterServices()
-            records = fs.filter_by_gender(self._genders[gender])
+            records = fs.read_all(query, (self._genders[gender],))
 
             if not records:
                 await ctx.send("database has a problem")
@@ -164,9 +172,12 @@ class Info(commands.Cog):
             MissingRequiredArgument: language was not passed as an argument
             KeyError: language was not avaiable or was incorrectly inputted
         """
-        if(self._lang_codes[language]):
+        query='''SELECT voice_alias, language, gender FROM 
+                available_voices WHERE language=%s'''
+                
+        if(self._languages[language]):
             fs = FilterServices()
-            records = fs.filter_by_lang(self._lang_codes[language])
+            records = fs.read_all(query, (self._languages[language][0],))
 
             if not records:
                 await ctx.send("database has a problem")

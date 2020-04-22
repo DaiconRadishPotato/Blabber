@@ -4,14 +4,14 @@
 # Contributor:  Fanny Avila (Fa-Avila),
 #               Marcos Avila (DaiconV)
 # Date created: 1/30/2020
-# Date last modified: 4/18/2020
+# Date last modified: 4/22/2020
 # Python Version: 3.8.1
 # License: MIT License
 
 from discord.ext import commands
 from discord import Embed, Colour
 from blabber.checks import is_guild_owner
-from blabber.guild_services import GuildDataService
+from blabber.services import DataServices
 
 
 class Settings(commands.Cog):
@@ -51,7 +51,8 @@ class Settings(commands.Cog):
     @commands.check(is_guild_owner)
     async def set_prefix(self, ctx, prefix):
         """
-        Changes prefix of Blabber for a particular guild.
+        Changes prefix of Blabber for a particular guild. Displays a message to 
+        user if set was successful or failed.
 
         parameter:
             ctx [commands.Context]: discord Contxt object
@@ -60,28 +61,21 @@ class Settings(commands.Cog):
         raises:
             MissingRequiredArgument: New prefix was not passed as an argument
         """
-        if prefix == self.DEFAULT_PREFIX:
-            try:
-                gds = GuildDataService()
-                gds.remove_guild_prefix(ctx.guild.id)
-                await ctx.send(f":white_check_mark: "
-                    f"**The new prefix is** '>'")
-            except Exception as e:
-                await ctx.send(f":x: "
-                    "**Had trouble setting up default prefix.**")
-                await ctx.send(f"Try again at a later time")
-                raise e
+        if len(prefix) <= 5:
+            ds = DataServices()
+            if prefix == self.DEFAULT_PREFIX:
+                query =("DELETE FROM guilds WHERE guild_id = %s")
+                ds.write(query, (int(ctx.guild.id),))
+            else:
+                query = ("INSERT IGNORE INTO guilds (guild_id, prefix) " 
+                "VALUES (%s, %s) ON DUPLICATE KEY UPDATE prefix = %s")
+                ds.write(query, (int(ctx.guild.id), str(prefix), str(prefix)))
+                
+            await ctx.send(f":white_check_mark: "
+                f"**The new prefix is **'{prefix}'")
         else:
-            try:
-                gds = GuildDataService()
-                gds.set_guild_prefix(ctx.guild.id, prefix)
-                await ctx.send(f":white_check_mark: "
-                    f"**The new prefix is **'{prefix}'")
-            except Exception as e:
-                await ctx.send(f":x: "
-                    f"**Had trouble setting up the new prefix.**")
-                await ctx.send(f"Try again at a later time")
-                raise e
+            await ctx.send(f":x: "
+                f"'{prefix}' **Is not a valid prefix.**")
 
     async def check_prefix(self, bot, message):
         """
@@ -106,17 +100,15 @@ class Settings(commands.Cog):
         returns:
             prefix [str]: that is used to call commands from the bot client
         """
-        try:
-            gds = GuildDataService()
-            prefix = gds.get_guild_prefix(guild_id)
-            if prefix is None:
-                prefix = self.DEFAULT_PREFIX
-            else:
-                prefix = prefix[0]
-            return prefix
-        except Exception as e:
-            raise e
-
+        ds=DataServices()
+        query=("SELECT prefix FROM guilds WHERE guild_id = %s LIMIT 1")
+        prefix=ds.read(query, (int(guild_id),))
+        if prefix is None:
+            prefix = self.DEFAULT_PREFIX
+        else:
+            prefix=prefix[0]
+        return prefix
+        
     @set_prefix.error
     async def set_prefix_error(self, ctx, error):
         """

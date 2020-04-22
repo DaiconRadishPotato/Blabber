@@ -1,0 +1,223 @@
+{
+    "voices": {
+        "voice_1": "voice_1",
+        "voice_2": "voice_2",
+        "voice_3": "voice_3",
+        "voice_4": "voice_4",
+        "voice_5": "voice_5",
+        "voice_6": "voice_6",
+        "voice_7": "voice_7",
+        "voice_8": "voice_8",
+        "voice_9": "voice_9",
+        "voice_10": "voice_10",
+        "voice_11": "voice_11",
+        "voice_12": "voice_12",
+        "voice_13": "voice_13",
+        "voice_14": "voice_14",
+        "voice_15": "voice_15",
+        "voice_16": "voice_16",
+        "voice_17": "voice_17",
+        "voice_18": "voice_18",
+        "voice_19": "voice_19",
+        "voice_20": "voice_20",
+        "voice_21": "voice_21",
+        "voice_22": "voice_22",
+        "voice_23": "voice_23",
+        "voice_24": "voice_24",
+        "voice_25": "voice_25",
+        "voice_26": "voice_26",
+        "voice_27": "voice_27",
+        "voice_28": "voice_28",
+        "voice_29": "voice_29",
+        "voice_30": "voice_30",
+        "voice_31": "voice_31",
+        "voice_32": "voice_32",
+        "voice_33": "voice_33",
+        "voice_34": "voice_34",
+        "voice_35": "voice_35",
+        "voice_36": "voice_36",
+        "voice_37": "voice_37",
+        "voice_38": "voice_38",
+        "voice_39": "voice_39",
+        "voice_40": "voice_40",
+        "voice_41": "voice_41",
+        "voice_42": "voice_42",
+        "voice_43": "voice_43",
+        "voice_44": "voice_44",
+        "voice_45": "voice_45",
+        "voice_46": "voice_46",
+        "voice_47": "voice_47",
+        "voice_48": "voice_48",
+        "voice_49": "voice_49",
+        "voice_50": "voice_50",
+        "voice_51": "voice_51",
+        "voice_52": "voice_52",
+        "voice_53": "voice_53",
+        "voice_54": "voice_54",
+        "voice_55": "voice_55",
+        "voice_56": "voice_56",
+        "voice_57": "voice_57",
+        "voice_58": "voice_58",
+        "voice_59": "voice_59",
+        "voice_60": "voice_60",
+        "voice_61": "voice_61",
+        "voice_62": "voice_62",
+        "voice_63": "voice_63",
+        "voice_64": "voice_64",
+        "voice_65": "voice_65",
+        "voice_66": "voice_66",
+        "voice_67": "voice_67",
+        "voice_68": "voice_68",
+        "voice_69": "voice_69",
+        "voice_70": "voice_70",
+        "voice_71": "voice_71",
+        "voice_72": "voice_72",
+        "voice_73": "voice_73",
+        "voice_74": "voice_74",
+        "voice_75": "voice_75",
+        "voice_76": "voice_76",
+        "voice_77": "voice_77",
+        "voice_78": "voice_78",
+        "voice_79": "voice_79",
+        "voice_80": "voice_80",
+        "voice_81": "voice_81",
+        "voice_82": "voice_82",
+        "voice_83": "voice_83",
+        "voice_84": "voice_84",
+        "voice_85": "voice_85",
+        "voice_86": "voice_86",
+        "voice_87": "voice_87",
+        "voice_88": "voice_88",
+        "voice_89": "voice_89",
+        "voice_90": "voice_90",
+        "voice_91": "voice_91",
+        "voice_92": "voice_92",
+        "voice_93": "voice_93",
+        "voice_94": "voice_94",
+        "voice_95": "voice_95",
+        "voice_96": "voice_96",
+        "voice_97": "voice_97",
+        "voice_98": "voice_98",
+        "voice_99": "voice_99",
+        "voice_100": "voice_100",
+        "voice_101": "voice_101",
+        "voice_102": "voice_102",
+        "voice_103": "voice_103",
+        "voice_104": "voice_104"
+    },
+    "languages": {
+        "de": [
+            "de",
+            "German"
+        ],
+        "es": [
+            "es",
+            "Spanish"
+        ],
+        "ar": [
+            "ar",
+            "Arabic"
+        ],
+        "fr": [
+            "fr",
+            "French"
+        ],
+        "it": [
+            "it",
+            "Italian"
+        ],
+        "ru": [
+            "ru",
+            "Russian"
+        ],
+        "cmn": [
+            "cmn",
+            "Mandarin Chinese"
+        ],
+        "ko": [
+            "ko",
+            "Korean"
+        ],
+        "ja": [
+            "ja",
+            "Japanese"
+        ],
+        "vi": [
+            "vi",
+            "Vietnamese"
+        ],
+        "fil": [
+            "fil",
+            "Filipino"
+        ],
+        "id": [
+            "id",
+            "Indonesian"
+        ],
+        "nl": [
+            "nl",
+            "Dutch"
+        ],
+        "cs": [
+            "cs",
+            "Czech"
+        ],
+        "el": [
+            "el",
+            "Greek"
+        ],
+        "pt": [
+            "pt",
+            "Portuguese"
+        ],
+        "hu": [
+            "hu",
+            "Hungarian"
+        ],
+        "pl": [
+            "pl",
+            "Polish"
+        ],
+        "sk": [
+            "sk",
+            "Slovak"
+        ],
+        "tr": [
+            "tr",
+            "Turkish"
+        ],
+        "uk": [
+            "uk",
+            "Ukrainian"
+        ],
+        "en": [
+            "en",
+            "English"
+        ],
+        "hi": [
+            "hi",
+            "Hindi"
+        ],
+        "da": [
+            "da",
+            "Danish"
+        ],
+        "fi": [
+            "fi",
+            "Finnish"
+        ],
+        "nb": [
+            "nb",
+            "Norwegian"
+        ],
+        "sv": [
+            "sv",
+            "Swedish"
+        ]
+    },
+    "genders": {
+        "male": "male", 
+        "female": "female", 
+        "neutral": "neutral"
+    }
+}
