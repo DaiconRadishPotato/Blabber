@@ -34,12 +34,7 @@ class Info(commands.Cog):
             data=json.load(f)
             self._languages=data['languages']
             self._genders=data['genders']
-        """
-        with open(r'./blabber/genders.json', 'r') as gender_f:
-            self._genders = json.load(gender_f)
-        with open(r'./blabber/language_codes.json', 'r') as lang_code_f:
-            self._lang_codes = json.load(lang_code_f)
-        """
+
     @commands.command(name='help', aliases=['h'])
     async def help(self, ctx):
         """
@@ -58,8 +53,8 @@ class Info(commands.Cog):
         value=f"Displays this message.",
         inline=False)
 
-        embed.add_field(name=f"`{prefix}connect` or `{prefix}c`",
-        value='Connect Blabber to the voice channel you\'re in',
+        embed.add_field(name=f"`{prefix}voice [alias]` or `{prefix}v [alias]`",
+        value='Set a specific voice for your say commands when for the guild',
         inline=False)
         
         embed.add_field(name=f"`{prefix}disconnect` or `{prefix}dc`",
@@ -72,7 +67,11 @@ class Info(commands.Cog):
         "voice channel, then it will join.",
         inline=False)
 
-        embed.add_field(name=f"`{prefix}settings` or `{prefix}s`", 
+        embed.add_field(name=f"`{prefix}list` or `{prefix}l`", 
+        value="Displays the Voice Directory and voices.",
+        inline=False)
+
+        embed.add_field(name=f"`{prefix}settings`", 
         value="Displays settings menu, which allows the certain users to "
         "change Blabber Bot settings such as the prefix",
         inline=False)
