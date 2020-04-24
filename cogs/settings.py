@@ -11,7 +11,7 @@
 from discord.ext import commands
 from discord import Embed, Colour
 from blabber.checks import is_guild_owner
-from blabber.services import DataServices
+from blabber.services import GuildService
 
 
 class Settings(commands.Cog):
@@ -62,14 +62,11 @@ class Settings(commands.Cog):
             MissingRequiredArgument: New prefix was not passed as an argument
         """
         if len(prefix) <= 5:
-            ds = DataServices()
+            gs = GuildService()
             if prefix == self.DEFAULT_PREFIX:
-                query =("DELETE FROM guilds WHERE guild_id = %s")
-                ds.write(query, (int(ctx.guild.id),))
+                gs.delete(ctx.guild.id)
             else:
-                query = ("INSERT IGNORE INTO guilds (guild_id, prefix) " 
-                "VALUES (%s, %s) ON DUPLICATE KEY UPDATE prefix = %s")
-                ds.write(query, (int(ctx.guild.id), str(prefix), str(prefix)))
+                gs.insert(ctx.guild.id, prefix,)
                 
             await ctx.send(f":white_check_mark: "
                 f"**The new prefix is **'{prefix}'")
@@ -100,9 +97,8 @@ class Settings(commands.Cog):
         returns:
             prefix [str]: that is used to call commands from the bot client
         """
-        ds=DataServices()
-        query=("SELECT prefix FROM guilds WHERE guild_id = %s LIMIT 1")
-        prefix=ds.read(query, (int(guild_id),))
+        gs=GuildService()
+        prefix=gs.select(guild_id)
         if prefix is None:
             prefix = self.DEFAULT_PREFIX
         else:

@@ -11,7 +11,7 @@
 import json
 from discord.ext import commands
 from discord import Embed, Colour
-from blabber.services import DataServices
+from blabber.services import UserService
 
 
 class Profiles(commands.Cog):
@@ -52,20 +52,13 @@ class Profiles(commands.Cog):
             MissingRequiredArgument: an alias was not passed as an argument
         """
         if alias in self._aliases:
-            ds = DataServices()
+            us = UserService()
             
             if self._aliases[alias] == self.DEFAULT_VOICE[0]:
-                query = ("DELETE FROM voice_profiles "
-                    "WHERE user_id = %s AND channel_id = %s")
-                ds.write(query, (int(ctx.author.id), int(ctx.channel.id)))
+                us.delete(ctx.author.id, ctx.channel.id)
                 
             else:
-                query = ("INSERT INTO voice_profiles " 
-                    "(user_id, channel_id, voice_alias) "
-                    "VALUES (%s, %s, %s) " 
-                    "ON DUPLICATE KEY UPDATE voice_alias = %s")
-                ds.write(query, (int(ctx.author.id), int(ctx.channel.id), 
-                    self._aliases[alias], self._aliases[alias]))
+                us.insert(ctx.author.id, ctx.channel.id, self._aliases[alias])
                 
             await ctx.send(f":white_check_mark: "
                 f"**The new voice is **'{alias}'")
@@ -82,12 +75,9 @@ class Profiles(commands.Cog):
         returns:
             voice [tuple]: of voice information from database
         """
-        query = ("SELECT * FROM available_voices "
-            "WHERE voice_alias IN (SELECT voice_alias FROM voice_profiles "
-            "WHERE user_id = %s AND channel_id = %s)")
-        ds=DataServices()
+        us=UserService()
         
-        voice=ds.read(query,(int(user_id), int(channel_id)))
+        voice=us.select(user_id, channel_id)
         if voice is None:
             voice = self.DEFAULT_VOICE
         return voice
