@@ -4,7 +4,7 @@
 # Contributor:  Fanny Avila (Fa-Avila),
 #               Marcos Avila (DaiconV)
 # Date created: 1/30/2020
-# Date last modified: 4/18/2020
+# Date last modified: 4/27/2020
 # Python Version: 3.8.1
 # License: MIT License
 
@@ -23,17 +23,19 @@ class Info(commands.Cog):
         bot [discord.Bot]: discord Bot object
         MAX_EMBED_FIELDS [int]: maximum amount of fields that will be shown in
         an embed
-        _genders [dict]: dictionary of genders used as a whitelist map
-        _lang_codes [dict]: dictionary of languages used as a whitelist map
+        _genders_map [dict]: dictionary of genders used as a whitelist map
+        _languages_map [dict]: dictionary of language lists used as a whitelist map
     """
     
     def __init__(self, bot):
         self.bot = bot
         self.MAX_EMBED_FIELDS = 25
+        self.LANG_CODE_INDEX = 0
+        self.LANG_INDEX = 1
         with open(r'./blabber/data.json', 'r') as f:
             data=json.load(f)
-            self._languages=data['languages']
-            self._genders=data['genders']
+            self._languages_map=data['languages']
+            self._genders_map=data['genders']
 
     @commands.command(name='help', aliases=['h'])
     async def help(self, ctx):
@@ -100,15 +102,15 @@ class Info(commands.Cog):
                 "Settings")._get_prefix(ctx.guild.id)
 
             embed = Embed(title="Voice Directory", description="Use the "
-            f"command {prefix}list [option] to filter the available voices.",
+            f"command `{prefix}list [option]` to show filter options.",
             colour=Colour.green())
             
-            embed.add_field(name="gender", 
-            value=f"`{prefix}list gender [male, female]`", 
+            embed.add_field(name="Gender", 
+            value=f"`{prefix}list gender`", 
             inline=False)
             
-            embed.add_field(name="language", 
-            value=f"`{prefix}list language [language]`",
+            embed.add_field(name="Language", 
+            value=f"`{prefix}list language`",
             inline=False)
             
             await ctx.send(embed=embed)
@@ -128,9 +130,9 @@ class Info(commands.Cog):
         """
         query='''SELECT voice_alias, language, gender FROM 
                 available_voices WHERE gender=%s'''
-        if self._genders[gender]:
+        if self._genders_map[gender]:
             fs = FilterServices()
-            records = fs.read_all(query, (self._genders[gender],))
+            records = fs.read_all(query, (self._genders_map[gender],))
 
             if not records:
                 await ctx.send("database has a problem")
@@ -174,9 +176,9 @@ class Info(commands.Cog):
         query='''SELECT voice_alias, language, gender FROM 
                 available_voices WHERE language=%s'''
                 
-        if(self._languages[language]):
+        if(self._languages_map[language]):
             fs = FilterServices()
-            records = fs.read_all(query, (self._languages[language][0],))
+            records = fs.read_all(query, (self._languages_map[language][0],))
 
             if not records:
                 await ctx.send("database has a problem")
@@ -215,23 +217,25 @@ class Info(commands.Cog):
             error [Error]: general Error object
         """
         embed = Embed(title="Voice Directory - List of Voices"
-        " - Gender Filter", colour=Colour.green())
+        " - Gender Filter Options", colour=Colour.green())
         prefix = await self.bot.get_cog("Settings")._get_prefix(ctx.guild.id)
+        
+        available_genders = ", ".join(gender 
+        for gender in self._genders_map.keys())
+
         if isinstance(error, commands.MissingRequiredArgument):
-            embed.add_field(name="show male voices only", 
-            value=f"{prefix}list gender male")
-
-            embed.add_field(name="show female voices only", 
-            value=f"{prefix}list gender female")
-
+            embed.add_field(name=f"Available Genders Options:", 
+            value = f"`{available_genders}`")
+            
+            embed.add_field(name="To list voices filtered by a gender:", 
+            value=f"`{prefix}list gender [gender_option]`" )
             await ctx.send(embed=embed)
         elif isinstance(error.original, KeyError):
             embed.add_field(name="Input Gender:", 
             value=f"`{ctx.args[2]}` is not available.")
-            
-            embed.add_field(name="Available Genders:", 
-            value="`male` and `female`")
-            
+
+            embed.add_field(name=f"Available Genders Options:", 
+            value = f"`{available_genders}`")
             await ctx.send(embed=embed)
 
     @voice_language_filter.error
@@ -246,19 +250,26 @@ class Info(commands.Cog):
             error [Error]: general Error object
         """
         embed = Embed(title="Voice Directory - List of Voices - "
-            "Language Filter", colour=Colour.green())
+        "Language Filter Menu", colour=Colour.green())
         prefix = await self.bot.get_cog("Settings"
             )._get_prefix(ctx.guild.id)
+        
+        available_languages = ", ".join(sorted(lang_list[self.LANG_INDEX] 
+        for lang_list in self._languages_map.values()))
+        
         if isinstance(error, commands.MissingRequiredArgument):
-            # available_voices = db.get_voice_profile_lang()
-            # for alias in available_voices:
-            #     embed.add_field(name=f"`{alias}`", inline=False)
+            embed.add_field(name='Available Languages Options:', 
+            value=f"`{available_languages}`")
+
+            embed.add_field(name="To list voices filtered by a language:", 
+            value=f"`{prefix}list lang [language_option]`")
             await ctx.send(embed=embed)
         elif isinstance(error.original, KeyError):
             embed.add_field(name="Input Language:", 
             value=f"`{ctx.args[2]}` is not available.")
-            embed.add_field(name="To get available languages use:", 
-            value=f"`{prefix}list lang`")
+
+            embed.add_field(name='Available Languages Options:', 
+            value=f"`{available_languages}`")
             await ctx.send(embed=embed)
 
 
