@@ -100,41 +100,56 @@ class Voice(commands.Cog):
 
     @disconnect_from_voice_channel.error
     async def disconnect_error(self, ctx, error):
-        # If user does not have permission to use 
+        """
+        Local error handler for command disconnect.
+        If user does not have permission, warn user.
+        If bot is not connected, warn user.
+
+        parameters:
+            ctx [commands.Context]: discord Context object
+            error [Error]: general Error object
+        """
         if isinstance(error, commands.CheckAnyFailure):
             await ctx.send("Voice::disconnect_from_voice_channel Bot is "
             "in use right now in a different channel. You require the blabby "
             "role or you need to try again later when it is not in use")
-        # If bot is not connected, warn the invoker
         elif isinstance(error.original, AttributeError):
             await ctx.send("Voice::disconnect_from_VC Bot is not "
             "connected")
 
     @connect_to_voice_channel.error
     async def connect_error(self, ctx, error):
+        """
+        Local error handler for command connect.
+        If invoker does not have permission and the bot is
+        connected, warn the user that the bot is already connected
+        If invoker does not have permission to use bot, warn them
+        If invoker is not in a voice channel, warm them
+        If bot is already connected to the same voice channel as author,
+        inform invoker
+        If bot is in a different voice channel than the invoker, 
+        switch channels.
+        
+        parameters:
+            ctx [commands.Context]: discord Context object
+            error [Error]: general Error object
+        """
         if isinstance(error, commands.CheckAnyFailure):
-            # If invoker is not in the have permission but the bot is
-            # connected, warn the user that the bot is already connected
             if ctx.voice_client.channel == ctx.author.voice.channel:
                 await ctx.send("Voice::connect_to_VC already connected to "
                 f"{ctx.voice_client.channel.name}")
             else:
-                # If invoker does not have permission to use bot, warn them
                 await ctx.send("Voice::connect_to_VC Voice is in use right "
                 "now in a different channel. You require the blabby role or "
                 "you need to try again later when it is not in use")
-        # If invoker is not in a voice channel, warm them
         elif isinstance(error.original, AttributeError):
             await ctx.send("Voice::connect_to_VC You need to be connected to "
             "a voice channel to use this command.")
         elif isinstance(error.original, ClientException):
-            # If bot is already connected to the same voice channel as author
             if ctx.voice_client.channel == ctx.author.voice.channel:
                 await ctx.send("Voice::connect_to_VC already connected to "
                 f"{ctx.voice_client.channel.name}")
             else:
-                # If bot is in a different voice channel than the invoker, 
-                # switch channels 
                 await ctx.send("Voice::connect_to_VC swaping from "
                 f"{ctx.voice_client.channel.name} to "
                 f"{ctx.author.voice.channel.name}")
