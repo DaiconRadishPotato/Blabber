@@ -37,7 +37,7 @@ class Profiles(commands.Cog):
         #reading in voice aliases from json into set
         with open(r'./blabber/data.json', 'r') as f:
             data=json.load(f)
-            self._aliases=data['voices']
+            self._aliases = data['aliases']
                 
     @commands.command(name='voice', aliases=['v'])
     async def set_voice(self, ctx, *, alias):
