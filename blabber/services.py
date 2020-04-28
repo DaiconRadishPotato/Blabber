@@ -192,25 +192,3 @@ class GuildService:
             cnx.commit()
             cursor.close()
             return cursor.rowcount
-            
-class FilterServices():
-    def __init__(self):
-        pass
-        
-    def read_all(self, query, data):
-        """
-        Reads multiple records from the database using the query and data 
-        arguments.
-        
-        parameters:
-            query [str]: SQL query string
-            data [tuple]: Tuple of data that is used by the query
-        returns:
-            record [list[tuple]]: multiple records from the database
-        """
-        with ConnectionManager(os.getenv('db_user'), os.getenv('db_pw')) as cnx:
-            cursor = cnx.cursor()
-            cursor.execute(query, data)
-            record = cursor.fetchall()
-            print(record)
-            return record #returns list of tuples

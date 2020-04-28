@@ -34,8 +34,9 @@ class Info(commands.Cog):
         self.LANG_INDEX = 1
         with open(r'./blabber/data.json', 'r') as f:
             data=json.load(f)
-            self._languages_map=data['languages']
-            self._genders_map=data['genders']
+            self._languages_map = data['languages']
+            self._genders_map = data['genders']
+            self._voices_map = data['voice_info']
 
     @commands.command(name='help', aliases=['h'])
     async def help(self, ctx):
@@ -128,36 +129,35 @@ class Info(commands.Cog):
             MissingRequiredArgument: gender was not passed as an argument
             KeyError: gender was not avaiable or there was incorrectly inputted
         """
-        query='''SELECT voice_alias, language, gender FROM 
-                available_voices WHERE gender=%s'''
         if self._genders_map[gender]:
-            fs = FilterServices()
-            records = fs.read_all(query, (self._genders_map[gender],))
+            records = [ 
+                (voice, info['language'], info['gender'] )
+                for voice, info in self._voices_map.items()
+                if info['gender'] == self._genders_map[gender]
+            ]
+            page_num = 1
+            embed = Embed(title="Voice Directory - List of Voices"
+            " - Gender Filter - Page " + str(page_num),
+            colour=Colour.green())
 
-            if not records:
-                await ctx.send("database has a problem")
-            else:
-                page_num = 1
-                embed = Embed(title="Voice Directory - List of Voices"
-                " - Gender Filter - Page " + str(page_num),
-                colour=Colour.green())
 
-                for record_num in range(len(records)):
-                    alias = records[record_num]
-                    
-                    if (record_num % (self.MAX_EMBED_FIELDS + 1) == 
-                    self.MAX_EMBED_FIELDS):
-                        await ctx.send(embed=embed)
-                        page_num += 1
-                        embed = Embed(title="Voice Directory - List of Voices"
-                        " - Gender Filter - Page " + str(page_num), 
-                        colour=Colour.green())
-                    
-                    embed.add_field(name=f"{alias[0]}",
-                    value = f"language: {alias[1]}\ngender: {alias[2]}", 
-                    inline=True)
+
+            for record_num in range(len(records)):
+                alias = records[record_num]
                 
-                await ctx.send(embed=embed)
+                if (record_num % (self.MAX_EMBED_FIELDS + 1) == 
+                self.MAX_EMBED_FIELDS):
+                    await ctx.send(embed=embed)
+                    page_num += 1
+                    embed = Embed(title="Voice Directory - List of Voices"
+                    " - Gender Filter - Page " + str(page_num), 
+                    colour=Colour.green())
+                
+                embed.add_field(name=f"{alias[0]}",
+                value = f"language: {alias[1]}\ngender: {alias[2]}", 
+                inline=True)
+
+            await ctx.send(embed=embed)
 
     @list_available_voices.command(name='language', aliases=['lang'])
     async def voice_language_filter(self, ctx, language:str):
@@ -173,37 +173,35 @@ class Info(commands.Cog):
             MissingRequiredArgument: language was not passed as an argument
             KeyError: language was not avaiable or was incorrectly inputted
         """
-        query='''SELECT voice_alias, language, gender FROM 
-                available_voices WHERE language=%s'''
+        language = language.lower()
+        if self._languages_map[language]:
+            records = [ 
+                (voice, info['language'], info['gender'] )
+                for voice, info in self._voices_map.items()
+                if info['language'] == 
+                self._languages_map[language][self.LANG_CODE_INDEX]
+            ]
+            page_num = 1
+            embed = Embed(title="Voice Directory - List of Voices - "
+            "Language Filter - Page " + str(page_num), 
+            colour=Colour.green())
+            
+            for record_num in range(len(records)):
+                alias = records[record_num]
                 
-        if(self._languages_map[language]):
-            fs = FilterServices()
-            records = fs.read_all(query, (self._languages_map[language][0],))
-
-            if not records:
-                await ctx.send("database has a problem")
-            else:
-                page_num = 1
-                embed = Embed(title="Voice Directory - List of Voices - "
-                "Language Filter - Page " + str(page_num), 
-                colour=Colour.green())
+                if (record_num % (self.MAX_EMBED_FIELDS + 1 ) == 
+                self.MAX_EMBED_FIELDS):
+                    await ctx.send(embed=embed)
+                    page_num += 1
+                    embed = Embed(title="Voice Directory - List of Voices"
+                    " - Language Filter - Page " + str(page_num),
+                    colour=Colour.green())
                 
-                for record_num in range(len(records)):
-                    alias = records[record_num]
-                    
-                    if (record_num % (self.MAX_EMBED_FIELDS + 1 ) == 
-                    self.MAX_EMBED_FIELDS):
-                        await ctx.send(embed=embed)
-                        page_num += 1
-                        embed = Embed(title="Voice Directory - List of Voices"
-                        " - Language Filter - Page " + str(page_num),
-                        colour=Colour.green())
-                    
-                    embed.add_field(name=f"{alias[0]}",
-                    value=f"language: {alias[1]}\ngender: {alias[2]}", 
-                    inline=True)
+                embed.add_field(name=f"{alias[0]}",
+                value=f"language: {alias[1]}\ngender: {alias[2]}", 
+                inline=True)
 
-                await ctx.send(embed=embed)
+            await ctx.send(embed=embed)
 
     @voice_gender_filter.error
     async def voice_gender_filter_error(self, ctx, error):
