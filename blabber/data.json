@@ -106,118 +106,118 @@
         "voice_104": "voice_104"
     },
     "languages": {
-        "de": [
+        "german": [
             "de",
             "German"
         ],
-        "es": [
+        "spanish": [
             "es",
             "Spanish"
         ],
-        "ar": [
+        "arabic": [
             "ar",
             "Arabic"
         ],
-        "fr": [
+        "french": [
             "fr",
             "French"
         ],
-        "it": [
+        "italian": [
             "it",
             "Italian"
         ],
-        "ru": [
+        "russian": [
             "ru",
             "Russian"
         ],
-        "cmn": [
+        "mandarin": [
             "cmn",
-            "Mandarin Chinese"
+            "Mandarin"
         ],
-        "ko": [
+        "korean": [
             "ko",
             "Korean"
         ],
-        "ja": [
+        "japanese": [
             "ja",
             "Japanese"
         ],
-        "vi": [
+        "vietnamese": [
             "vi",
             "Vietnamese"
         ],
-        "fil": [
+        "filipino": [
             "fil",
             "Filipino"
         ],
-        "id": [
+        "indonesian": [
             "id",
             "Indonesian"
         ],
-        "nl": [
+        "dutch": [
             "nl",
             "Dutch"
         ],
-        "cs": [
+        "czech": [
             "cs",
             "Czech"
         ],
-        "el": [
+        "greek": [
             "el",
             "Greek"
         ],
-        "pt": [
+        "portuguese": [
             "pt",
             "Portuguese"
         ],
-        "hu": [
+        "hungarian": [
             "hu",
             "Hungarian"
         ],
-        "pl": [
+        "polish": [
             "pl",
             "Polish"
         ],
-        "sk": [
+        "slovak": [
             "sk",
             "Slovak"
         ],
-        "tr": [
+        "turkish": [
             "tr",
             "Turkish"
         ],
-        "uk": [
+        "ukrainian": [
             "uk",
             "Ukrainian"
         ],
-        "en": [
+        "english": [
             "en",
             "English"
         ],
-        "hi": [
+        "hindi": [
             "hi",
             "Hindi"
         ],
-        "da": [
+        "danish": [
             "da",
             "Danish"
         ],
-        "fi": [
+        "finnish": [
             "fi",
             "Finnish"
         ],
-        "nb": [
+        "norwegian": [
             "nb",
             "Norwegian"
         ],
-        "sv": [
+        "swedish": [
             "sv",
             "Swedish"
         ]
     },
     "genders": {
-        "male": "male", 
-        "female": "female"
+        "male": "MALE", 
+        "female": "FEMALE"
     },
     "voice_info" : {
         "voice_1": {
