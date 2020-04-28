@@ -12,7 +12,6 @@ import json
 
 from discord.ext import commands
 from discord import Embed, Colour
-from blabber.services import FilterServices
 
 class Info(commands.Cog):
     """
@@ -25,6 +24,7 @@ class Info(commands.Cog):
         an embed
         _genders_map [dict]: dictionary of genders used as a whitelist map
         _languages_map [dict]: dictionary of language lists used as a whitelist map
+        _voices_map [dict]: dictionary of voices and their information
     """
     
     def __init__(self, bot):
@@ -138,8 +138,6 @@ class Info(commands.Cog):
         embed = Embed(title="Voice Directory - List of Voices"
         " - Gender Filter - Page " + str(page_num),
         colour=Colour.green())
-
-
 
         for record_num in range(len(records)):
             alias = records[record_num]
