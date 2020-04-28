@@ -10,7 +10,7 @@
 # License: MIT License
 
 from discord.player import AudioSource
-
+from blabber.request import TTSRequestManager
 
 class TTSAudio(AudioSource):
     """
@@ -20,8 +20,9 @@ class TTSAudio(AudioSource):
     attributes:
         handle [TTSRequestHandler]: request handler object containing audio
     """
-    def __init__(self, handle):
-        self._packets = handle.iter_packets()
+    def __init__(self, pool):
+        self._manager = TTSRequestManager(pool)
+        self._packets = self._manager.iter_packets()
         
     def read(self):
         """
@@ -30,7 +31,15 @@ class TTSAudio(AudioSource):
         returns:
             bytes: packet of audio data
         """
-        return next(self._packets, b'')
+        try:
+            data = next(self._packets)
+        except StopIteration:
+            data = b''
+            self._packets = self._manager.iter_packets()
+        return data
+
+    def submit_request(self, request):
+        self._manager.submit_request(request)
 
     def is_opus(self):
         """
