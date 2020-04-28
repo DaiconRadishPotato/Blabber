@@ -61,18 +61,15 @@ class Settings(commands.Cog):
         raises:
             MissingRequiredArgument: New prefix was not passed as an argument
         """
-        if len(prefix) <= 5:
-            gs = GuildService()
-            if prefix == self.DEFAULT_PREFIX:
-                gs.delete(ctx.guild.id)
-            else:
-                gs.insert(ctx.guild.id, prefix,)
-                
-            await ctx.send(f":white_check_mark: "
-                f"**The new prefix is **'{prefix}'")
+        gs = GuildService()
+        
+        if prefix == self.DEFAULT_PREFIX:
+            gs.delete(ctx.guild.id)
         else:
-            await ctx.send(f":x: "
-                f"'{prefix}' **Is not a valid prefix.**")
+            gs.insert(ctx.guild.id, prefix)
+            
+        await ctx.send(f":white_check_mark: "
+            f"**The new prefix is **'{prefix}'")
 
     async def check_prefix(self, bot, message):
         """

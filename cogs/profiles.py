@@ -37,8 +37,9 @@ class Profiles(commands.Cog):
         #reading in voice aliases from json into set
         with open(r'./blabber/data.json', 'r') as f:
             data=json.load(f)
-            self._aliases = data['aliases']
-                
+            #self._aliases = data['aliases']
+            self._aliases = data['voice_info']
+            
     @commands.command(name='voice', aliases=['v'])
     async def set_voice(self, ctx, *, alias):
         """
@@ -51,21 +52,18 @@ class Profiles(commands.Cog):
         raises:
             MissingRequiredArgument: an alias was not passed as an argument
         """
-        if alias in self._aliases:
-            us = UserService()
+        #sanitization will be handled by checks
+        us = UserService()
+        
+        if alias == self.DEFAULT_VOICE[0]:
+            us.delete(ctx.author.id, ctx.channel.id)
             
-            if self._aliases[alias] == self.DEFAULT_VOICE[0]:
-                us.delete(ctx.author.id, ctx.channel.id)
-                
-            else:
-                us.insert(ctx.author.id, ctx.channel.id, self._aliases[alias])
-                
-            await ctx.send(f":white_check_mark: "
-                f"**The new voice is **'{alias}'")
-                
         else:
-            await ctx.send(f":x: **`{alias}` is not a valid voice**")
+            us.insert(ctx.author.id, ctx.channel.id, alias)
             
+        await ctx.send(f":white_check_mark: "
+            f"**The new voice is **'{alias}'")
+                
     async def _get_voice(self, user_id, channel_id):
         """
         Prints current users current voice profile.
