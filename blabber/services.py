@@ -97,7 +97,6 @@ class UserService:
             cursor = cnx.cursor(buffered=True)
             cursor.execute(query, data)
             record = cursor.fetchone()
-            print(record)
             return record
             
     def delete(self, user_id, channel_id):
@@ -170,7 +169,6 @@ class GuildService:
             cursor = cnx.cursor(buffered=True)
             cursor.execute(query, data)
             record = cursor.fetchone()
-            print(record)
             return record
             
     def delete(self, guild_id):
