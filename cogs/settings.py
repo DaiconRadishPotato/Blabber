@@ -37,7 +37,7 @@ class Settings(commands.Cog):
             ctx [commands.Context]: discord Contxt object
         """
         if ctx.invoked_subcommand is None:
-            prefix = await self._get_prefix(ctx.guild.id)
+            prefix = await self._get_prefix(ctx.guild)
 
             embed = Embed(title="Blabber Settings - Menu",
                           description="Use the command format "
@@ -66,9 +66,9 @@ class Settings(commands.Cog):
         gs = GuildService()
 
         if prefix == self.DEFAULT_PREFIX:
-            gs.delete(ctx.guild.id)
+            gs.delete(hash(ctx.guild))
         else:
-            gs.insert(ctx.guild.id, prefix)
+            gs.insert(hash(ctx.guild), prefix)
 
         await ctx.send(f":white_check_mark: **The new prefix is **'{prefix}'")
 
@@ -85,20 +85,20 @@ class Settings(commands.Cog):
             prefix [str]: that is used to call commands from the bot client
         """
         return commands.when_mentioned_or(
-            await self._get_prefix(message.guild.id))(bot, message)
+            await self._get_prefix(message.guild))(bot, message)
 
-    async def _get_prefix(self, guild_id: int):
+    async def _get_prefix(self, guild):
         """
         Checks database if guild has a different prefix than the default.
         Returns DEFAULT_PREFIX if record not found on the database
 
         parameters:
-            guild_id [int]: unique id for guild
+            guild [Guild]: discord Guild object
         returns:
             prefix [str]: that is used to call commands from the bot client
         """
         gs = GuildService()
-        prefix = gs.select(guild_id)
+        prefix = gs.select(hash(guild))
         if prefix is None:
             return self.DEFAULT_PREFIX
         else:
@@ -118,7 +118,7 @@ class Settings(commands.Cog):
         """
 
         if isinstance(error, commands.MissingRequiredArgument):
-            prefix = await self._get_prefix(ctx.guild.id)
+            prefix = await self._get_prefix(ctx.guild)
 
             embed = Embed(
                 title="Blabber Settings - Prefix",

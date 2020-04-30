@@ -43,7 +43,7 @@ class Info(commands.Cog):
         paramters:
             ctx [commands.Context]: discord Context object
         """
-        prefix = await self.bot.get_cog("Settings")._get_prefix(ctx.guild.id)
+        prefix = await self.bot.get_cog("Settings")._get_prefix(ctx.guild)
         embed = Embed(title="Help Directory",
                       description="",
                       colour=Colour.gold())
@@ -97,8 +97,7 @@ class Info(commands.Cog):
             ctx [commands.Context]: discord Context object
         """
         if ctx.invoked_subcommand is None:
-            prefix = await self.bot.get_cog(
-                "Settings")._get_prefix(ctx.guild.id)
+            prefix = await self.bot.get_cog("Settings")._get_prefix(ctx.guild)
 
             embed = Embed(title="Voice Directory", description="Use the "
                           f"command `{prefix}list [option]`"
@@ -211,7 +210,7 @@ class Info(commands.Cog):
         """
         embed = Embed(title="Voice Directory - List of Voices"
                       " - Gender Filter Options", colour=Colour.green())
-        prefix = await self.bot.get_cog("Settings")._get_prefix(ctx.guild.id)
+        prefix = await self.bot.get_cog("Settings")._get_prefix(ctx.guild)
 
         available_genders = ", ".join(gender
                                       for gender in self._genders_map.keys())
@@ -246,8 +245,7 @@ class Info(commands.Cog):
         """
         embed = Embed(title="Voice Directory - List of Voices - "
                       "Language Filter Menu", colour=Colour.green())
-        prefix = await self.bot.get_cog("Settings"
-                                        )._get_prefix(ctx.guild.id)
+        prefix = await self.bot.get_cog("Settings")._get_prefix(ctx.guild)
 
         available_languages = ", ".join(sorted(
             lang_list[self.LANG_INDEX]

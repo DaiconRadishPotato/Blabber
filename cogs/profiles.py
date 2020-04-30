@@ -55,25 +55,25 @@ class Profiles(commands.Cog):
         us = UserService()
 
         if alias == self.DEFAULT_VOICE[0]:
-            us.delete(ctx.author.id, ctx.channel.id)
+            us.delete(hash(ctx.author), hash(ctx.channel))
         elif self._aliases[alias]:
-            us.insert(ctx.author.id, ctx.channel.id, alias)
+            us.insert(hash(ctx.author), hash(ctx.channel), alias)
 
         await ctx.send(f":white_check_mark: **The new voice is **'{alias}'")
 
-    async def _get_voice(self, user_id, channel_id):
+    async def _get_voice(self, user, channel):
         """
         Prints current users current voice profile.
 
         parameter:
-            user_id [int]: unique id of user
-            channel_id [int]: unique id of channel
+            user [User]: discord User object
+            channel_id [Channel]: discord Channel Object
         returns:
             voice [tuple]: of voice information from database
         """
         us = UserService()
 
-        voice = us.select(user_id, channel_id)
+        voice = us.select(hash(user), hash(channel))
         if voice is None:
             return self.DEFAULT_VOICE
         else:
@@ -90,9 +90,8 @@ class Profiles(commands.Cog):
             error [Error]: general Error object
         """
         if isinstance(error, commands.MissingRequiredArgument):
-            voice = (await self._get_voice(ctx.author.id, ctx.channel.id))[0]
-            prefix = (await self.bot.get_cog("Settings"
-                                             )._get_prefix(ctx.guild.id))
+            voice = (await self._get_voice(ctx.author, ctx.channel))[0]
+            prefix = (await self.bot.get_cog("Settings")._get_prefix(ctx.guild))
             member = ctx.message.author
 
             embed = Embed(
