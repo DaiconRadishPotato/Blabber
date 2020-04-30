@@ -66,9 +66,9 @@ class Settings(commands.Cog):
         gs = GuildService()
 
         if prefix == self.DEFAULT_PREFIX:
-            gs.delete(hash(ctx.guild))
+            gs.delete(ctx.guild)
         else:
-            gs.insert(hash(ctx.guild), prefix)
+            gs.insert(ctx.guild, prefix)
 
         await ctx.send(f":white_check_mark: **The new prefix is **'{prefix}'")
 
@@ -98,7 +98,7 @@ class Settings(commands.Cog):
             prefix [str]: that is used to call commands from the bot client
         """
         gs = GuildService()
-        prefix = gs.select(hash(guild))
+        prefix = gs.select(guild)
         if prefix is None:
             return self.DEFAULT_PREFIX
         else:

@@ -81,10 +81,6 @@ class Info(commands.Cog):
                         "p`", value="Displays current guild prefix.",
                         inline=False)
 
-        embed.add_field(name=f"`{prefix}list` or `{prefix}l`",
-                        value="Displays the Voice Directory and voices.",
-                        inline=False)
-
         await ctx.send(embed=embed)
 
     @commands.group(name='list', aliases=['l', 'ls'])

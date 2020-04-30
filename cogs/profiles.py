@@ -55,9 +55,9 @@ class Profiles(commands.Cog):
         us = UserService()
 
         if alias == self.DEFAULT_VOICE[0]:
-            us.delete(hash(ctx.author), hash(ctx.channel))
+            us.delete(ctx.author, ctx.channel)
         elif self._aliases[alias]:
-            us.insert(hash(ctx.author), hash(ctx.channel), alias)
+            us.insert(ctx.author, ctx.channel, alias)
 
         await ctx.send(f":white_check_mark: **The new voice is **'{alias}'")
 
@@ -73,7 +73,7 @@ class Profiles(commands.Cog):
         """
         us = UserService()
 
-        voice = us.select(hash(user), hash(channel))
+        voice = us.select(user, channel)
         if voice is None:
             return self.DEFAULT_VOICE
         else:
