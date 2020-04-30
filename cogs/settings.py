@@ -108,14 +108,15 @@ class Settings(commands.Cog):
     async def set_prefix_error(self, ctx, error):
         """
         Sends informational embed to be displayed if set prefix command
-        is missing arguments
+        is missing arguments.
+        If invoker does not pass a prefix, then send current prefix, show
+        set_prefix command format, and describe prefix requirement.
 
         parameters:
             ctx [commands.Context]: discord Context object
             error [Error]: general Error object
         """
-        # if invoker does not pass a prefix, then send current prefix, show
-        # set_prefix command format, and describe prefix requirement.
+
         if isinstance(error, commands.MissingRequiredArgument):
             prefix = await self._get_prefix(ctx.guild.id)
 

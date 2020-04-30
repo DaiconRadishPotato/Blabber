@@ -228,7 +228,9 @@ class Info(commands.Cog):
 
             embed.add_field(name="To list voices filtered by a gender:",
                             value=f"`{prefix}list gender [gender_option]`")
+
             await ctx.send(embed=embed)
+
         elif isinstance(error.original, KeyError):
             embed.add_field(name="Input Gender:",
                             value=f"`{ctx.args[2]}` is not available.")
@@ -263,6 +265,7 @@ class Info(commands.Cog):
 
             embed.add_field(name="To list voices filtered by a language:",
                             value=f"`{prefix}list lang [language_option]`")
+
             await ctx.send(embed=embed)
         elif isinstance(error.original, KeyError):
             embed.add_field(name="Input Language:",
@@ -270,6 +273,7 @@ class Info(commands.Cog):
 
             embed.add_field(name='Available Languages Options:',
                             value=f"`{available_languages}`")
+
             await ctx.send(embed=embed)
 
 
