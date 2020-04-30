@@ -60,7 +60,7 @@ class Info(commands.Cog):
 
         embed.add_field(name=f"`{prefix}voice [alias]` or `{prefix}v [alias]`",
                         value="Set a specific voice for your say commands "
-                        "when for the guild",
+                        "unique to the guild",
                         inline=False)
 
         embed.add_field(name=f"`{prefix}disconnect` or `{prefix}dc`",

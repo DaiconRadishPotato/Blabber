@@ -7,6 +7,7 @@
 # Date last modified: 4/23/2020
 # Python Version: 3.8.1
 # License: MIT License
+
 import os
 import mysql.connector
 from dotenv import load_dotenv
@@ -64,7 +65,7 @@ class UserService:
             alias [str]: new voice
         returns:
             int: 1 if voice was successfully added 2 if voice was updated.
-            None: on connection failure
+            None: On connection failure
         """
         query = ("INSERT INTO voice_profiles "
                  "(user_id, channel_id, voice_alias) "
@@ -104,14 +105,14 @@ class UserService:
 
     def delete(self, user_id, channel_id):
         """
-        Deltes specified row from the voice_profile table.
+        Deletes specified row from the voice_profile table.
 
         parameters:
             user_id [int]: id of the current user
             channel_id [int]: id of the current channel
         returns:
             int: 1 if voice was successfully removed.
-            None: on connection failure
+            None: On connection failure
         """
         query = ("DELETE FROM voice_profiles "
                  "WHERE user_id = %s AND channel_id = %s")
@@ -143,7 +144,7 @@ class GuildService:
             prefix [str]: new prefix
         returns:
             int: 1 if voice was successfully added 2 if voice was updated.
-            None: on connection failure
+            None: On connection failure
         """
         query = ("INSERT INTO guilds (guild_id, prefix) "
                  "VALUES (%s, %s) ON DUPLICATE KEY UPDATE prefix = %s")
@@ -184,7 +185,7 @@ class GuildService:
             guild_id [int]: id of the current guild
         returns:
             int: 1 if voice was successfully removed.
-            None: on connection failure
+            None: On connection failure
         """
         query = ("DELETE FROM guilds WHERE guild_id = %s")
         data = (int(guild_id),)
