@@ -51,7 +51,7 @@ class Settings(commands.Cog):
 
     @settings.command(name='prefix', aliases=['p'])
     @commands.check(is_guild_owner)
-    async def set_prefix(self, ctx, prefix):
+    async def set_prefix(self, ctx, prefix: str):
         """
         Changes prefix of Blabber for a particular guild. Displays a message
         to user if set was successful or failed.
@@ -70,8 +70,7 @@ class Settings(commands.Cog):
         else:
             gs.insert(ctx.guild.id, prefix)
 
-        await ctx.send(f":white_check_mark: "
-                       f"**The new prefix is **'{prefix}'")
+        await ctx.send(f":white_check_mark: **The new prefix is **'{prefix}'")
 
     async def check_prefix(self, bot, message):
         """
@@ -88,21 +87,22 @@ class Settings(commands.Cog):
         return commands.when_mentioned_or(
             await self._get_prefix(message.guild.id))(bot, message)
 
-    async def _get_prefix(self, guild_id):
+    async def _get_prefix(self, guild_id: int):
         """
         Checks database if guild has a different prefix than the default.
         Returns DEFAULT_PREFIX if record not found on the database
 
+        parameters:
+            guild_id [int]: unique id for guild
         returns:
             prefix [str]: that is used to call commands from the bot client
         """
         gs = GuildService()
         prefix = gs.select(guild_id)
         if prefix is None:
-            prefix = self.DEFAULT_PREFIX
+            return self.DEFAULT_PREFIX
         else:
-            prefix = prefix[0]
-        return prefix
+            return prefix[0]
 
     @set_prefix.error
     async def set_prefix_error(self, ctx, error):
@@ -137,6 +137,8 @@ class Settings(commands.Cog):
                             value=f"`Any text, max 5 characters`")
 
             await ctx.send(embed=embed)
+        else:
+            return None
 
 
 def setup(bot):

@@ -56,7 +56,7 @@ class Profiles(commands.Cog):
 
         if alias == self.DEFAULT_VOICE[0]:
             us.delete(ctx.author.id, ctx.channel.id)
-        else:
+        elif self._aliases[alias]:
             us.insert(ctx.author.id, ctx.channel.id, alias)
 
         await ctx.send(f":white_check_mark: **The new voice is **'{alias}'")
@@ -66,7 +66,8 @@ class Profiles(commands.Cog):
         Prints current users current voice profile.
 
         parameter:
-            ctx [commands.Context]: discord Contxt object
+            user_id [int]: unique id of user
+            channel_id [int]: unique id of channel
         returns:
             voice [tuple]: of voice information from database
         """
@@ -74,8 +75,9 @@ class Profiles(commands.Cog):
 
         voice = us.select(user_id, channel_id)
         if voice is None:
-            voice = self.DEFAULT_VOICE
-        return voice
+            return self.DEFAULT_VOICE
+        else:
+            return voice
 
     @set_voice.error
     async def set_voice_error(self, ctx, error):
@@ -108,6 +110,18 @@ class Profiles(commands.Cog):
                             value=f"`{prefix}v [new voice]`")
 
             await ctx.send(embed=embed)
+        elif isinstance(error.original, KeyError):
+            embed = Embed(title="Blabber Voice - Setting Voice",
+                          colour=Colour.blue())
+
+            embed.add_field(name="Input Voice:",
+                            value=f"`{ctx.args[2]}` is not available.")
+
+            embed.add_field(name='To list all available voice options:',
+                            value=f"`{prefix}list`")
+
+            await ctx.send(embed=embed)
+
 
 
 def setup(bot):

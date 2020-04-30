@@ -18,13 +18,17 @@ load_dotenv()
 class ConnectionManager:
     """
     Manages connection to the database.
+
+    attributes:
+        username [str]: username for connction to MySQLConnection
+        password [str]: password for connction to MySQLConnection
     """
 
-    def __init__(self, un, pw):
+    def __init__(self, username, password):
         """Initializes connection."""
         self._cnx = mysql.connector.connect(
-            user=un,
-            password=pw,
+            user=username,
+            password=password,
             host=os.getenv('db_host'),
             database=os.getenv('db_name')
         )

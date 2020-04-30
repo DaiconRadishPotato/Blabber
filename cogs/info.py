@@ -21,12 +21,6 @@ class Info(commands.Cog):
 
     attributes:
         bot [discord.Bot]: discord Bot object
-        MAX_EMBED_FIELDS [int]: maximum amount of fields that will be shown in
-        an embed
-        _genders_map [dict]: dictionary of genders used as a whitelist map
-        _languages_map [dict]: dictionary of language lists used as a
-        whitelist map
-        _voices_map [dict]: dictionary of voices and their information
     """
 
     def __init__(self, bot):
