@@ -4,7 +4,7 @@
 # Contributor:  Fanny Avila (Fa-Avila),
 #               Marcos Avila (DaiconV)
 # Date created: 2/3/2019
-# Date last modified: 3/4/2020
+# Date last modified: 3/23/2020
 # Python Version: 3.8.1
 # License: MIT License
 
@@ -15,7 +15,7 @@ import discord
 from discord.ext import commands
 
 
-class _Roles(commands.Cog):
+class Roles(commands.Cog):
     """
     Private Permission Cog that allows role managers to give permission for 
     certain users to use blabber
@@ -79,4 +79,4 @@ def setup(bot):
     parameter: 
         bot [discord.Bot]: discord Bot object
     """
-    bot.add_cog(_Roles(bot))
+    bot.add_cog(Roles(bot))
