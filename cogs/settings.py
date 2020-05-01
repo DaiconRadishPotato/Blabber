@@ -11,8 +11,7 @@
 from discord.ext import commands
 from discord import Embed, Colour
 from blabber.checks import is_guild_owner
-from blabber.services import GuildService
-
+from blabber.cache import PrefixCache
 
 class Settings(commands.Cog):
     """
@@ -26,6 +25,7 @@ class Settings(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.DEFAULT_PREFIX = '>'
+        self.pc = PrefixCache()
 
     @commands.group(name='settings')
     async def settings(self, ctx):
@@ -58,18 +58,11 @@ class Settings(commands.Cog):
 
         parameter:
             ctx [commands.Context]: discord Contxt object
-            prefix [str]: string used before command names to
-            invoke blabber bot
+            prefix [str]: string used before commands to invoke blabber bot
         raises:
             MissingRequiredArgument: New prefix was not passed as an argument
         """
-        gs = GuildService()
-
-        if prefix == self.DEFAULT_PREFIX:
-            gs.delete(ctx.guild)
-        else:
-            gs.insert(ctx.guild, prefix)
-
+        self.pc[ctx.guild] = prefix
         await ctx.send(f":white_check_mark: **The new prefix is **'{prefix}'")
 
     async def check_prefix(self, bot, message):
@@ -84,8 +77,12 @@ class Settings(commands.Cog):
         returns:
             prefix [str]: that is used to call commands from the bot client
         """
-        return commands.when_mentioned_or(
-            await self._get_prefix(message.guild))(bot, message)
+        try:
+            return commands.when_mentioned_or(
+                await self._get_prefix(message.guild))(bot, message)
+        except:
+            return self.DEFAULT_PREFIX
+
 
     async def _get_prefix(self, guild):
         """
@@ -97,12 +94,9 @@ class Settings(commands.Cog):
         returns:
             prefix [str]: that is used to call commands from the bot client
         """
-        gs = GuildService()
-        prefix = gs.select(guild)
-        if prefix is None:
-            return self.DEFAULT_PREFIX
-        else:
-            return prefix[0]
+        prefix = self.pc[guild]
+        return prefix
+
 
     @set_prefix.error
     async def set_prefix_error(self, ctx, error):
@@ -137,8 +131,6 @@ class Settings(commands.Cog):
                             value=f"`Any text, max 5 characters`")
 
             await ctx.send(embed=embed)
-        else:
-            return None
 
 
 def setup(bot):

@@ -39,7 +39,7 @@ class Errors(commands.Cog):
                            f'"{ctx.message.content}" '
                            'is not a command for Blabber.')
         else:
-        #     await ctx.send(error)
+            # await ctx.send(error)
             raise error
 
 

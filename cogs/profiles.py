@@ -12,7 +12,7 @@ import json
 
 from discord.ext import commands
 from discord import Embed, Colour
-from blabber.services import UserService
+from blabber.cache import VoiceProfileCache
 
 
 class Profiles(commands.Cog):
@@ -21,7 +21,6 @@ class Profiles(commands.Cog):
     voice profiles
 
     attributes:
-        DEFAULT_VOICE [tuple]: a constant tuple of voice arguments
         bot [discord.Bot]: discord Bot object
         aliases [set]: set object of string alias/voice names
     """
@@ -35,6 +34,7 @@ class Profiles(commands.Cog):
             'de-DE'
         )
         self.bot = bot
+        self.vpc = VoiceProfileCache()
 
         with open(r'./blabber/data.json', 'r') as f:
             data = json.load(f)
@@ -52,12 +52,8 @@ class Profiles(commands.Cog):
         raises:
             MissingRequiredArgument: an alias was not passed as an argument
         """
-        us = UserService()
-
-        if alias == self.DEFAULT_VOICE[0]:
-            us.delete(ctx.author, ctx.channel)
-        elif self._aliases[alias]:
-            us.insert(ctx.author, ctx.channel, alias)
+        if self._aliases[alias] is not None:
+            self.vpc[(ctx.author, ctx.channel)] = alias
 
         await ctx.send(f":white_check_mark: **The new voice is **'{alias}'")
 
@@ -69,15 +65,10 @@ class Profiles(commands.Cog):
             user [User]: discord User object
             channel_id [Channel]: discord Channel Object
         returns:
-            voice [tuple]: of voice information from database
+            voice [tuple]: tuple of voice information from database
         """
-        us = UserService()
-
-        voice = us.select(user, channel)
-        if voice is None:
-            return self.DEFAULT_VOICE
-        else:
-            return voice
+        voice = self.vpc[(user, channel)]
+        return voice
 
     @set_voice.error
     async def set_voice_error(self, ctx, error):
@@ -91,7 +82,7 @@ class Profiles(commands.Cog):
         """
         if isinstance(error, commands.MissingRequiredArgument):
             voice = (await self._get_voice(ctx.author, ctx.channel))[0]
-            prefix = (await self.bot.get_cog("Settings")._get_prefix(ctx.guild))
+            prefix = await self.bot.get_cog("Settings")._get_prefix(ctx.guild)
             member = ctx.message.author
 
             embed = Embed(
