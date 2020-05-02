@@ -2,222 +2,319 @@
 #
 # Author: Marcos Avila (DaiconV)
 # Contributors: Fanny Avila (Fa-Avila),
-#               Marcos Avila (DaiconV),
 #               Jacky Zhang (jackyeightzhang)
 # Date created: 4/16/2020
-# Date last modified: 4/24/2020
+# Date last modified: 5/1/2020
 # Python Version: 3.8.1
 # License: MIT License
 
+import asyncio
 import queue
 import threading
 import time
 
+
 class SimplexIOBase():
     """
     Uni-directional stream object that supports single-read/multi-write
-    operations. Write accessors are allowed to write in the order of their 
+    operations. Write accessors are allowed to write in the order of their
     creation.
     """
     def __init__(self):
-        # Internal queue to pass data between threads
-        self._chunks = queue.Queue()
+        # Queue to pass data between accessors
+        self.chunks = queue.Queue()
 
-        self._lock = threading.Lock()
         self._reader = None
         self._writer = None
         self._future_writers = queue.Queue()
 
-    def _add_reader(self, reader):
+        # Internal Lock for synchronized access between threads
+        self._lock = threading.Lock()
+
+    def add_reader(self, reader):
+        """
+        Attaches a SimplexReader. Only one read accessor is allowed to attach.
+
+        parameters:
+            reader [SimplexReader]: read accessor to attach
+        raises:
+            IOError: raised when an open read accessor is currently attatched
+        """
         with self._lock:
+            # Check if a reader has already been set
             if self._reader:
                 raise IOError('open read accessor already exists')
 
             self._reader = reader
 
-    def _add_writer(self, writer):
+    def add_writer(self, writer):
+        """
+        Attaches a SimplexWriter.
+
+        parameters:
+            writer [SimplexWriter]: write accessor to attach
+        """
         with self._lock:
+            # Check if a writer has been set
             if self._writer:
-                writer._write_lock.acquire()
+                # Lock writer and add to FIFO queue
+                writer.write_lock.acquire()
                 self._future_writers.put(writer)
             else:
                 self._writer = writer
 
-    def _remove_reader(self, reader):
+    def remove_reader(self, reader):
+        """
+        Detatches the SimplexReader.
+
+        parameters:
+            reader [SimplexReader]: read accessor to detach
+        """
         with self._lock:
             if self._reader is reader:
                 self._reader = None
 
-    def _remove_writer(self, writer):
+    def remove_writer(self, writer):
+        """
+        Detatches the SimplexWriter.
+
+        parameters:
+            writer [SimplexWriter]: write accessor to detach
+        """
         with self._lock:
             if self._writer is writer:
-                self._writer = None
-            
-                while self._writer == None:
-                    if self._future_writers.empty():
-                        break
-
+                # Loop through FIFO queue until an valid writer is found
+                while not self._future_writers.empty():
                     next_writer = self._future_writers.get()
-                    if not next_writer.is_open():
-                        continue
+                    # Check to see if writer is open
+                    if next_writer.is_open():
+                        next_writer.write_lock.release()
+                        self._writer = next_writer
+                        return None
 
-                    next_writer._write_lock.release()
-                    self._writer = next_writer
+                self._writer = None
 
     def has_reader(self):
+        """
+        Query to determine if a SimplexReader is currently attached.
+
+        returns:
+            bool: value of 'True' if a SimplexReader is attatched
+        """
         with self._lock:
-            return self._reader != None
+            return self._reader is not None
 
     def has_writer(self):
+        """
+        Query to determine if a SimplexWriter is currently attached.
+
+        returns:
+            bool: value of 'True' if a SimplexWriter is attatched
+        """
         with self._lock:
-            return self._writer != None
+            return self._writer is not None
+
 
 class SimplexReader():
     """
-    SimplexIOBase accessor object with read-only permission.
+    SimplexIOBase accessor object with read-only capabilities.
 
     attributes:
-        stream [SimplexStream]: SimplexStream object to read from
+        io_base [SimplexIOBase]: IO base object to read data from
     """
-    def __init__(self, raw):
-        self._raw = raw
-        self._lock = threading.Lock()
-
+    def __init__(self, io_base):
+        self._io_base = io_base
         self._open = True
         self._buffer = bytearray()
-        
-        raw._add_reader(self)
-    
+
+        # Internal Lock for synchronized access between threads
+        self._lock = threading.Lock()
+
+        # Attach reader to IO base object
+        io_base.add_reader(self)
+
     def __del__(self):
+        """Destructor to ensure that SimplexReader closes properly."""
         self.close()
 
-    # Queries
     def is_open(self):
+        """
+        Query to determine if SimplexReader is currently open.
+
+        returns:
+            bool: value of 'True' if SimplexReader is open
+        """
         with self._lock:
             return self._open
 
-    # Commands
+    async def wait_for_data(self):
+        """Asynchronous spinlock to poll IO base object for data."""
+        with self._lock:
+            if len(self._buffer) != 0:
+                return None
+
+        # Keep polling until data is written to IO base object
+        while self._io_base.chunks.empty():
+            await asyncio.sleep(0.05)
+
     def close(self):
-        """Closes read access to the SimplexStream."""
+        """Closes read access to SimplexIOBase."""
         with self._lock:
             if self._open:
                 self._open = False
-                self._raw._remove_reader(self)
 
-    def read(self, size=-1):
+                # Detatch reader from IO base object
+                self._io_base.remove_reader(self)
+
+    def _readall(self):
         """
-        Reads at most size bytes from stream. 
-        If the size argument is negative, read until EOF is reached. 
-        Returns an empty bytes object at EOF.
+        Reads bytes from IO base object until EOF is reached.
+        Returns an empty bytes object when SimplexReader is at EOF.
 
-        parameters:
-            size [int] (default=-1): number of bytes objects to return 
-        raises:
-            ValueError: raised when reading from a closed file
         returns:
             bytes: oldest unread data
         """
-        print("read called!")
-        # Check if reader is closed
-        with self._lock:
-            if not self._open:
-                raise ValueError('I/O operation on closed stream')
+        # Keep polling until EOF is reached
+        while self._io_base.has_writer() or not self._io_base.chunks.empty():
+            while not self._io_base.chunks.empty():
+                self._buffer += self._io_base.chunks.get()
 
-            if size < 0:
-                return self.readall()
+            # Small sleep before resuming polling loop
+            if self._io_base.has_writer():
+                time.sleep(0.05)
 
-            # Check if buffer already contains amount of bytes to read
-            if len(self._buffer) >= size:
-                # Save remaining bytes to buffer
-                data = self._buffer[:size]
-                self._buffer = self._buffer[size:]
-                print("size: " + str(size))
-                print(data)
-                return bytes(data)
-
-            # Keep polling until enough data has been read or EOF is reached
-            while self._raw.has_writer() or not self._raw._chunks.empty():
-                while not self._raw._chunks.empty():
-                    self._buffer += self._raw._chunks.get()
-
-                # Break out of loop if enough bytes have been read
-                if len(self._buffer) >= size:
-                    data = self._buffer[:size]
-                    self._buffer = self._buffer[size:]
-                    print("size: " + str(size))
-                    print(data)
-                    return bytes(data)
-
-                # Small sleep before resuming polling loop
-                if self._raw.has_writer():
-                    time.sleep(0.01)
-
-            print("nada")
-            return bytes(b'')
-
-    def readall(self):
-        while self._raw.has_writer() or not self._raw._chunks.empty():
-            while not self._raw._chunks.empty():
-                self._buffer += self._raw._chunks.get()
-        
-            if self._raw.has_writer():
-                time.sleep(0.01)
-
+        # Return data which was read before EOF was reached
         data = self._buffer
         self._buffer = bytearray()
         return bytes(data)
 
+    def read(self, size=-1):
+        """
+        Reads at most 'size' bytes from IO base object.
+        If the 'size' argument is negative, read until EOF is reached.
+        Returns an empty bytes object at EOF.
+
+        parameters:
+            size [int] (default=-1): number of bytes to read
+        raises:
+            ValueError: raised when reading from a closed SimplexReader
+        returns:
+            bytes: oldest unread data from IO base object
+        """
+        # Check if reader is closed
+        with self._lock:
+            if not self._open:
+                raise ValueError('I/O operation on closed accessor')
+
+        # Read until EOF if size parameter is negative
+        if size < 0:
+            return self._readall()
+
+        # Check if buffer already contains amount of bytes to read
+        if len(self._buffer) >= size:
+            # Save remaining bytes to buffer
+            data = self._buffer[:size]
+            self._buffer = self._buffer[size:]
+            return bytes(data)
+
+        # Keep polling until enough data has been read or EOF is reached
+        while self._io_base.has_writer() or not self._io_base.chunks.empty():
+            while not self._io_base.chunks.empty():
+                self._buffer += self._io_base.chunks.get()
+
+            # Break out of loop if enough bytes have been read
+            if len(self._buffer) >= size:
+                data = self._buffer[:size]
+                self._buffer = self._buffer[size:]
+                return bytes(data)
+
+            # Small sleep before resuming polling loop
+            if self._io_base.has_writer():
+                time.sleep(0.05)
+
+        # Return data which was read before EOF was reached
+        data = self._buffer
+        self._buffer = bytearray()
+        return bytes(data)
+
+    def readall(self):
+        """
+        Reads bytes from IO base object until EOF is reached.
+        Returns an empty bytes object when SimplexReader is at EOF.
+
+        raises:
+            ValueError: raised when reading from a closed SimplexReader
+        returns:
+            bytes: oldest unread data from IO base object
+        """
+        # Check if reader is closed
+        with self._lock:
+            if not self._open:
+                raise ValueError('I/O operation on closed accessor')
+
+        return self._readall()
 
 
 class SimplexWriter():
     """
-    SimplexStream accessor object with write-only permission.
+    SimplexIOBase accessor object with write-only capabilities.
 
     attributes:
-        stream [SimplexStream]: SimplexStream object to write to
+        io_base [SimplexIOBase]: IO base object to write data to
     """
-    def __init__(self, raw):
-        self._raw = raw
-        self._lock = threading.Lock()
-        self._write_lock = threading.Lock()
+    def __init__(self, io_base):
+        # Lock to ensure ordered writes to IO base
+        self.write_lock = threading.Lock()
 
+        self._io_base = io_base
         self._open = True
 
-        raw._add_writer(self)
+        # Internal Lock for synchronized access between threads
+        self._lock = threading.Lock()
+
+        # Attach writer to IO base object
+        io_base.add_writer(self)
 
     def __del__(self):
+        """Destructor to ensure that SimplexWriter closes properly."""
         self.close()
 
-    # Queries
     def is_open(self):
+        """
+        Query to determine if SimplexWriter is currently open.
+
+        returns:
+            bool: value of 'True' if SimplexWriter is open
+        """
         with self._lock:
             return self._open
-    
-    # Commands
+
     def close(self):
-        """Closes read access to the SimplexStream."""
+        """Closes write access to SimplexIOBase."""
         with self._lock:
             if self._open:
                 self._open = False
-                self._raw._remove_writer(self)
+
+                # Detatch writer from IO base object
+                self._io_base.remove_writer(self)
 
     def write(self, data):
         """
-        Writes bytes to stream.
+        Writes bytes to IO base object.
 
         parameters:
-            data [bytes]: bytes to be written to stream
+            data [bytes]: bytes to be written
         raises:
-            ValueError: raised when writing to a closed file
+            ValueError: raised when writing to a closed SimplexWriter
         returns:
-            int: number of bytes written to stream
+            int: number of bytes written to IO base object
         """
         # Check if writer is closed
         with self._lock:
             if not self._open:
-                raise ValueError('I/O operation on closed stream')
+                raise ValueError('I/O operation on closed accessor')
 
-        with self._write_lock:
-            self._raw._chunks.put(data)
+        with self.write_lock:
+            self._io_base.chunks.put(data)
+
         return len(data)
-

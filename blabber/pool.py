@@ -2,10 +2,9 @@
 #
 # Author: Marcos Avila (DaiconV)
 # Contributors: Fanny Avila (Fa-Avila),
-#               Marcos Avila (DaiconV),
 #               Jacky Zhang (jackyeightzhang)
 # Date created: 4/20/2020
-# Date last modified: 2/14/2020
+# Date last modified: 5/1/2020
 # Python Version: 3.8.1
 # License: MIT License
 
@@ -15,39 +14,34 @@ import os
 import queue
 import threading
 
-from collections.abc import Generator
 from dotenv import load_dotenv
 from google.auth.transport.requests import AuthorizedSession
 from google.oauth2 import service_account
 
-# Retrieve Google API credentials
 load_dotenv()
-GOOGLE_APPLICATION_CREDENTIALS = os.getenv('google_application_credentials')
-
-# Google TTS synthesize speech service end-point url
-SYNTHESIZE_SPEECH = 'https://texttospeech.googleapis.com/v1/text:synthesize'
 
 # Chunk size for response streaming
 CHUNK_SIZE = 1024 * 1024
 
-# Number of handler thread running in pool
-REQUEST_HANDLER_COUNT = 50
+# Number of handler threads running in handler pool
+HANDLER_COUNT = 100
 
 
 class TTSRequestHandler(threading.Thread):
     """
-    Handler object used for sending and processing a TTS request.
-    
-    attributes:
-        request [TTSRequest]: request object that will be sent
-    """
-    def __init__(self, jobs, session):
-        threading.Thread.__init__(self)
-        self.daemon = True
-        self._jobs = jobs
-        self._session = session
+    Handler thread which processes TTS request jobs from a Handler Pool. Writes
+    response audio data to input stream provided in job.
 
-        self._quote_count = 0
+    attributes:
+        pool [TTSRequestHandlerPool]: handler pool from which this handler
+                                      thread spawned from
+    """
+    def __init__(self, pool):
+        super().__init__()
+
+        self._session = pool._session
+        self._terminate = pool._terminate
+        self._jobs = pool._jobs
         
     def _extract_b64_data(self, data):
         """
@@ -56,62 +50,98 @@ class TTSRequestHandler(threading.Thread):
 
         parameters:
             data [bytes]: chunk of raw response data from Google Cloud API
+        yields:
+            int: integer representation of a byte that makes up the base64
+                 encoded TTS audio data
         """
+        quote_count = 0
         for byte in data:
             # Count number of times a quote character is read
             if byte == ord('"'):
-                self._quote_count += 1
+                quote_count += 1
 
             # Yield data between 3rd and 4th quote character
-            if byte != ord('"') and self._quote_count == 3:
+            if byte != ord('"') and quote_count == 3:
                 yield byte
 
     def run(self):
-        """Extracts Opus encoded audio data from Google Cloud API response."""
+        """Running loop for handler thread."""
+        # Keep polling job queue
+        while not self._terminate.is_set():
+            # Attempt to retrieve a job
+            try:
+                job = self._jobs.get(timeout=1)
+            except queue.Empty:
+                continue
 
-        while True:
-            self._quote_count = 0
-            # Remain idle until a job is retrieved
-            request, istream = self._jobs.get()
-            # Send TTS request through Google Cloud API session
-            response = self._session.post(
-                SYNTHESIZE_SPEECH, data=json.dumps(request), stream=True)
+            request, istream = job
+            extract_b64_data = self._extract_b64_data
+            try:
+                # Send TTS request through Google Cloud API session
+                response = self._session.post(
+                    'https://texttospeech.googleapis.com/v1/text:synthesize',
+                    data=json.dumps(request), stream=True)
 
-            # Iterate through response in chunks for processing
-            b64_encoded_prefix = b''
-            for chunk in response.iter_lines(chunk_size=CHUNK_SIZE):
-                b64_encoded_chunk = b64_encoded_prefix + \
-                    bytes(self._extract_b64_data(chunk))
+                # Iterate through response in chunks for processing
+                b64_encoded_prefix = bytearray()
+                for chunk in response.iter_lines(chunk_size=CHUNK_SIZE):
+                    b64_encoded_chunk = b64_encoded_prefix + \
+                        bytes(extract_b64_data(chunk))
 
-                # Calculate maximum number of bytes to decode (multiple of 4)
-                decode_limit = (len(b64_encoded_chunk) // 4) * 4
+                    # Calculate maximum number of bytes to decode
+                    decode_limit = (len(b64_encoded_chunk) // 4) * 4
 
-                # Save remaining bytes to be prefixed to the next chunk
-                b64_encoded_prefix = b64_encoded_chunk[decode_limit:]
+                    # Save remaining bytes to be prefixed to the next chunk
+                    b64_encoded_prefix = b64_encoded_chunk[decode_limit:]
 
-                # Write decoded chunk to stream
-                istream.write(base64.b64decode(
-                    b64_encoded_chunk[:decode_limit]))
-
-            # Close input stream after processing response
-            istream.close()
+                    # Write decoded chunk to stream
+                    istream.write(base64.b64decode(
+                        b64_encoded_chunk[:decode_limit]))
+            finally:
+                # Close input stream after processing response
+                istream.close()
 
 
 class TTSRequestHandlerPool():
-    def __init__(self, handler_count=50):
-        self._jobs = queue.Queue()
-        self._handlers = [None] * handler_count
-        
-        # Initiate a Google Cloud API session
+    """Handler pool for processing TTS request jobs."""
+    def __init__(self):
+        # Initialize Google Cloud API session
         credentials = service_account.Credentials.from_service_account_file(
-            GOOGLE_APPLICATION_CREDENTIALS)
+            os.getenv('google_application_credentials'))
         scoped_credentials = credentials.with_scopes(
             ['https://www.googleapis.com/auth/cloud-platform'])
         self._session = AuthorizedSession(scoped_credentials)
 
-        for index in range(handler_count):
-            self._handlers[index] = TTSRequestHandler(self._jobs, self._session)
+        self._terminate = threading.Event()
+        self._jobs = queue.Queue()
+        self._handlers = [None] * HANDLER_COUNT
+
+        # Spawn handler threads
+        for index in range(HANDLER_COUNT):
+            self._handlers[index] = TTSRequestHandler(self)
             self._handlers[index].start()
 
+    def __del__(self):
+        """Destructor to ensure that TTSRequestHandlerPool closes properly."""
+        self.teardown()
+
     def submit_job(self, job):
+        """
+        Submits a TTS request job to the FIFO job queue for processing.
+
+        parameters:
+            job [(TTSRequest, SimplexWriter)]: TTS request job object to be
+                                               submitted
+        """
         self._jobs.put(job)
+
+    def teardown(self):
+        """Terminates all active handler threads in handler pool."""
+        # Check if teardown has already been performed
+        if not self._terminate.is_set():
+            # Set termination flag
+            self._terminate.set()
+
+            # Join all handler threads
+            for handler in self._handlers:
+                handler.join()
