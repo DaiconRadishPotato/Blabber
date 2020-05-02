@@ -32,7 +32,7 @@ class TTSRequestHandler(threading.Thread):
     Handler thread which processes TTS request jobs from a Handler Pool. Writes
     response audio data to input stream provided in job.
 
-    attributes:
+    parameters:
         pool [TTSRequestHandlerPool]: handler pool from which this handler
                                       thread spawned from
     """
@@ -42,7 +42,7 @@ class TTSRequestHandler(threading.Thread):
         self._session = pool._session
         self._terminate = pool._terminate
         self._jobs = pool._jobs
-        
+
     def _extract_b64_data(self, data):
         """
         Generator used for extracting base64 encoded audio from a Google
@@ -122,7 +122,6 @@ class TTSRequestHandlerPool():
             self._handlers[index].start()
 
     def __del__(self):
-        """Destructor to ensure that TTSRequestHandlerPool closes properly."""
         self.teardown()
 
     def submit_job(self, job):

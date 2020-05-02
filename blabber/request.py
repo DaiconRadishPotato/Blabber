@@ -12,11 +12,12 @@ from discord.oggparse import OggStream
 
 from blabber.stream import SimplexIOBase, SimplexReader, SimplexWriter
 
+
 class TTSRequest(dict):
     """
     Request object that represents a Google Cloud API TTS request.
 
-    attributes:
+    parameters:
         message   [str]: text to be converted into audio
         lang_code [str] (default='en-GB'): language code of TTS voice
         name      [str] (default='en-GB-Standard-A'): name of TTS voice
@@ -45,13 +46,16 @@ class TTSRequestDispatcher():
     Dispatcher object that submits TTS requests to a handler pool to be
     processed.
 
-    attributes:
+    parameters:
         pool [TTSRequestHandlerPool]: handler pool for processing TTS requests
     """
     def __init__(self, pool):
         self._pool = pool
         self._io_base = SimplexIOBase()
         self._ostream = SimplexReader(self._io_base)
+
+    def __del__(self):
+        self._ostream.close()
 
     def iter_packets(self):
         """

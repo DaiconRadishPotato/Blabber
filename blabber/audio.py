@@ -12,22 +12,23 @@ from discord.player import AudioSource
 
 from blabber.request import TTSRequestDispatcher
 
+
 class TTSAudio(AudioSource):
     """
     AudioSource object that streams Opus encoded audio data from TTS request
     responses.
-    
-    attributes:
+
+    parameters:
         pool [TTSRequestHandlerPool]: handler pool for processing TTS requests
     """
     def __init__(self, pool):
         self._dispatch = TTSRequestDispatcher(pool)
         self._packets = self._dispatch.iter_packets()
-        
+
     def read(self):
         """
-        Reads one packet of audio data from the request dispatcher. 
-        
+        Reads one packet of audio data from the request dispatcher.
+
         returns:
             bytes: packet of audio data
         """
