@@ -4,7 +4,7 @@
 # Contributors: Fanny Avila (Fa-Avila),
 #               Jacky Zhang (jackyeightzhang)
 # Date created: 4/16/2020
-# Date last modified: 5/1/2020
+# Date last modified: 5/3/2020
 # Python Version: 3.8.1
 # License: MIT License
 
@@ -16,8 +16,8 @@ import time
 
 class SimplexIOBase():
     """
-    Uni-directional IO base object that supports single-read/multi-write
-    operations. Attached SimplexWriters are allowed to write in the order of
+    Uni-directional I/O base object that supports single-read/multi-write
+    operations. Attached write accessors are allowed to write in the order of
     their creation.
     """
     def __init__(self):
@@ -33,13 +33,13 @@ class SimplexIOBase():
 
     def attach_reader(self, reader):
         """
-        Attaches a SimplexReader. Only one SimplexReader is allowed to attach
+        Attaches a read accessor. Only one read accessor is allowed to attach
         at any given time.
 
         parameters:
-            reader [SimplexReader]: SimplexReader to attach
+            reader [SimplexReader]: read accessor to attach
         raises:
-            IOError: raised when an open SimplexReader is already attached
+            IOError: raised when an open read accessor is already attached
         """
         with self._lock:
             # Check if a reader has already been attached
@@ -50,10 +50,10 @@ class SimplexIOBase():
 
     def attach_writer(self, writer):
         """
-        Attaches a SimplexWriter.
+        Attaches a write accessor.
 
         parameters:
-            writer [SimplexWriter]: SimplexWriter to attach
+            writer [SimplexWriter]: write accessor to attach
         """
         with self._lock:
             # Check if a writer has been set
@@ -66,10 +66,10 @@ class SimplexIOBase():
 
     def detach_reader(self, reader):
         """
-        Detatches a SimplexReader.
+        Detaches a read accessor.
 
         parameters:
-            reader [SimplexReader]: SimplexReader to detach
+            reader [SimplexReader]: read accessor to detach
         """
         with self._lock:
             if self._reader is reader:
@@ -77,10 +77,10 @@ class SimplexIOBase():
 
     def detach_writer(self, writer):
         """
-        Detatches a SimplexWriter.
+        Detaches a write accessor.
 
         parameters:
-            writer [SimplexWriter]: SimplexWriter to detach
+            writer [SimplexWriter]: write accessor to detach
         """
         with self._lock:
             if self._writer is writer:
@@ -97,20 +97,20 @@ class SimplexIOBase():
 
     def has_reader(self):
         """
-        Query to determine if a SimplexReader is currently attached.
+        Query to determine if a read accessor is currently attached.
 
         returns:
-            bool: value of 'True' if a SimplexReader is attached
+            bool: value of 'True' if a read accessor is attached
         """
         with self._lock:
             return self._reader is not None
 
     def has_writer(self):
         """
-        Query to determine if a SimplexWriter is currently attached.
+        Query to determine if a write accessor is currently attached.
 
         returns:
-            bool: value of 'True' if a SimplexWriter is attached
+            bool: value of 'True' if a write accessor is attached
         """
         with self._lock:
             return self._writer is not None
@@ -118,10 +118,10 @@ class SimplexIOBase():
 
 class SimplexReader():
     """
-    SimplexIOBase accessor object with read-only capabilities.
+    I/O base object accessor with read-only capabilities.
 
     parameters:
-        io_base [SimplexIOBase]: SimplexIOBase to read from
+        io_base [SimplexIOBase]: I/O base object to read from
     """
     def __init__(self, io_base):
         self._io_base = io_base
@@ -131,7 +131,7 @@ class SimplexReader():
         # Internal Lock for synchronized access between threads
         self._lock = threading.Lock()
 
-        # Attach to IO base
+        # Attach to I/O base object
         io_base.attach_reader(self)
 
     def __del__(self):
@@ -139,40 +139,40 @@ class SimplexReader():
 
     def is_open(self):
         """
-        Query to determine if SimplexReader is currently open.
+        Query to determine if read accessor is currently open.
 
         returns:
-            bool: value of 'True' if SimplexReader is open
+            bool: value of 'True' if read accessor is open
         """
         with self._lock:
             return self._open
 
     async def wait_for_data(self):
-        """Asynchronous spinlock to poll attached SimplexIOBase for data."""
+        """Asynchronous spin-lock to poll I/O base object for data."""
         with self._lock:
             if len(self._buffer) != 0:
                 return None
 
-        # Keep polling until data is written to IO base
+        # Keep polling until data is written to I/O base object
         while self._io_base.chunks.empty():
             await asyncio.sleep(0.05)
 
     def close(self):
-        """Closes SimplexReader and detaches from SimplexIOBase."""
+        """Closes read accessor and detaches I/O base object."""
         with self._lock:
             if self._open:
                 self._open = False
 
-                # Detatch reader from IO base
+                # Detatch reader from I/O base object
                 self._io_base.detach_reader(self)
 
     def _readall(self):
         """
-        Reads bytes from SimplexIOBase until EOF is reached.
-        Returns an empty bytes object when SimplexReader is at EOF.
+        Reads bytes from I/O base object until EOF is reached. Returns an empty
+        bytes object when read accessor is at EOF.
 
         returns:
-            bytes: oldest unread data from attached SimplexIOBase
+            bytes: oldest unread data from I/O base object
         """
         # Keep polling until EOF is reached
         while self._io_base.has_writer() or not self._io_base.chunks.empty():
@@ -190,16 +190,16 @@ class SimplexReader():
 
     def read(self, size=-1):
         """
-        Reads at most 'size' bytes from SimplexIOBase. If the 'size' argument
+        Reads at most 'size' bytes from I/O base object. If the 'size' argument
         is negative, read until EOF is reached. Returns an empty bytes object
         at EOF.
 
         parameters:
             size [int] (default=-1): number of bytes to read
         raises:
-            ValueError: raised when reading from a closed SimplexReader
+            ValueError: raised when reading from a closed read accessor
         returns:
-            bytes: oldest unread data from attached SimplexIOBase
+            bytes: oldest unread data from attached I/O base object
         """
         # Check if reader is closed
         with self._lock:
@@ -239,13 +239,13 @@ class SimplexReader():
 
     def readall(self):
         """
-        Reads bytes from SimplexIOBase until EOF is reached.
-        Returns an empty bytes object when SimplexReader is at EOF.
+        Reads bytes from I/O base object until EOF is reached. Returns an empty
+        bytes object when read accessor is at EOF.
 
         raises:
-            ValueError: raised when reading from a closed SimplexReader
+            ValueError: raised when reading from a closed read accessor
         returns:
-            bytes: oldest unread data from attached SimplexIOBase
+            bytes: oldest unread data from attached I/O base object
         """
         # Check if reader is closed
         with self._lock:
@@ -257,13 +257,13 @@ class SimplexReader():
 
 class SimplexWriter():
     """
-    SimplexIOBase accessor object with write-only capabilities.
+    I/O base object accessor with write-only capabilities.
 
     parameters:
-        io_base [SimplexIOBase]: SimplexIOBase to write to
+        io_base [SimplexIOBase]: I/O base object to write to
     """
     def __init__(self, io_base):
-        # Lock to ensure ordered writes to IO base
+        # Lock to ensure ordered writes to I/O base object
         self.write_lock = threading.Lock()
 
         self._io_base = io_base
@@ -272,7 +272,7 @@ class SimplexWriter():
         # Internal Lock for synchronized access between threads
         self._lock = threading.Lock()
 
-        # Attach to IO base
+        # Attach to I/O base object
         io_base.attach_writer(self)
 
     def __del__(self):
@@ -280,33 +280,33 @@ class SimplexWriter():
 
     def is_open(self):
         """
-        Query to determine if SimplexWriter is currently open.
+        Query to determine if write accessor is currently open.
 
         returns:
-            bool: value of 'True' if SimplexWriter is open
+            bool: value of 'True' if write accessor is open
         """
         with self._lock:
             return self._open
 
     def close(self):
-        """Closes SimplexWriter and detaches from SimplexIOBase."""
+        """Closes write accessor and detaches I/O base object."""
         with self._lock:
             if self._open:
                 self._open = False
 
-                # Detatch writer from IO base
+                # Detatch writer from I/O base object
                 self._io_base.detach_writer(self)
 
     def write(self, data):
         """
-        Writes bytes to SimplexIOBase.
+        Writes bytes to I/O base object.
 
         parameters:
             data [bytes]: bytes to be written
         raises:
-            ValueError: raised when writing to a closed SimplexWriter
+            ValueError: raised when writing to a closed write accessor
         returns:
-            int: number of bytes written to attached SimplexIOBase
+            int: number of bytes written to I/O base object
         """
         # Check if writer is closed
         with self._lock:

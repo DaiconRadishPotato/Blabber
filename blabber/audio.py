@@ -4,7 +4,7 @@
 # Contributors: Fanny Avila (Fa-Avila),
 #               Jacky Zhang (jackyeightzhang)
 # Date created: 3/3/2020
-# Date last modified: 5/1/2020
+# Date last modified: 5/3/2020
 # Python Version: 3.8.1
 # License: MIT License
 
@@ -19,7 +19,7 @@ class TTSAudio(AudioSource):
     responses.
 
     parameters:
-        pool [TTSRequestHandlerPool]: handler pool for processing TTS requests
+        pool [TTSRequestHandlerPool]: handler pool for processing a TTS request
     """
     def __init__(self, pool):
         self._dispatch = TTSRequestDispatcher(pool)
@@ -42,7 +42,7 @@ class TTSAudio(AudioSource):
 
     async def submit_request(self, request):
         """
-        Submits a TTS request to the request dispatcher to be processed.
+        Submits a TTS request for processing.
 
         parameters:
             request [TTSRequest]: TTS request object to be submitted
@@ -51,7 +51,7 @@ class TTSAudio(AudioSource):
 
     def is_opus(self):
         """
-        Query to determine if TTSAudio data is Opus encoded.
+        Query to determine if AudioSource read data is Opus encoded.
 
         returns:
             bool: value of 'True'

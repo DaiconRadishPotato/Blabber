@@ -4,7 +4,7 @@
 # Contributors: Fanny Avila (Fa-Avila),
 #               Jacky Zhang (jackyeightzhang)
 # Date created: 4/20/2020
-# Date last modified: 5/1/2020
+# Date last modified: 5/3/2020
 # Python Version: 3.8.1
 # License: MIT License
 
@@ -29,12 +29,12 @@ HANDLER_COUNT = 100
 
 class TTSRequestHandler(threading.Thread):
     """
-    Handler thread which processes TTS request jobs from a Handler Pool. Writes
-    response audio data to input stream provided in job.
+    Handler thread which processes TTS request jobs from a handler pool, and
+    writes response audio data to input stream provided in TTS request job.
 
     parameters:
-        pool [TTSRequestHandlerPool]: handler pool from which this handler
-                                      thread spawned from
+        pool [TTSRequestHandlerPool]: handler pool from which handler thread
+                                      spawned from
     """
     def __init__(self, pool):
         super().__init__()
@@ -45,14 +45,13 @@ class TTSRequestHandler(threading.Thread):
 
     def _extract_b64_data(self, data):
         """
-        Generator used for extracting base64 encoded audio from a Google
-        Cloud API response.
+        Generator used for extracting base64 encoded data from a Google Cloud
+        API response.
 
         parameters:
-            data [bytes]: chunk of raw response data from Google Cloud API
+            data [bytes]: chunk of raw response data
         yields:
-            int: integer representation of a byte that makes up the base64
-                 encoded TTS audio data
+            int: integer representation of a byte of base64 encoded data
         """
         quote_count = 0
         for byte in data:
@@ -65,7 +64,7 @@ class TTSRequestHandler(threading.Thread):
                 yield byte
 
     def run(self):
-        """Running loop for handler thread."""
+        """Running loop for handler thread object."""
         # Keep polling job queue
         while not self._terminate.is_set():
             # Attempt to retrieve a job
@@ -126,11 +125,10 @@ class TTSRequestHandlerPool():
 
     def submit_job(self, job):
         """
-        Submits a TTS request job to the FIFO job queue for processing.
+        Submits a TTS request job to a FIFO job queue for processing.
 
         parameters:
-            job [(TTSRequest, SimplexWriter)]: TTS request job object to be
-                                               submitted
+            job [(TTSRequest, SimplexWriter)]: TTS request job to be submitted
         """
         self._jobs.put(job)
 

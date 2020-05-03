@@ -4,7 +4,7 @@
 # Contributors: Fanny Avila (Fa-Avila),
 #               Jacky Zhang (jackyeightzhang)
 # Date created: 1/6/2020
-# Date last modified: 5/1/2020
+# Date last modified: 5/3/2020
 # Python Version: 3.8.1
 # License: MIT License
 
@@ -15,7 +15,7 @@ from blabber.stream import SimplexIOBase, SimplexReader, SimplexWriter
 
 class TTSRequest(dict):
     """
-    Request object that represents a Google Cloud API TTS request.
+    Request object that represents a Google Cloud TTS API request.
 
     parameters:
         message   [str]: text to be converted into audio
@@ -33,7 +33,6 @@ class TTSRequest(dict):
         self['audioConfig'] = dict()
         self['input'] = dict()
         self['voice'] = dict()
-        # TODO Add support for other audio encodings
         self['audioConfig']['audioEncoding'] = 'OGG_OPUS'
         self['input']['text'] = message
         self['voice']['languageCode'] = lang_code
@@ -43,8 +42,9 @@ class TTSRequest(dict):
 
 class TTSRequestDispatcher():
     """
-    Dispatcher object that submits TTS requests to a handler pool to be
-    processed.
+    Dispatcher object that submits TTS request to the handler pool for
+    processing, and generates a stream of Opus encoded audio data from TTS
+    request responses.
 
     parameters:
         pool [TTSRequestHandlerPool]: handler pool for processing TTS requests
@@ -69,12 +69,12 @@ class TTSRequestDispatcher():
 
     async def submit_request(self, request):
         """
-        Submits a TTS request to the handler pool to be processed.
+        Submits a TTS request for processing.
 
         parameters:
-            request [TTSRequest]: TTS request object to be submitted
+            request [TTSRequest]: TTS request to be submitted
         """
-        # Spawn a new input stream to recieve response audio data
+        # Spawn a new input stream to receive response audio data
         istream = SimplexWriter(self._io_base)
         self._pool.submit_job((request, istream))
 
