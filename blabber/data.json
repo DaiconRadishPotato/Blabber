@@ -1,0 +1,586 @@
+{
+    "languages": {
+        "german": [
+            "de",
+            "German"
+        ],
+        "spanish": [
+            "es",
+            "Spanish"
+        ],
+        "arabic": [
+            "ar",
+            "Arabic"
+        ],
+        "french": [
+            "fr",
+            "French"
+        ],
+        "italian": [
+            "it",
+            "Italian"
+        ],
+        "russian": [
+            "ru",
+            "Russian"
+        ],
+        "mandarin": [
+            "cmn",
+            "Mandarin"
+        ],
+        "korean": [
+            "ko",
+            "Korean"
+        ],
+        "japanese": [
+            "ja",
+            "Japanese"
+        ],
+        "vietnamese": [
+            "vi",
+            "Vietnamese"
+        ],
+        "filipino": [
+            "fil",
+            "Filipino"
+        ],
+        "indonesian": [
+            "id",
+            "Indonesian"
+        ],
+        "dutch": [
+            "nl",
+            "Dutch"
+        ],
+        "czech": [
+            "cs",
+            "Czech"
+        ],
+        "greek": [
+            "el",
+            "Greek"
+        ],
+        "portuguese": [
+            "pt",
+            "Portuguese"
+        ],
+        "hungarian": [
+            "hu",
+            "Hungarian"
+        ],
+        "polish": [
+            "pl",
+            "Polish"
+        ],
+        "slovak": [
+            "sk",
+            "Slovak"
+        ],
+        "turkish": [
+            "tr",
+            "Turkish"
+        ],
+        "ukrainian": [
+            "uk",
+            "Ukrainian"
+        ],
+        "english": [
+            "en",
+            "English"
+        ],
+        "hindi": [
+            "hi",
+            "Hindi"
+        ],
+        "danish": [
+            "da",
+            "Danish"
+        ],
+        "finnish": [
+            "fi",
+            "Finnish"
+        ],
+        "norwegian": [
+            "nb",
+            "Norwegian"
+        ],
+        "swedish": [
+            "sv",
+            "Swedish"
+        ]
+    },
+    "genders": {
+        "male": "MALE", 
+        "female": "FEMALE"
+    },
+    "voice_info" : {
+        "voice_1": {
+            "gender": "FEMALE",
+            "language": "de"
+        },
+        "voice_10": {
+            "gender": "FEMALE",
+            "language": "ru"
+        },
+        "voice_100": {
+            "gender": "FEMALE",
+            "language": "de"
+        },
+        "voice_101": {
+            "gender": "MALE",
+            "language": "de"
+        },
+        "voice_102": {
+            "gender": "MALE",
+            "language": "de"
+        },
+        "voice_103": {
+            "gender": "FEMALE",
+            "language": "en"
+        },
+        "voice_104": {
+            "gender": "MALE",
+            "language": "en"
+        },
+        "voice_105": {
+            "gender": "FEMALE",
+            "language": "en"
+        },
+        "voice_106": {
+            "gender": "MALE",
+            "language": "en"
+        },
+        "voice_107": {
+            "gender": "FEMALE",
+            "language": "fr"
+        },
+        "voice_108": {
+            "gender": "MALE",
+            "language": "fr"
+        },
+        "voice_109": {
+            "gender": "FEMALE",
+            "language": "fr"
+        },
+        "voice_11": {
+            "gender": "MALE",
+            "language": "ru"
+        },
+        "voice_110": {
+            "gender": "MALE",
+            "language": "fr"
+        },
+        "voice_111": {
+            "gender": "FEMALE",
+            "language": "fr"
+        },
+        "voice_112": {
+            "gender": "MALE",
+            "language": "fr"
+        },
+        "voice_113": {
+            "gender": "FEMALE",
+            "language": "fr"
+        },
+        "voice_114": {
+            "gender": "MALE",
+            "language": "fr"
+        },
+        "voice_115": {
+            "gender": "FEMALE",
+            "language": "it"
+        },
+        "voice_116": {
+            "gender": "MALE",
+            "language": "it"
+        },
+        "voice_117": {
+            "gender": "MALE",
+            "language": "it"
+        },
+        "voice_12": {
+            "gender": "FEMALE",
+            "language": "ru"
+        },
+        "voice_13": {
+            "gender": "MALE",
+            "language": "ru"
+        },
+        "voice_14": {
+            "gender": "FEMALE",
+            "language": "cmn"
+        },
+        "voice_15": {
+            "gender": "FEMALE",
+            "language": "cmn"
+        },
+        "voice_16": {
+            "gender": "MALE",
+            "language": "cmn"
+        },
+        "voice_17": {
+            "gender": "MALE",
+            "language": "cmn"
+        },
+        "voice_18": {
+            "gender": "FEMALE",
+            "language": "cmn"
+        },
+        "voice_19": {
+            "gender": "MALE",
+            "language": "cmn"
+        },
+        "voice_2": {
+            "gender": "FEMALE",
+            "language": "es"
+        },
+        "voice_20": {
+            "gender": "MALE",
+            "language": "cmn"
+        },
+        "voice_21": {
+            "gender": "FEMALE",
+            "language": "ko"
+        },
+        "voice_22": {
+            "gender": "FEMALE",
+            "language": "ko"
+        },
+        "voice_23": {
+            "gender": "MALE",
+            "language": "ko"
+        },
+        "voice_24": {
+            "gender": "MALE",
+            "language": "ko"
+        },
+        "voice_25": {
+            "gender": "FEMALE",
+            "language": "ja"
+        },
+        "voice_26": {
+            "gender": "MALE",
+            "language": "ja"
+        },
+        "voice_27": {
+            "gender": "FEMALE",
+            "language": "ja"
+        },
+        "voice_28": {
+            "gender": "MALE",
+            "language": "ja"
+        },
+        "voice_29": {
+            "gender": "FEMALE",
+            "language": "vi"
+        },
+        "voice_3": {
+            "gender": "FEMALE",
+            "language": "ar"
+        },
+        "voice_30": {
+            "gender": "MALE",
+            "language": "vi"
+        },
+        "voice_31": {
+            "gender": "FEMALE",
+            "language": "vi"
+        },
+        "voice_32": {
+            "gender": "MALE",
+            "language": "vi"
+        },
+        "voice_33": {
+            "gender": "FEMALE",
+            "language": "fil"
+        },
+        "voice_34": {
+            "gender": "FEMALE",
+            "language": "id"
+        },
+        "voice_35": {
+            "gender": "MALE",
+            "language": "id"
+        },
+        "voice_36": {
+            "gender": "MALE",
+            "language": "id"
+        },
+        "voice_37": {
+            "gender": "FEMALE",
+            "language": "id"
+        },
+        "voice_38": {
+            "gender": "FEMALE",
+            "language": "nl"
+        },
+        "voice_39": {
+            "gender": "MALE",
+            "language": "nl"
+        },
+        "voice_4": {
+            "gender": "MALE",
+            "language": "ar"
+        },
+        "voice_40": {
+            "gender": "MALE",
+            "language": "nl"
+        },
+        "voice_41": {
+            "gender": "FEMALE",
+            "language": "nl"
+        },
+        "voice_42": {
+            "gender": "FEMALE",
+            "language": "nl"
+        },
+        "voice_43": {
+            "gender": "FEMALE",
+            "language": "cs"
+        },
+        "voice_44": {
+            "gender": "FEMALE",
+            "language": "el"
+        },
+        "voice_45": {
+            "gender": "FEMALE",
+            "language": "pt"
+        },
+        "voice_46": {
+            "gender": "FEMALE",
+            "language": "hu"
+        },
+        "voice_47": {
+            "gender": "FEMALE",
+            "language": "pl"
+        },
+        "voice_48": {
+            "gender": "FEMALE",
+            "language": "pl"
+        },
+        "voice_49": {
+            "gender": "MALE",
+            "language": "pl"
+        },
+        "voice_5": {
+            "gender": "MALE",
+            "language": "ar"
+        },
+        "voice_50": {
+            "gender": "MALE",
+            "language": "pl"
+        },
+        "voice_51": {
+            "gender": "FEMALE",
+            "language": "pl"
+        },
+        "voice_52": {
+            "gender": "FEMALE",
+            "language": "sk"
+        },
+        "voice_53": {
+            "gender": "FEMALE",
+            "language": "tr"
+        },
+        "voice_54": {
+            "gender": "MALE",
+            "language": "tr"
+        },
+        "voice_55": {
+            "gender": "FEMALE",
+            "language": "tr"
+        },
+        "voice_56": {
+            "gender": "FEMALE",
+            "language": "tr"
+        },
+        "voice_57": {
+            "gender": "MALE",
+            "language": "tr"
+        },
+        "voice_58": {
+            "gender": "FEMALE",
+            "language": "uk"
+        },
+        "voice_59": {
+            "gender": "FEMALE",
+            "language": "bn"
+        },
+        "voice_6": {
+            "gender": "FEMALE",
+            "language": "ar"
+        },
+        "voice_60": {
+            "gender": "MALE",
+            "language": "bn"
+        },
+        "voice_61": {
+            "gender": "FEMALE",
+            "language": "en"
+        },
+        "voice_62": {
+            "gender": "FEMALE",
+            "language": "en"
+        },
+        "voice_63": {
+            "gender": "MALE",
+            "language": "en"
+        },
+        "voice_64": {
+            "gender": "MALE",
+            "language": "en"
+        },
+        "voice_65": {
+            "gender": "FEMALE",
+            "language": "gu"
+        },
+        "voice_66": {
+            "gender": "MALE",
+            "language": "gu"
+        },
+        "voice_67": {
+            "gender": "FEMALE",
+            "language": "hi"
+        },
+        "voice_68": {
+            "gender": "FEMALE",
+            "language": "hi"
+        },
+        "voice_69": {
+            "gender": "MALE",
+            "language": "hi"
+        },
+        "voice_7": {
+            "gender": "FEMALE",
+            "language": "fr"
+        },
+        "voice_70": {
+            "gender": "MALE",
+            "language": "hi"
+        },
+        "voice_71": {
+            "gender": "FEMALE",
+            "language": "kn"
+        },
+        "voice_72": {
+            "gender": "MALE",
+            "language": "kn"
+        },
+        "voice_73": {
+            "gender": "FEMALE",
+            "language": "ml"
+        },
+        "voice_74": {
+            "gender": "MALE",
+            "language": "ml"
+        },
+        "voice_75": {
+            "gender": "FEMALE",
+            "language": "ta"
+        },
+        "voice_76": {
+            "gender": "MALE",
+            "language": "ta"
+        },
+        "voice_77": {
+            "gender": "FEMALE",
+            "language": "te"
+        },
+        "voice_78": {
+            "gender": "MALE",
+            "language": "te"
+        },
+        "voice_79": {
+            "gender": "FEMALE",
+            "language": "th"
+        },
+        "voice_8": {
+            "gender": "FEMALE",
+            "language": "it"
+        },
+        "voice_80": {
+            "gender": "FEMALE",
+            "language": "da"
+        },
+        "voice_81": {
+            "gender": "FEMALE",
+            "language": "fi"
+        },
+        "voice_82": {
+            "gender": "FEMALE",
+            "language": "pt"
+        },
+        "voice_83": {
+            "gender": "MALE",
+            "language": "pt"
+        },
+        "voice_84": {
+            "gender": "MALE",
+            "language": "pt"
+        },
+        "voice_85": {
+            "gender": "FEMALE",
+            "language": "pt"
+        },
+        "voice_86": {
+            "gender": "FEMALE",
+            "language": "nb"
+        },
+        "voice_87": {
+            "gender": "FEMALE",
+            "language": "nb"
+        },
+        "voice_88": {
+            "gender": "MALE",
+            "language": "nb"
+        },
+        "voice_89": {
+            "gender": "FEMALE",
+            "language": "nb"
+        },
+        "voice_9": {
+            "gender": "FEMALE",
+            "language": "ru"
+        },
+        "voice_90": {
+            "gender": "MALE",
+            "language": "nb"
+        },
+        "voice_91": {
+            "gender": "FEMALE",
+            "language": "sv"
+        },
+        "voice_92": {
+            "gender": "FEMALE",
+            "language": "en"
+        },
+        "voice_93": {
+            "gender": "MALE",
+            "language": "en"
+        },
+        "voice_94": {
+            "gender": "FEMALE",
+            "language": "en"
+        },
+        "voice_95": {
+            "gender": "MALE",
+            "language": "en"
+        },
+        "voice_96": {
+            "gender": "MALE",
+            "language": "en"
+        },
+        "voice_97": {
+            "gender": "FEMALE",
+            "language": "en"
+        },
+        "voice_98": {
+            "gender": "MALE",
+            "language": "en"
+        },
+        "voice_99": {
+            "gender": "FEMALE",
+            "language": "en"
+        }
+    }
+}
