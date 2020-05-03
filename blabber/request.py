@@ -74,9 +74,9 @@ class TTSRequestDispatcher():
         parameters:
             request [TTSRequest]: TTS request object to be submitted
         """
-        # Spawn a new input stream to write-back response audio data
+        # Spawn a new input stream to recieve response audio data
         istream = SimplexWriter(self._io_base)
         self._pool.submit_job((request, istream))
 
-        # Block until data arrives in IO base object
+        # Block until data is available in output stream
         await self._ostream.wait_for_data()
