@@ -12,8 +12,9 @@ from discord import Embed, Activity, ActivityType, ClientException, utils
 from discord.ext import commands
 
 from blabber.checks import is_guild_owner, is_bot_alone
-from blabber.request import TTSRequest, TTSRequestHandler
-from blabber.player import TTSAudio
+from blabber.audio import TTSAudio
+from blabber.request import TTSRequest
+from blabber.pool import TTSRequestHandlerPool
 
 
 class Voice(commands.Cog):
@@ -25,6 +26,11 @@ class Voice(commands.Cog):
     """
     def __init__(self, bot):
         self.bot = bot
+
+        self._pool = TTSRequestHandlerPool()
+
+    def cog_unload(self):
+        self._pool.teardown()
 
     @commands.command(name='disconnect', aliases=['dc'])
     @commands.check_any(is_guild_owner, commands.has_role("Blabby"), 
@@ -89,9 +95,15 @@ class Voice(commands.Cog):
         if ctx.voice_client is not None and len(message) != 0:
             if len(message) <= 600:
                 request = TTSRequest(message)
-                handle = TTSRequestHandler(request)
-                source = TTSAudio(handle)
-                ctx.voice_client.play(source)
+                if ctx.voice_client._player:
+                    audio = ctx.voice_client._player.source
+                else:
+                    audio = TTSAudio(self._pool)
+
+                await audio.submit_request(request)
+
+                if not ctx.voice_client.is_playing():
+                    ctx.voice_client.play(audio)
             else:
                 await ctx.send("Voice::say_message Please make your message "
                                "shorter. We have set the character limit to"
