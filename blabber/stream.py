@@ -17,7 +17,7 @@ import time
 class SimplexIOBase():
     """
     Uni-directional IO base object that supports single-read/multi-write
-    operations. Attached write accessors are allowed to write in the order of
+    operations. Attached SimplexWriters are allowed to write in the order of
     their creation.
     """
     def __init__(self):
@@ -100,7 +100,7 @@ class SimplexIOBase():
         Query to determine if a SimplexReader is currently attached.
 
         returns:
-            bool: value of 'True' if a SimplexReader is attatched
+            bool: value of 'True' if a SimplexReader is attached
         """
         with self._lock:
             return self._reader is not None
@@ -110,7 +110,7 @@ class SimplexIOBase():
         Query to determine if a SimplexWriter is currently attached.
 
         returns:
-            bool: value of 'True' if a SimplexWriter is attatched
+            bool: value of 'True' if a SimplexWriter is attached
         """
         with self._lock:
             return self._writer is not None
@@ -260,7 +260,7 @@ class SimplexWriter():
     SimplexIOBase accessor object with write-only capabilities.
 
     parameters:
-        io_base [SimplexIOBase]: SimplexIOBase to write data to
+        io_base [SimplexIOBase]: SimplexIOBase to write to
     """
     def __init__(self, io_base):
         # Lock to ensure ordered writes to IO base
@@ -289,7 +289,7 @@ class SimplexWriter():
             return self._open
 
     def close(self):
-        """Closes write access to SimplexIOBase."""
+        """Closes SimplexWriter and detaches from SimplexIOBase."""
         with self._lock:
             if self._open:
                 self._open = False
