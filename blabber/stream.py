@@ -166,7 +166,7 @@ class SimplexReader():
                 # Detatch reader from I/O base object
                 self._io_base.detach_reader(self)
 
-    def _readall(self):
+    def _read_all(self):
         """
         Reads bytes from I/O base object until EOF is reached. Returns an empty
         bytes object when read accessor is at EOF.
@@ -208,7 +208,7 @@ class SimplexReader():
 
         # Read until EOF if size parameter is negative
         if size < 0:
-            return self._readall()
+            return self._read_all()
 
         # Check if buffer already contains amount of bytes to read
         if len(self._buffer) >= size:
@@ -236,23 +236,6 @@ class SimplexReader():
         data = self._buffer
         self._buffer = bytearray()
         return bytes(data)
-
-    def readall(self):
-        """
-        Reads bytes from I/O base object until EOF is reached. Returns an empty
-        bytes object when read accessor is at EOF.
-
-        raises:
-            ValueError: raised when reading from a closed read accessor
-        returns:
-            bytes: oldest unread data from attached I/O base object
-        """
-        # Check if reader is closed
-        with self._lock:
-            if not self._open:
-                raise ValueError('I/O operation on closed accessor')
-
-        return self._readall()
 
 
 class SimplexWriter():

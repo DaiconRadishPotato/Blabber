@@ -29,7 +29,7 @@ HANDLER_COUNT = 100
 
 class TTSRequestHandler(threading.Thread):
     """
-    Handler thread which processes TTS request jobs from a handler pool, and
+    Handler thread which processes TTS request jobs from a handler pool and
     writes response audio data to input stream provided in TTS request job.
 
     parameters:

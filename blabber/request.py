@@ -43,7 +43,7 @@ class TTSRequest(dict):
 class TTSRequestDispatcher():
     """
     Dispatcher object that submits TTS request to the handler pool for
-    processing, and generates a stream of Opus encoded audio data from TTS
+    processing and generates a stream of Opus encoded audio data from TTS
     request responses.
 
     parameters:
