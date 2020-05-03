@@ -27,10 +27,10 @@ class TTSAudio(AudioSource):
 
     def read(self):
         """
-        Reads one packet of audio data from the request dispatcher.
+        Reads one packet of Opus encoded audio data from TTS request responses.
 
         returns:
-            bytes: packet of audio data
+            bytes: single packet of Opus encoded audio data
         """
         try:
             data = next(self._packets)
@@ -54,7 +54,6 @@ class TTSAudio(AudioSource):
         Query to determine if TTSAudio data is Opus encoded.
 
         returns:
-            bool: value of 'True' if audio data is Opus encoded
+            bool: value of 'True'
         """
-        # TODO Add support for other audio encodings
         return True
