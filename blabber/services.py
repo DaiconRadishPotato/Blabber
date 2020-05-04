@@ -4,7 +4,7 @@
 # Contributor:  Jacky Zhang (jackyeightzhang),
 #               Marcos Avila (DaiconV)
 # Date created: 3/27/2020
-# Date last modified: 4/23/2020
+# Date last modified: 5/4/2020
 # Python Version: 3.8.1
 # License: MIT License
 
@@ -19,7 +19,7 @@ class ConnectionManager:
     """
     Manages connection to the database.
 
-    attributes:
+    parameters:
         username [str]: username for connction to MySQLConnection
         password [str]: password for connction to MySQLConnection
     """
@@ -68,8 +68,8 @@ class UserService:
             channel [Channel]: discord Channel Object
             alias [str]: new voice
         returns:
-            int: 1 if voice was successfully added 2 if voice was updated.
-            None: On connection failure
+            cusor.rowcout [int]: integer representing successful insertion or
+                                 update
         """
         query = ("INSERT INTO voice_profiles "
                  "(user, channel, voice_alias) "
@@ -92,8 +92,7 @@ class UserService:
             user [User]: discord User Object
             channel [Channel]: discord Channel object
         returns:
-            tuple: voice profile retrieved from the database
-            None: if no record found in the table
+            record [tuple]: voice profile retrieved from the database
         """
         query = (
             "SELECT * FROM available_voices "
@@ -115,8 +114,8 @@ class UserService:
             user [User]: discord User Object
             channel [Channel]: discord Channel object
         returns:
-            int: 1 if voice was successfully removed.
-            None: On connection failure
+            cursor.rowcount [int]: integer representing a voice successfully
+                                   removed
         """
         query = ("DELETE FROM voice_profiles "
                  "WHERE user = %s AND channel = %s")
@@ -147,8 +146,8 @@ class GuildService:
             guild [Guild]: discord Guild object
             prefix [str]: new prefix
         returns:
-            int: 1 if voice was successfully added 2 if voice was updated.
-            None: On connection failure
+            cursor.rowcount [int]: integer representing successful insertion or
+                                   update
         """
         query = ("INSERT INTO guilds (guild, prefix) "
                  "VALUES (%s, %s) ON DUPLICATE KEY UPDATE prefix = %s")
@@ -169,8 +168,7 @@ class GuildService:
             user [User]: discord User Object
             channel [Channel]: discord Channel object
         returns:
-            tuple: voice profile retrieved from the database
-            None: if no record found in the table
+            record [tuple]: voice profile retrieved from the database
         """
         query = ("SELECT prefix FROM guilds WHERE guild = %s LIMIT 1")
         data = (int(hash(guild)),)
@@ -188,8 +186,7 @@ class GuildService:
         parameters:
             guild [Guild]: discord Guild object
         returns:
-            int: 1 if voice was successfully removed.
-            None: On connection failure
+            cursor.rowcount [int]: integer representing successful removal.
         """
         query = ("DELETE FROM guilds WHERE guild = %s")
         data = (int(hash(guild)),)

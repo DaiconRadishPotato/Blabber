@@ -4,7 +4,7 @@
 #           Marcos Avila (DaiconV)
 # Contributors: Fanny Avila (Fa-Avila),
 # Date created: 4/9/2019
-# Date last modified: 4/13/2020
+# Date last modified: 5/4/2020
 # Python Version: 3.8.1
 # License: MIT License
 
@@ -16,7 +16,7 @@ class VoiceProfileCache(TTLCache):
     Voice Profile Cache object that caches recently used voice profiles and 
     removes those that are least frequently used when size limit is reached.
 
-    attributes:
+    parameters:
         max_size [int]: maximum size of cache
         time_to_live [int]: time in secs before a cache object expires
     """
@@ -54,6 +54,8 @@ class VoiceProfileCache(TTLCache):
 
         parameter:
             key [tuple]: tuple of discord User and Channel objects
+        returns:
+            voice [tuple]: tuple with voice alias and other voice information
         raises:
             NotInDatabase: Does not exist in cache or database. TBD
         """
@@ -101,6 +103,8 @@ class PrefixCache(TTLCache):
 
         parameter:
             key [tuple]: tuple of discord User and Channel objects
+        returns:
+            prefix [str]: string used for command prefix
         raises:
             NotInDatabase: Does not exist in cache or database. TBD
         """

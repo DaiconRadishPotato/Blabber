@@ -4,7 +4,7 @@
 # Contributor:  Fanny Avila (Fa-Avila),
 #               Marcos Avila (DaiconV)
 # Date created: 1/30/2020
-# Date last modified: 4/28/2020
+# Date last modified: 5/4/2020
 # Python Version: 3.8.1
 # License: MIT License
 
@@ -18,7 +18,7 @@ class Settings(commands.Cog):
     Settings Cog Object that is a collection of commands for managing
     Blabber's settings for a specific guild.
 
-    attributes:
+    parameters:
         bot [discord.Bot]: discord Bot object
     """
 
@@ -73,7 +73,7 @@ class Settings(commands.Cog):
         parameters:
             bot [discord.Bot]: discord Bot object
             message [discord.Message]: the message or context from the guild
-            that called the bot.
+                                       that called the bot.
         returns:
             prefix [str]: that is used to call commands from the bot client
         """

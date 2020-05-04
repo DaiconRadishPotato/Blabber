@@ -4,7 +4,7 @@
 # Contributor:  Jacky Zhang (jackyeightzhang),
 #               Marcos Avila (DaiconV)
 # Date created: 3/27/2020
-# Date last modified: 4/28/2020
+# Date last modified: 5/4/2020
 # Python Version: 3.8.1
 # License: MIT License
 
@@ -20,7 +20,7 @@ class Profiles(commands.Cog):
     Profiles Cog Object that is a collection of commands for managing a user's
     voice profiles
 
-    attributes:
+    parameters:
         bot [discord.Bot]: discord Bot object
         aliases [set]: set object of string alias/voice names
     """

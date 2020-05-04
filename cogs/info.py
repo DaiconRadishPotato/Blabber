@@ -4,7 +4,7 @@
 # Contributor:  Fanny Avila (Fa-Avila),
 #               Marcos Avila (DaiconV)
 # Date created: 1/30/2020
-# Date last modified: 4/28/2020
+# Date last modified: 5/4/2020
 # Python Version: 3.8.1
 # License: MIT License
 
@@ -19,7 +19,7 @@ class Info(commands.Cog):
     Collection of commands for displaying information about Blabber Bot for the
     particular guild.
 
-    attributes:
+    parameters:
         bot [discord.Bot]: discord Bot object
     """
 

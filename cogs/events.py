@@ -4,7 +4,7 @@
 # Contributor:  Fanny Avila (Fa-Avila),
 #               Marcos Avila (DaiconV)
 # Date created: 1/27/2020
-# Date last modified: 3/4/2020
+# Date last modified: 5/4/2020
 # Python Version: 3.8.1
 # License: MIT License
 
@@ -36,7 +36,7 @@ class Events(commands.Cog):
     """
     Events Cog that handles events prints in the python shell.
 
-    attributes:
+    parameters:
         bot [discord.Bot]: discord Bot object
     """
     def __init__(self, bot):
