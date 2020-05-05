@@ -22,23 +22,18 @@ class Profiles(commands.Cog):
 
     parameters:
         bot [discord.Bot]: discord Bot object
-        aliases [set]: set object of string alias/voice names
+        _aliases [dict]: dictionary object of string alias
     """
 
     def __init__(self, bot):
-        self.DEFAULT_VOICE = (
-            'voice_1',
-            'de-DE-Standard-F',
-            'FEMALE',
-            'de',
-            'de-DE'
-        )
         self.bot = bot
         self.vpc = VoiceProfileCache()
 
         with open(r'./blabber/data.json', 'r') as f:
             data = json.load(f)
-            self._aliases = data['voice_info']
+            self._aliases = dict()
+            for voice_alias in data['voice_info'].keys():
+                self._aliases[voice_alias] = voice_alias
 
     @commands.command(name='voice', aliases=['v'])
     async def set_voice(self, ctx, *, alias):
@@ -52,7 +47,7 @@ class Profiles(commands.Cog):
         raises:
             MissingRequiredArgument: an alias was not passed as an argument
         """
-        if self._aliases[alias] is not None:
+        if self._aliases[alias]:
             self.vpc[(ctx.author, ctx.channel)] = alias
 
         await ctx.send(f":white_check_mark: **The new voice is **'{alias}'")

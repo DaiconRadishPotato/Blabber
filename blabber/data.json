@@ -115,472 +115,706 @@
     },
     "voice_info" : {
         "voice_1": {
+            "voice_name": "de-DE-Standard-F",
             "gender": "FEMALE",
-            "language": "de"
+            "language": "de",
+            "lang_code": "de-DE"
         },
         "voice_10": {
+            "voice_name": "ru-RU-Standard-A",
             "gender": "FEMALE",
-            "language": "ru"
+            "language": "ru",
+            "lang_code": "ru-RU"
         },
         "voice_100": {
+            "voice_name": "de-DE-Standard-A",
             "gender": "FEMALE",
-            "language": "de"
+            "language": "de",
+            "lang_code": "de-DE"
         },
         "voice_101": {
+            "voice_name": "de-DE-Standard-B",
             "gender": "MALE",
-            "language": "de"
+            "language": "de",
+            "lang_code": "de-DE"
         },
         "voice_102": {
+            "voice_name": "de-DE-Standard-E",
             "gender": "MALE",
-            "language": "de"
+            "language": "de",
+            "lang_code": "de-DE"
         },
         "voice_103": {
+            "voice_name": "en-AU-Standard-A",
             "gender": "FEMALE",
-            "language": "en"
+            "language": "en",
+            "lang_code": "en-AU"
         },
         "voice_104": {
+            "voice_name": "en-AU-Standard-B",
             "gender": "MALE",
-            "language": "en"
+            "language": "en",
+            "lang_code": "en-AU"
         },
         "voice_105": {
+            "voice_name": "en-AU-Standard-C",
             "gender": "FEMALE",
-            "language": "en"
+            "language": "en",
+            "lang_code": "en-AU"
         },
         "voice_106": {
+            "voice_name": "en-AU-Standard-D",
             "gender": "MALE",
-            "language": "en"
+            "language": "en",
+            "lang_code": "en-AU"
         },
         "voice_107": {
+            "voice_name": "fr-CA-Standard-A",
             "gender": "FEMALE",
-            "language": "fr"
+            "language": "fr",
+            "lang_code": "fr-CA"
         },
         "voice_108": {
+            "voice_name": "fr-CA-Standard-B",
             "gender": "MALE",
-            "language": "fr"
+            "language": "fr",
+            "lang_code": "fr-CA"
         },
         "voice_109": {
+            "voice_name": "fr-CA-Standard-C",
             "gender": "FEMALE",
-            "language": "fr"
+            "language": "fr",
+            "lang_code": "fr-CA"
         },
         "voice_11": {
+            "voice_name": "ru-RU-Standard-B",
             "gender": "MALE",
-            "language": "ru"
+            "language": "ru",
+            "lang_code": "ru-RU"
         },
         "voice_110": {
+            "voice_name": "fr-CA-Standard-D",
             "gender": "MALE",
-            "language": "fr"
+            "language": "fr",
+            "lang_code": "fr-CA"
         },
         "voice_111": {
+            "voice_name": "fr-FR-Standard-A",
             "gender": "FEMALE",
-            "language": "fr"
+            "language": "fr",
+            "lang_code": "fr-FR"
         },
         "voice_112": {
+            "voice_name": "fr-FR-Standard-B",
             "gender": "MALE",
-            "language": "fr"
+            "language": "fr",
+            "lang_code": "fr-FR"
         },
         "voice_113": {
+            "voice_name": "fr-FR-Standard-C",
             "gender": "FEMALE",
-            "language": "fr"
+            "language": "fr",
+            "lang_code": "fr-FR"
         },
         "voice_114": {
+            "voice_name": "fr-FR-Standard-D",
             "gender": "MALE",
-            "language": "fr"
+            "language": "fr",
+            "lang_code": "fr-FR"
         },
         "voice_115": {
+            "voice_name": "it-IT-Standard-B",
             "gender": "FEMALE",
-            "language": "it"
+            "language": "it",
+            "lang_code": "it-IT"
         },
         "voice_116": {
+            "voice_name": "it-IT-Standard-C",
             "gender": "MALE",
-            "language": "it"
+            "language": "it",
+            "lang_code": "it-IT"
         },
         "voice_117": {
+            "voice_name": "it-IT-Standard-D",
             "gender": "MALE",
-            "language": "it"
+            "language": "it",
+            "lang_code": "it-IT"
         },
         "voice_12": {
+            "voice_name": "ru-RU-Standard-C",
             "gender": "FEMALE",
-            "language": "ru"
+            "language": "ru",
+            "lang_code": "ru-RU"
         },
         "voice_13": {
+            "voice_name": "ru-RU-Standard-D",
             "gender": "MALE",
-            "language": "ru"
+            "language": "ru",
+            "lang_code": "ru-RU"
         },
         "voice_14": {
+            "voice_name": "cmn-CN-Standard-D",
             "gender": "FEMALE",
-            "language": "cmn"
+            "language": "cmn",
+            "lang_code": "cmn-CN"
         },
         "voice_15": {
+            "voice_name": "cmn-CN-Standard-A",
             "gender": "FEMALE",
-            "language": "cmn"
+            "language": "cmn",
+            "lang_code": "cmn-CN"
         },
         "voice_16": {
+            "voice_name": "cmn-CN-Standard-B",
             "gender": "MALE",
-            "language": "cmn"
+            "language": "cmn",
+            "lang_code": "cmn-CN"
         },
         "voice_17": {
+            "voice_name": "cmn-CN-Standard-C",
             "gender": "MALE",
-            "language": "cmn"
+            "language": "cmn",
+            "lang_code": "cmn-CN"
         },
         "voice_18": {
+            "voice_name": "cmn-TW-Standard-A-Alpha",
             "gender": "FEMALE",
-            "language": "cmn"
+            "language": "cmn",
+            "lang_code": "cmn-TW"
         },
         "voice_19": {
+            "voice_name": "cmn-TW-Standard-B-Alpha",
             "gender": "MALE",
-            "language": "cmn"
+            "language": "cmn",
+            "lang_code": "cmn-TW"
         },
         "voice_2": {
+            "voice_name": "es-ES-Standard-A",
             "gender": "FEMALE",
-            "language": "es"
+            "language": "es",
+            "lang_code": "es-ES"
         },
         "voice_20": {
+            "voice_name": "cmn-TW-Standard-C-Alpha",
             "gender": "MALE",
-            "language": "cmn"
+            "language": "cmn",
+            "lang_code": "cmn-TW"
         },
         "voice_21": {
+            "voice_name": "ko-KR-Standard-A",
             "gender": "FEMALE",
-            "language": "ko"
+            "language": "ko",
+            "lang_code": "ko-KR"
         },
         "voice_22": {
+            "voice_name": "ko-KR-Standard-B",
             "gender": "FEMALE",
-            "language": "ko"
+            "language": "ko",
+            "lang_code": "ko-KR"
         },
         "voice_23": {
+            "voice_name": "ko-KR-Standard-C",
             "gender": "MALE",
-            "language": "ko"
+            "language": "ko",
+            "lang_code": "ko-KR"
         },
         "voice_24": {
+            "voice_name": "ko-KR-Standard-D",
             "gender": "MALE",
-            "language": "ko"
+            "language": "ko",
+            "lang_code": "ko-KR"
         },
         "voice_25": {
+            "voice_name": "ja-JP-Standard-A",
             "gender": "FEMALE",
-            "language": "ja"
+            "language": "ja",
+            "lang_code": "ja-JP"
         },
         "voice_26": {
+            "voice_name": "ja-JP-Standard-C",
             "gender": "MALE",
-            "language": "ja"
+            "language": "ja",
+            "lang_code": "ja-JP"
         },
         "voice_27": {
+            "voice_name": "ja-JP-Standard-B",
             "gender": "FEMALE",
-            "language": "ja"
+            "language": "ja",
+            "lang_code": "ja-JP"
         },
         "voice_28": {
+            "voice_name": "ja-JP-Standard-D",
             "gender": "MALE",
-            "language": "ja"
+            "language": "ja",
+            "lang_code": "ja-JP"
         },
         "voice_29": {
+            "voice_name": "vi-VN-Standard-A",
             "gender": "FEMALE",
-            "language": "vi"
+            "language": "vi",
+            "lang_code": "vi-VN"
         },
         "voice_3": {
+            "voice_name": "ar-XA-Standard-A",
             "gender": "FEMALE",
-            "language": "ar"
+            "language": "ar",
+            "lang_code": "ar-XA"
         },
         "voice_30": {
+            "voice_name": "vi-VN-Standard-B",
             "gender": "MALE",
-            "language": "vi"
+            "language": "vi",
+            "lang_code": "vi-VN"
         },
         "voice_31": {
+            "voice_name": "vi-VN-Standard-C",
             "gender": "FEMALE",
-            "language": "vi"
+            "language": "vi",
+            "lang_code": "vi-VN"
         },
         "voice_32": {
+            "voice_name": "vi-VN-Standard-D",
             "gender": "MALE",
-            "language": "vi"
+            "language": "vi",
+            "lang_code": "vi-VN"
         },
         "voice_33": {
+            "voice_name": "fil-PH-Standard-A",
             "gender": "FEMALE",
-            "language": "fil"
+            "language": "fil",
+            "lang_code": "fil-PH"
         },
         "voice_34": {
+            "voice_name": "id-ID-Standard-A",
             "gender": "FEMALE",
-            "language": "id"
+            "language": "id",
+            "lang_code": "id-ID"
         },
         "voice_35": {
+            "voice_name": "id-ID-Standard-B",
             "gender": "MALE",
-            "language": "id"
+            "language": "id",
+            "lang_code": "id-ID"
         },
         "voice_36": {
+            "voice_name": "id-ID-Standard-C",
             "gender": "MALE",
-            "language": "id"
+            "language": "id",
+            "lang_code": "id-ID"
         },
         "voice_37": {
+            "voice_name": "id-ID-Standard-D",
             "gender": "FEMALE",
-            "language": "id"
+            "language": "id",
+            "lang_code": "id-ID"
         },
         "voice_38": {
+            "voice_name": "nl-NL-Standard-A",
             "gender": "FEMALE",
-            "language": "nl"
+            "language": "nl",
+            "lang_code": "nl-NL"
         },
         "voice_39": {
+            "voice_name": "nl-NL-Standard-B",
             "gender": "MALE",
-            "language": "nl"
+            "language": "nl",
+            "lang_code": "nl-NL"
         },
         "voice_4": {
+            "voice_name": "ar-XA-Standard-B",
             "gender": "MALE",
-            "language": "ar"
+            "language": "ar",
+            "lang_code": "ar-XA"
         },
         "voice_40": {
+            "voice_name": "nl-NL-Standard-C",
             "gender": "MALE",
-            "language": "nl"
+            "language": "nl",
+            "lang_code": "nl-NL"
         },
         "voice_41": {
+            "voice_name": "nl-NL-Standard-D",
             "gender": "FEMALE",
-            "language": "nl"
+            "language": "nl",
+            "lang_code": "nl-NL"
         },
         "voice_42": {
+            "voice_name": "nl-NL-Standard-E",
             "gender": "FEMALE",
-            "language": "nl"
+            "language": "nl",
+            "lang_code": "nl-NL"
         },
         "voice_43": {
+            "voice_name": "cs-CZ-Standard-A",
             "gender": "FEMALE",
-            "language": "cs"
+            "language": "cs",
+            "lang_code": "cs-CZ"
         },
         "voice_44": {
+            "voice_name": "el-GR-Standard-A",
             "gender": "FEMALE",
-            "language": "el"
+            "language": "el",
+            "lang_code": "el-GR"
         },
         "voice_45": {
+            "voice_name": "pt-BR-Standard-A",
             "gender": "FEMALE",
-            "language": "pt"
+            "language": "pt",
+            "lang_code": "pt-BR"
         },
         "voice_46": {
+            "voice_name": "hu-HU-Standard-A",
             "gender": "FEMALE",
-            "language": "hu"
+            "language": "hu",
+            "lang_code": "hu-HU"
         },
         "voice_47": {
+            "voice_name": "pl-PL-Standard-E",
             "gender": "FEMALE",
-            "language": "pl"
+            "language": "pl",
+            "lang_code": "pl-PL"
         },
         "voice_48": {
+            "voice_name": "pl-PL-Standard-A",
             "gender": "FEMALE",
-            "language": "pl"
+            "language": "pl",
+            "lang_code": "pl-PL"
         },
         "voice_49": {
+            "voice_name": "pl-PL-Standard-B",
             "gender": "MALE",
-            "language": "pl"
+            "language": "pl",
+            "lang_code": "pl-PL"
         },
         "voice_5": {
+            "voice_name": "ar-XA-Standard-C",
             "gender": "MALE",
-            "language": "ar"
+            "language": "ar",
+            "lang_code": "ar-XA"
         },
         "voice_50": {
+            "voice_name": "pl-PL-Standard-C",
             "gender": "MALE",
-            "language": "pl"
+            "language": "pl",
+            "lang_code": "pl-PL"
         },
         "voice_51": {
+            "voice_name": "pl-PL-Standard-D",
             "gender": "FEMALE",
-            "language": "pl"
+            "language": "pl",
+            "lang_code": "pl-PL"
         },
         "voice_52": {
+            "voice_name": "sk-SK-Standard-A",
             "gender": "FEMALE",
-            "language": "sk"
+            "language": "sk",
+            "lang_code": "sk-SK"
         },
         "voice_53": {
+            "voice_name": "tr-TR-Standard-A",
             "gender": "FEMALE",
-            "language": "tr"
+            "language": "tr",
+            "lang_code": "tr-TR"
         },
         "voice_54": {
+            "voice_name": "tr-TR-Standard-B",
             "gender": "MALE",
-            "language": "tr"
+            "language": "tr",
+            "lang_code": "tr-TR"
         },
         "voice_55": {
+            "voice_name": "tr-TR-Standard-C",
             "gender": "FEMALE",
-            "language": "tr"
+            "language": "tr",
+            "lang_code": "tr-TR"
         },
         "voice_56": {
+            "voice_name": "tr-TR-Standard-D",
             "gender": "FEMALE",
-            "language": "tr"
+            "language": "tr",
+            "lang_code": "tr-TR"
         },
         "voice_57": {
+            "voice_name": "tr-TR-Standard-E",
             "gender": "MALE",
-            "language": "tr"
+            "language": "tr",
+            "lang_code": "tr-TR"
         },
         "voice_58": {
+            "voice_name": "uk-UA-Standard-A",
             "gender": "FEMALE",
-            "language": "uk"
+            "language": "uk",
+            "lang_code": "uk-UA"
         },
         "voice_59": {
+            "voice_name": "bn-IN-Standard-A",
             "gender": "FEMALE",
-            "language": "bn"
+            "language": "bn",
+            "lang_code": "bn-IN"
         },
         "voice_6": {
+            "voice_name": "ar-XA-Standard-D",
             "gender": "FEMALE",
-            "language": "ar"
+            "language": "ar",
+            "lang_code": "ar-XA"
         },
         "voice_60": {
+            "voice_name": "bn-IN-Standard-B",
             "gender": "MALE",
-            "language": "bn"
+            "language": "bn",
+            "lang_code": "bn-IN"
         },
         "voice_61": {
+            "voice_name": "en-IN-Standard-D",
             "gender": "FEMALE",
-            "language": "en"
+            "language": "en",
+            "lang_code": "en-IN"
         },
         "voice_62": {
+            "voice_name": "en-IN-Standard-A",
             "gender": "FEMALE",
-            "language": "en"
+            "language": "en",
+            "lang_code": "en-IN"
         },
         "voice_63": {
+            "voice_name": "en-IN-Standard-B",
             "gender": "MALE",
-            "language": "en"
+            "language": "en",
+            "lang_code": "en-IN"
         },
         "voice_64": {
+            "voice_name": "en-IN-Standard-C",
             "gender": "MALE",
-            "language": "en"
+            "language": "en",
+            "lang_code": "en-IN"
         },
         "voice_65": {
+            "voice_name": "gu-IN-Standard-A",
             "gender": "FEMALE",
-            "language": "gu"
+            "language": "gu",
+            "lang_code": "gu-IN"
         },
         "voice_66": {
+            "voice_name": "gu-IN-Standard-B",
             "gender": "MALE",
-            "language": "gu"
+            "language": "gu",
+            "lang_code": "gu-IN"
         },
         "voice_67": {
+            "voice_name": "hi-IN-Standard-D",
             "gender": "FEMALE",
-            "language": "hi"
+            "language": "hi",
+            "lang_code": "hi-IN"
         },
         "voice_68": {
+            "voice_name": "hi-IN-Standard-A",
             "gender": "FEMALE",
-            "language": "hi"
+            "language": "hi",
+            "lang_code": "hi-IN"
         },
         "voice_69": {
+            "voice_name": "hi-IN-Standard-B",
             "gender": "MALE",
-            "language": "hi"
+            "language": "hi",
+            "lang_code": "hi-IN"
         },
         "voice_7": {
+            "voice_name": "fr-FR-Standard-E",
             "gender": "FEMALE",
-            "language": "fr"
+            "language": "fr",
+            "lang_code": "fr-FR"
         },
         "voice_70": {
+            "voice_name": "hi-IN-Standard-C",
             "gender": "MALE",
-            "language": "hi"
+            "language": "hi",
+            "lang_code": "hi-IN"
         },
         "voice_71": {
+            "voice_name": "kn-IN-Standard-A",
             "gender": "FEMALE",
-            "language": "kn"
+            "language": "kn",
+            "lang_code": "kn-IN"
         },
         "voice_72": {
+            "voice_name": "kn-IN-Standard-B",
             "gender": "MALE",
-            "language": "kn"
+            "language": "kn",
+            "lang_code": "kn-IN"
         },
         "voice_73": {
+            "voice_name": "ml-IN-Standard-A",
             "gender": "FEMALE",
-            "language": "ml"
+            "language": "ml",
+            "lang_code": "ml-IN"
         },
         "voice_74": {
+            "voice_name": "ml-IN-Standard-B",
             "gender": "MALE",
-            "language": "ml"
+            "language": "ml",
+            "lang_code": "ml-IN"
         },
         "voice_75": {
+            "voice_name": "ta-IN-Standard-A",
             "gender": "FEMALE",
-            "language": "ta"
+            "language": "ta",
+            "lang_code": "ta-IN"
         },
         "voice_76": {
+            "voice_name": "ta-IN-Standard-B",
             "gender": "MALE",
-            "language": "ta"
+            "language": "ta",
+            "lang_code": "ta-IN"
         },
         "voice_77": {
+            "voice_name": "te-IN-Standard-A",
             "gender": "FEMALE",
-            "language": "te"
+            "language": "te",
+            "lang_code": "te-IN"
         },
         "voice_78": {
+            "voice_name": "te-IN-Standard-B",
             "gender": "MALE",
-            "language": "te"
+            "language": "te",
+            "lang_code": "te-IN"
         },
         "voice_79": {
+            "voice_name": "th-TH-Standard-A",
             "gender": "FEMALE",
-            "language": "th"
+            "language": "th",
+            "lang_code": "th-TH"
         },
         "voice_8": {
+            "voice_name": "it-IT-Standard-A",
             "gender": "FEMALE",
-            "language": "it"
+            "language": "it",
+            "lang_code": "it-IT"
         },
         "voice_80": {
+            "voice_name": "da-DK-Standard-A",
             "gender": "FEMALE",
-            "language": "da"
+            "language": "da",
+            "lang_code": "da-DK"
         },
         "voice_81": {
+            "voice_name": "fi-FI-Standard-A",
             "gender": "FEMALE",
-            "language": "fi"
+            "language": "fi",
+            "lang_code": "fi-FI"
         },
         "voice_82": {
+            "voice_name": "pt-PT-Standard-A",
             "gender": "FEMALE",
-            "language": "pt"
+            "language": "pt",
+            "lang_code": "pt-PT"
         },
         "voice_83": {
+            "voice_name": "pt-PT-Standard-B",
             "gender": "MALE",
-            "language": "pt"
+            "language": "pt",
+            "lang_code": "pt-PT"
         },
         "voice_84": {
+            "voice_name": "pt-PT-Standard-C",
             "gender": "MALE",
-            "language": "pt"
+            "language": "pt",
+            "lang_code": "pt-PT"
         },
         "voice_85": {
+            "voice_name": "pt-PT-Standard-D",
             "gender": "FEMALE",
-            "language": "pt"
+            "language": "pt",
+            "lang_code": "pt-PT"
         },
         "voice_86": {
+            "voice_name": "nb-no-Standard-E",
             "gender": "FEMALE",
-            "language": "nb"
+            "language": "nb",
+            "lang_code": "nb-NO"
         },
         "voice_87": {
+            "voice_name": "nb-NO-Standard-A",
             "gender": "FEMALE",
-            "language": "nb"
+            "language": "nb",
+            "lang_code": "nb-NO"
         },
         "voice_88": {
+            "voice_name": "nb-NO-Standard-B",
             "gender": "MALE",
-            "language": "nb"
+            "language": "nb",
+            "lang_code": "nb-NO"
         },
         "voice_89": {
+            "voice_name": "nb-NO-Standard-C",
             "gender": "FEMALE",
-            "language": "nb"
+            "language": "nb",
+            "lang_code": "nb-NO"
         },
         "voice_9": {
+            "voice_name": "ru-RU-Standard-E",
             "gender": "FEMALE",
-            "language": "ru"
+            "language": "ru",
+            "lang_code": "ru-RU"
         },
         "voice_90": {
+            "voice_name": "nb-NO-Standard-D",
             "gender": "MALE",
-            "language": "nb"
+            "language": "nb",
+            "lang_code": "nb-NO"
         },
         "voice_91": {
+            "voice_name": "sv-SE-Standard-A",
             "gender": "FEMALE",
-            "language": "sv"
+            "language": "sv",
+            "lang_code": "sv-SE"
         },
         "voice_92": {
+            "voice_name": "en-GB-Standard-A",
             "gender": "FEMALE",
-            "language": "en"
+            "language": "en",
+            "lang_code": "en-GB"
         },
         "voice_93": {
+            "voice_name": "en-GB-Standard-B",
             "gender": "MALE",
-            "language": "en"
+            "language": "en",
+            "lang_code": "en-GB"
         },
         "voice_94": {
+            "voice_name": "en-GB-Standard-C",
             "gender": "FEMALE",
-            "language": "en"
+            "language": "en",
+            "lang_code": "en-GB"
         },
         "voice_95": {
+            "voice_name": "en-GB-Standard-D",
             "gender": "MALE",
-            "language": "en"
+            "language": "en",
+            "lang_code": "en-GB"
         },
         "voice_96": {
+            "voice_name": "en-US-Standard-B",
             "gender": "MALE",
-            "language": "en"
+            "language": "en",
+            "lang_code": "en-US"
         },
         "voice_97": {
+            "voice_name": "en-US-Standard-C",
             "gender": "FEMALE",
-            "language": "en"
+            "language": "en",
+            "lang_code": "en-US"
         },
         "voice_98": {
+            "voice_name": "en-US-Standard-D",
             "gender": "MALE",
-            "language": "en"
+            "language": "en",
+            "lang_code": "en-US"
         },
         "voice_99": {
+            "voice_name": "en-US-Standard-E",
             "gender": "FEMALE",
-            "language": "en"
+            "language": "en",
+            "lang_code": "en-US"
         }
     }
 }

@@ -8,8 +8,11 @@
 # Python Version: 3.8.1
 # License: MIT License
 
+import json
+
 from cachetools import TTLCache
 from blabber.services import UserService, GuildService
+
 
 class VoiceProfileCache(TTLCache):
     """
@@ -19,18 +22,32 @@ class VoiceProfileCache(TTLCache):
     parameters:
         max_size [int]: maximum size of cache
         time_to_live [int]: time in secs before a cache object expires
+        _available_voices [dict]: dictionary object of voice information
     """
     def __init__(self, max_size=500, time_to_live=60):
         super().__init__(maxsize=max_size, ttl=time_to_live)
-        self.DEFAULT_VOICE = (
-            'voice_1',
-            'de-DE-Standard-F',
-            'FEMALE',
-            'de',
-            'de-DE'
-        )
+        self.DEFAULT_VOICE = {
+            "voice_alias": 'voice_1',
+            "voice_name": 'de-DE-Standard-F',
+            "gender": 'FEMALE',
+            "language": 'de',
+            "lang_code": 'de-DE'
+        }
         self._service = UserService()
 
+        with open(r'./blabber/data.json', 'r') as f:
+            data = json.load(f)
+            self._available_voices = data["voice_info"]
+
+    def __getitem__(self, key):
+        voice_alias = super().__getitem__(key)
+
+        if isinstance(voice_alias, str):
+            return (voice_alias, *self._available_voices[voice_alias].values())
+        elif isinstance(voice_alias, tuple):
+            return voice_alias
+        else:
+            return None
 
     def __setitem__(self, key, value):
         """
@@ -43,7 +60,7 @@ class VoiceProfileCache(TTLCache):
         """
         super().__setitem__(key, value)
 
-        if value == self.DEFAULT_VOICE[0]:
+        if value == self.DEFAULT_VOICE["voice_alias"]:
             self._service.delete(*key)
         else:
             self._service.insert(*key, value)
@@ -60,12 +77,11 @@ class VoiceProfileCache(TTLCache):
             NotInDatabase: Does not exist in cache or database. TBD
         """
         voice = self._service.select(*key)
-        print(voice)
-        if voice is None:
-            return None
-        else:
+        if voice:
             return voice
-        
+        else:
+            return None
+
 
 class PrefixCache(TTLCache):
     """
@@ -109,7 +125,7 @@ class PrefixCache(TTLCache):
             NotInDatabase: Does not exist in cache or database. TBD
         """
         prefix = self._service.select(key)
-        if prefix is None:
-            return None
-        else:
+        if prefix:
             return prefix[0]
+        else:
+            return None
