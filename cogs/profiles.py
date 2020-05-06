@@ -4,7 +4,7 @@
 # Contributor:  Jacky Zhang (jackyeightzhang),
 #               Marcos Avila (DaiconV)
 # Date created: 3/27/2020
-# Date last modified: 5/4/2020
+# Date last modified: 5/5/2020
 # Python Version: 3.8.1
 # License: MIT License
 
@@ -27,7 +27,7 @@ class Profiles(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        self.vpc = VoiceProfileCache()
+        self.voice_profile_cache = VoiceProfileCache()
 
         with open(r'./blabber/data.json', 'r') as f:
             data = json.load(f)
@@ -48,7 +48,7 @@ class Profiles(commands.Cog):
             MissingRequiredArgument: an alias was not passed as an argument
         """
         if self._aliases[alias]:
-            self.vpc[(ctx.author, ctx.channel)] = alias
+            self.voice_profile_cache[(ctx.author, ctx.channel)] = alias
 
         await ctx.send(f":white_check_mark: **The new voice is **'{alias}'")
 
@@ -62,7 +62,7 @@ class Profiles(commands.Cog):
         returns:
             voice [tuple]: tuple of voice information from database
         """
-        voice = self.vpc[(user, channel)]
+        voice = self.voice_profile_cache[(user, channel)]
         return voice
 
     @set_voice.error

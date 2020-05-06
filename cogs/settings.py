@@ -4,7 +4,7 @@
 # Contributor:  Fanny Avila (Fa-Avila),
 #               Marcos Avila (DaiconV)
 # Date created: 1/30/2020
-# Date last modified: 5/4/2020
+# Date last modified: 5/5/2020
 # Python Version: 3.8.1
 # License: MIT License
 
@@ -25,7 +25,7 @@ class Settings(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.DEFAULT_PREFIX = '>'
-        self.pc = PrefixCache()
+        self.prefix_cache = PrefixCache()
 
     @commands.group(name='settings')
     async def settings(self, ctx):
@@ -62,7 +62,7 @@ class Settings(commands.Cog):
         raises:
             MissingRequiredArgument: New prefix was not passed as an argument
         """
-        self.pc[ctx.guild] = prefix
+        self.prefix_cache[ctx.guild] = prefix
         await ctx.send(f":white_check_mark: **The new prefix is **'{prefix}'")
 
     async def check_prefix(self, bot, message):
@@ -94,7 +94,7 @@ class Settings(commands.Cog):
         returns:
             prefix [str]: that is used to call commands from the bot client
         """
-        prefix = self.pc[guild]
+        prefix = self.prefix_cache[guild]
         return prefix
 
 

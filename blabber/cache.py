@@ -4,7 +4,7 @@
 #           Marcos Avila (DaiconV)
 # Contributors: Fanny Avila (Fa-Avila),
 # Date created: 4/9/2019
-# Date last modified: 5/4/2020
+# Date last modified: 5/5/2020
 # Python Version: 3.8.1
 # License: MIT License
 
@@ -40,6 +40,14 @@ class VoiceProfileCache(TTLCache):
             self._available_voices = data["voice_info"]
 
     def __getitem__(self, key):
+        """
+        Checks if a voice preference is in cache or database and returns it.
+
+        parameters:
+            key [tuple]: tuple of discord User and Channel objects
+        returns:
+            voice_alias [tuple]: tuple of voice information
+        """
         voice_alias = super().__getitem__(key)
 
         if isinstance(voice_alias, str):
@@ -51,8 +59,8 @@ class VoiceProfileCache(TTLCache):
 
     def __setitem__(self, key, value):
         """
-        Creates an item in cache or updates an existing item. Then writes
-        through to the database to ensure consistency.
+        Creates an voice profile in cache or updates an existing item. Then 
+        writes through to the database to ensure consistency.
 
         parameters:
             key [tuple]: tuple of discord User and Channel objects
