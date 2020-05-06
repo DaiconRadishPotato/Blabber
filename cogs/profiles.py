@@ -22,7 +22,6 @@ class Profiles(commands.Cog):
 
     parameters:
         bot [discord.Bot]: discord Bot object
-        _aliases [dict]: dictionary object of string alias
     """
 
     def __init__(self, bot):

@@ -22,16 +22,15 @@ class VoiceProfileCache(TTLCache):
     parameters:
         max_size [int]: maximum size of cache
         time_to_live [int]: time in secs before a cache object expires
-        _available_voices [dict]: dictionary object of voice information
     """
     def __init__(self, max_size=500, time_to_live=60):
         super().__init__(maxsize=max_size, ttl=time_to_live)
         self.DEFAULT_VOICE = {
-            "voice_alias": 'voice_1',
-            "voice_name": 'de-DE-Standard-F',
+            "voice_alias": 'voice_97',
+            "voice_name": 'en-US-Standard-C',
             "gender": 'FEMALE',
-            "language": 'de',
-            "lang_code": 'de-DE'
+            "language": 'en',
+            "lang_code": 'en-US'
         }
         self._service = UserService()
 
