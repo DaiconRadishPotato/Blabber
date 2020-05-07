@@ -107,6 +107,34 @@
         "swedish": [
             "sv",
             "Swedish"
+        ],
+        "gujarati": [
+            "gu",
+            "Gujarati"
+        ],
+        "kannada": [
+            "kn",
+            "Kannada"
+        ],
+        "malayalam": [
+            "ml",
+            "Malayalam"
+        ],
+        "tamil": [
+            "ta",
+            "Tamil"
+        ],
+        "telugu": [
+            "te",
+            "Telugu"
+        ],
+        "thai": [
+            "th",
+            "Thai"
+        ],
+        "bengali": [
+            "bn",
+            "Bengali"
         ]
     },
     "genders": {
