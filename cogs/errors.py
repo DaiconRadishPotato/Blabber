@@ -4,7 +4,7 @@
 # Contributor:  Fanny Avila (Fa-Avila),
 #               Marcos Avila (DaiconV)
 # Date created: 2/26/2020
-# Date last modified: 3/9/2020
+# Date last modified: 5/4/2020
 # Python Version: 3.8.1
 # License: MIT License
 
@@ -15,7 +15,7 @@ class Errors(commands.Cog):
     """
     Errors Cog that handles unexpected erros and prints in the python shell.
 
-    attributes:
+    parameters:
         bot [discord.Bot]: discord Bot object
     """
     def __init__(self, bot):
@@ -39,7 +39,7 @@ class Errors(commands.Cog):
                            f'"{ctx.message.content}" '
                            'is not a command for Blabber.')
         else:
-        #     await ctx.send(error)
+            # await ctx.send(error)
             raise error
 
 

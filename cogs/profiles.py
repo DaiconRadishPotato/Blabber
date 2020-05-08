@@ -4,7 +4,7 @@
 # Contributor:  Jacky Zhang (jackyeightzhang),
 #               Marcos Avila (DaiconV)
 # Date created: 3/27/2020
-# Date last modified: 4/28/2020
+# Date last modified: 5/5/2020
 # Python Version: 3.8.1
 # License: MIT License
 
@@ -12,7 +12,7 @@ import json
 
 from discord.ext import commands
 from discord import Embed, Colour
-from blabber.services import UserService
+from blabber.cache import VoiceProfileCache
 
 
 class Profiles(commands.Cog):
@@ -20,25 +20,19 @@ class Profiles(commands.Cog):
     Profiles Cog Object that is a collection of commands for managing a user's
     voice profiles
 
-    attributes:
-        DEFAULT_VOICE [tuple]: a constant tuple of voice arguments
+    parameters:
         bot [discord.Bot]: discord Bot object
-        aliases [set]: set object of string alias/voice names
     """
 
     def __init__(self, bot):
-        self.DEFAULT_VOICE = (
-            'voice_1',
-            'de-DE-Standard-F',
-            'FEMALE',
-            'de',
-            'de-DE'
-        )
         self.bot = bot
+        self.voice_profile_cache = VoiceProfileCache()
 
         with open(r'./blabber/data.json', 'r') as f:
             data = json.load(f)
-            self._aliases = data['voice_info']
+            self._aliases = dict()
+            for voice_alias in data['voice_info'].keys():
+                self._aliases[voice_alias] = voice_alias
 
     @commands.command(name='voice', aliases=['v'])
     async def set_voice(self, ctx, *, alias):
@@ -52,12 +46,8 @@ class Profiles(commands.Cog):
         raises:
             MissingRequiredArgument: an alias was not passed as an argument
         """
-        us = UserService()
-
-        if alias == self.DEFAULT_VOICE[0]:
-            us.delete(ctx.author, ctx.channel)
-        elif self._aliases[alias]:
-            us.insert(ctx.author, ctx.channel, alias)
+        if self._aliases[alias]:
+            self.voice_profile_cache[(ctx.author, ctx.channel)] = alias
 
         await ctx.send(f":white_check_mark: **The new voice is **'{alias}'")
 
@@ -69,15 +59,10 @@ class Profiles(commands.Cog):
             user [User]: discord User object
             channel_id [Channel]: discord Channel Object
         returns:
-            voice [tuple]: of voice information from database
+            voice [tuple]: tuple of voice information from database
         """
-        us = UserService()
-
-        voice = us.select(user, channel)
-        if voice is None:
-            return self.DEFAULT_VOICE
-        else:
-            return voice
+        voice = self.voice_profile_cache[(user, channel)]
+        return voice
 
     @set_voice.error
     async def set_voice_error(self, ctx, error):
@@ -91,7 +76,7 @@ class Profiles(commands.Cog):
         """
         if isinstance(error, commands.MissingRequiredArgument):
             voice = (await self._get_voice(ctx.author, ctx.channel))[0]
-            prefix = (await self.bot.get_cog("Settings")._get_prefix(ctx.guild))
+            prefix = await self.bot.get_cog("Settings")._get_prefix(ctx.guild)
             member = ctx.message.author
 
             embed = Embed(

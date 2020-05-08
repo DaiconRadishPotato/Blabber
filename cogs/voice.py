@@ -4,7 +4,7 @@
 # Contributor:  Fanny Avila (Fa-Avila),
 #               Marcos Avila (DaiconV)
 # Date created: 12/16/2019
-# Date last modified: 3/29/2020
+# Date last modified: 5/4/2020
 # Python Version: 3.8.1
 # License: MIT License
 
@@ -20,7 +20,7 @@ class Voice(commands.Cog):
     """
     Collection of commands for handling connection to Discord voice channel.
 
-    attributes:
+    parameters:
         bot [discord.Bot]: discord Bot object
     """
     def __init__(self, bot):
@@ -69,8 +69,8 @@ class Voice(commands.Cog):
             ctx [commands.Context]: discord Context object
         raises:
             CheckAnyFailure: Invoker does not have permission to use the bot ie
-            not the guild owner, nor do they have "Blabby" role, and bot is not
-            with other users.
+                             not the guild owner, nor do they have "Blabby" 
+                             role, and bot is not with other users.
             AttributeError: Invoker is not in a voice channel.
             ClientException: Bot is already connected to a voice channel.
         """
