@@ -4,7 +4,7 @@
 # Contributor:  Fanny Avila (Fa-Avila),
 #               Marcos Avila (DaiconV)
 # Date created: 1/30/2020
-# Date last modified: 5/4/2020
+# Date last modified: 5/7/2020
 # Python Version: 3.8.1
 # License: MIT License
 
@@ -26,11 +26,12 @@ class Info(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.MAX_EMBED_FIELDS = 25
-        self.LANG_CODE_INDEX = 0
-        self.LANG_INDEX = 1
+        self._languages_map = dict()
+
         with open(r'./blabber/data.json', 'r') as f:
             data = json.load(f)
-            self._languages_map = data['languages']
+            for voice in data['voice_info'].values():
+                self._languages_map[voice["language"]] = voice["language"]
             self._genders_map = data['genders']
             self._voices_map = data['voice_info']
 
@@ -168,8 +169,7 @@ class Info(commands.Cog):
         records = [
             (voice, info['language'], info['gender'])
             for voice, info in self._voices_map.items()
-            if info['language'] ==
-            self._languages_map[language][self.LANG_CODE_INDEX]
+            if info['language'] == self._languages_map[language]
         ]
         page_num = 1
         embed = Embed(title="Voice Directory - List of Voices - "
@@ -244,8 +244,8 @@ class Info(commands.Cog):
         prefix = await self.bot.get_cog("Settings")._get_prefix(ctx.guild)
 
         available_languages = ", ".join(sorted(
-            lang_list[self.LANG_INDEX]
-            for lang_list in self._languages_map.values()))
+            lang for lang in self._languages_map.values()
+            ))
 
         if isinstance(error, commands.MissingRequiredArgument):
             embed.add_field(name='Available Languages Options:',
