@@ -131,7 +131,7 @@ class Info(commands.Cog):
             if info['gender'] == gender
         ]
         if len(records) == 0:
-            return None
+            return KeyError
         page_num = 1
         embed = Embed(title="Voice Directory - List of Voices"
                       " - Gender Filter - Page " + str(page_num),
@@ -175,7 +175,7 @@ class Info(commands.Cog):
             if info['language'] == language
         ]
         if len(records) == 0:
-            return None
+            raise KeyError
         page_num = 1
         embed = Embed(title="Voice Directory - List of Voices - "
                       "Language Filter - Page " + str(page_num),
