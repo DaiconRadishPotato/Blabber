@@ -4,19 +4,19 @@
 # Contributor:  Fanny Avila (Fa-Avila),
 #               Marcos Avila (DaiconV)
 # Date created: 12/16/2019
-# Date last modified: 5/4/2020
+# Date last modified: 5/10/2020
 # Python Version: 3.8.1
 # License: MIT License
 
 from discord import ClientException
 from discord.ext import commands
 
-
 from blabber.checks import *
 
 from blabber.audio import TTSAudio
 from blabber.request import TTSRequest
 from blabber.pool import TTSRequestHandlerPool
+
 
 class Voice(commands.Cog):
     """
@@ -36,15 +36,16 @@ class Voice(commands.Cog):
     async def _summon_blabber(self, ctx):
         if ctx.voice_client:
             await can_disconnect(ctx)
+            await blabber_has_required_permissions(ctx)
             await ctx.voice_client.move_to(ctx.author.voice.channel)
             return 'Moved'
         else:
+            await blabber_has_required_permissions(ctx)
             await ctx.author.voice.channel.connect()
             return 'Connected'
 
     @commands.command(name='connect', aliases=['c'])
     @commands.check(is_connected)
-    @commands.check(blabber_has_required_permissions)
     async def connect(self, ctx):
         """
         Connects Blabber to the voice channel the command invoker is connected to.
@@ -89,7 +90,6 @@ class Voice(commands.Cog):
             *message [str]: array of words to be joined
         """
         if not ctx.voice_client or ctx.author.voice.channel != ctx.voice_client.channel:
-            await blabber_has_required_permissions(ctx)
             await self._summon_blabber(ctx)
             
         request = TTSRequest(message)

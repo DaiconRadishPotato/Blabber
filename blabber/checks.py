@@ -3,13 +3,14 @@
 # Contributor:  Fanny Avila (Fa-Avila),
 #               Marcos Avila (DaiconV)
 # Date created: 3/9/2020
-# Date last modified: 3/9/2020
+# Date last modified: 5/10/2020
 # Python Version: 3.8.1
-# License: "MIT"
+# License: MIT License
 
 from discord.ext import commands
 
 from blabber.errors import *
+
 
 @commands.check
 async def is_guild_owner(ctx):
@@ -22,6 +23,7 @@ async def is_guild_owner(ctx):
         boolean: True if invoker is owner of guild
     """
     return ctx.author == ctx.guild.owner
+
 
 @commands.check
 async def is_bot_alone(ctx):
@@ -39,6 +41,7 @@ async def is_bot_alone(ctx):
             (len(ctx.voice_client.channel.members) == 2 and \
                 ctx.author.voice.channel == ctx.voice_client.channel)
 
+
 async def is_connected(ctx):
     if not ctx.author.voice:
         raise NotConnected()
@@ -55,6 +58,7 @@ async def blabber_has_required_permissions(ctx):
         raise BlabberMissingSpeakPermission(ctx.author.voice.channel.name)
 
     return True
+
 
 async def can_disconnect(ctx):
     # Count number of users in voice channel excluding context author and bots
