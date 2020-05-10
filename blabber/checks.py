@@ -70,7 +70,7 @@ async def can_disconnect(ctx):
             raise MissingCredentials()
 
 
-async def can_move(ctx):
-    await can_disconnect(ctx)
-    await blabber_has_required_permissions(ctx)
+async def tts_message_is_valid(ctx):
+    if len(ctx.message.content) > 600:
+        raise TTSMessageTooLong()
     return True

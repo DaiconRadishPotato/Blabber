@@ -78,8 +78,9 @@ class Voice(commands.Cog):
 
 
     @commands.command(name='say', aliases=['s'])
-    @commands.has_role("Blabby")
-    async def say_message(self, ctx, *, message:str):
+    @commands.check(is_connected)
+    @commands.check(tts_message_is_valid)
+    async def say(self, ctx, *, message:str):
         """
         To be created
 
@@ -87,27 +88,22 @@ class Voice(commands.Cog):
             ctx [commands.Context]: discord Context object
             *message [str]: array of words to be joined
         """
-        if ctx.voice_client is None:
-            await self.connect_to_voice_channel(ctx)
+        if not ctx.voice_client or ctx.author.voice.channel != ctx.voice_client.channel:
+            await blabber_has_required_permissions(ctx)
+            await self._summon_blabber(ctx)
             
-        if ctx.voice_client is not None and len(message) != 0:
-            if len(message) <= 600:
-                request = TTSRequest(message)
-                if ctx.voice_client._player:
-                    audio = ctx.voice_client._player.source
-                else:
-                    audio = TTSAudio(self._pool)
-
-                await audio.submit_request(request)
-
-                if not ctx.voice_client.is_playing():
-                    ctx.voice_client.play(audio)
-            else:
-                await ctx.send("Voice::say_message Please make your message "
-                               "shorter. We have set the character limit to"
-                               "600 to be considerate for others.")
+        request = TTSRequest(message)
+        if ctx.voice_client._player:
+            audio = ctx.voice_client._player.source
         else:
-            await ctx.send("Voice::say_message Please input a message")
+            audio = TTSAudio(self._pool)
+
+        await audio.submit_request(request)
+
+        if not ctx.voice_client.is_playing():
+            ctx.voice_client.play(audio)
+
+        await ctx.message.add_reaction('📣')
 
     @disconnect.error
     async def disconnect_error(self, ctx, error):
@@ -131,8 +127,15 @@ class Voice(commands.Cog):
         """
         # Check what kind of operation caused error
         operation = 'move' if ctx.voice_client else 'connect'
-
         await ctx.send(f":x: **Unable to {operation}**\n{error}")
+    
+    @say.error
+    async def say_error(self, ctx, error):
+        if not isinstance(error, TTSMessageTooLong):
+            operation = 'move' if ctx.voice_client else 'connect'
+            await ctx.send(f":x: **Unable to {operation}**\n{error}")
+        else:
+            await ctx.send(f":x: **Unable to convert to speech**\n{error}")
                 
 def setup(bot):
     """
