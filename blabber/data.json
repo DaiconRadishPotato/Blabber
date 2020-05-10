@@ -1,8 +1,8 @@
 {
-    "genders": {
-        "male": "MALE", 
-        "female": "FEMALE"
-    },
+    "genders": [
+        "male",
+        "female"
+    ],
     "voice_info" : {
         "voice_1": {
             "voice_name": "de-DE-Standard-F",

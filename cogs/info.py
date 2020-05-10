@@ -26,13 +26,13 @@ class Info(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.MAX_EMBED_FIELDS = 25
-        self._languages_map = dict()
+        self._languages_set = set()
 
         with open(r'./blabber/data.json', 'r') as f:
             data = json.load(f)
             for voice in data['voice_info'].values():
-                self._languages_map[voice["language"]] = voice["language"]
-            self._genders_map = data['genders']
+                self._languages_set.add(voice["language"])
+            self._genders_set = set(data['genders'])
             self._voices_map = data['voice_info']
 
     @commands.command(name='help', aliases=['h'])
@@ -122,13 +122,16 @@ class Info(commands.Cog):
             gender [str]: string object used to represent the gender to filter
         raises:
             MissingRequiredArgument: gender was not passed as an argument
-            KeyError: gender was not avaiable or there was incorrectly inputted
+            KeyError: gender is not available or was improperly inputted
         """
+        gender = gender.upper()
         records = [
             (voice, info['language'], info['gender'])
             for voice, info in self._voices_map.items()
-            if info['gender'] == self._genders_map[gender]
+            if info['gender'] == gender
         ]
+        if len(records) == 0:
+            return None
         page_num = 1
         embed = Embed(title="Voice Directory - List of Voices"
                       " - Gender Filter - Page " + str(page_num),
@@ -163,14 +166,16 @@ class Info(commands.Cog):
             filter
         raises:
             MissingRequiredArgument: language was not passed as an argument
-            KeyError: language was not avaiable or was incorrectly inputted
+            KeyError: language is not available or was improperly inputted
         """
         language = language.lower()
         records = [
             (voice, info['language'], info['gender'])
             for voice, info in self._voices_map.items()
-            if info['language'] == self._languages_map[language]
+            if info['language'] == language
         ]
+        if len(records) == 0:
+            return None
         page_num = 1
         embed = Embed(title="Voice Directory - List of Voices - "
                       "Language Filter - Page " + str(page_num),
@@ -208,8 +213,7 @@ class Info(commands.Cog):
                       " - Gender Filter Options", colour=Colour.green())
         prefix = await self.bot.get_cog("Settings")._get_prefix(ctx.guild)
 
-        available_genders = ", ".join(gender
-                                      for gender in self._genders_map.keys())
+        available_genders = ", ".join(gender for gender in self._genders_set)
 
         if isinstance(error, commands.MissingRequiredArgument):
             embed.add_field(name=f"Available Genders Options:",
@@ -243,9 +247,9 @@ class Info(commands.Cog):
                       "Language Filter Menu", colour=Colour.green())
         prefix = await self.bot.get_cog("Settings")._get_prefix(ctx.guild)
 
-        available_languages = ", ".join(sorted(
-            lang for lang in self._languages_map.values()
-            ))
+        available_languages = ", ".join(
+            sorted(lang for lang in self._languages_set)
+            )
 
         if isinstance(error, commands.MissingRequiredArgument):
             embed.add_field(name='Available Languages Options:',
