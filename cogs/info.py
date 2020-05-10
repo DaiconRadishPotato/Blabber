@@ -131,7 +131,7 @@ class Info(commands.Cog):
             if info['gender'] == gender
         ]
         if len(records) == 0:
-            return KeyError
+            raise KeyError
         page_num = 1
         embed = Embed(title="Voice Directory - List of Voices"
                       " - Gender Filter - Page " + str(page_num),
