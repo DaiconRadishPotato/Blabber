@@ -37,6 +37,9 @@ class Voice(commands.Cog):
         if ctx.voice_client:
             await can_disconnect(ctx)
             await blabber_has_required_permissions(ctx)
+            player = ctx.voice_client._player
+            if player is not None:
+                player.source.clear()
             await ctx.voice_client.move_to(ctx.author.voice.channel)
             return 'Moved'
         else:

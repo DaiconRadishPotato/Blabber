@@ -67,6 +67,15 @@ class TTSRequestDispatcher():
         # Send output stream to OggStream object for Opus packet extraction
         yield from OggStream(self._ostream).iter_packets()
 
+    def clear(self):
+		"""
+		Re-initializes internal audio data buffer.
+		"""
+        self._ostream.close()
+
+        self._io_base = SimplexIOBase()
+        self._ostream = SimplexReader(self._io_base)
+
     async def submit_request(self, request):
         """
         Submits a TTS request for processing.
