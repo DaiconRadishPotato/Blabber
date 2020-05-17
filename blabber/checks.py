@@ -68,11 +68,12 @@ async def can_disconnect(ctx):
 
     if user_count > 0:
         try:
-            await commands.has_role('Blabby').predicate(ctx)
             await commands.has_permissions(manage_channels=True).predicate(ctx)
         except:
-            raise MissingCredentials()
-
+            try:
+                await commands.has_role('Blabby').predicate(ctx)
+            except:
+                raise MissingCredentials()
 
 async def tts_message_is_valid(ctx):
     if len(ctx.message.content) > 600:
