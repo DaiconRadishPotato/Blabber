@@ -35,9 +35,9 @@ class TTSAudio(AudioSource):
         return True
 
     def clear(self):
-		"""
-		Re-initializes internal audio data buffer.
-		"""
+        """
+        Re-initializes internal audio data buffer.
+        """
         self._dispatch.clear()
         self._packets = self._dispatch.iter_packets()
 
