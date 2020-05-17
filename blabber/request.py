@@ -68,6 +68,9 @@ class TTSRequestDispatcher():
         yield from OggStream(self._ostream).iter_packets()
 
     def clear(self):
+		"""
+		Re-initializes internal audio data buffer.
+		"""
         self._ostream.close()
 
         self._io_base = SimplexIOBase()
