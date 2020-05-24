@@ -24,7 +24,6 @@ class Settings(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        self.DEFAULT_PREFIX = '>'
         self.prefix_cache = PrefixCache()
 
     @commands.group(name='settings')
@@ -77,11 +76,9 @@ class Settings(commands.Cog):
         returns:
             prefix [str]: that is used to call commands from the bot client
         """
-        try:
-            return commands.when_mentioned_or(
-                await self._get_prefix(message.guild))(bot, message)
-        except:
-            return self.DEFAULT_PREFIX
+        return commands.when_mentioned_or(
+            await self._get_prefix(message.guild))(bot, message)
+
 
 
     async def _get_prefix(self, guild):
