@@ -8,9 +8,11 @@
 # Python Version: 3.8.1
 # License: MIT License
 
-from discord.ext import commands
 from discord import Embed, Colour
+from discord.ext import commands
+
 from blabber.checks import is_guild_owner
+
 
 class Settings(commands.Cog):
     """
