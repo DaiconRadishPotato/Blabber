@@ -4,7 +4,7 @@
 # Contributor:  Fanny Avila (Fa-Avila),
 #               Marcos Avila (DaiconV)
 # Date created: 12/16/2019
-# Date last modified: 3/4/2020
+# Date last modified: 5/24/2020
 # Python Version: 3.8.1
 # License: MIT License
 
@@ -14,6 +14,8 @@ import asyncio
 
 from discord.ext import commands
 from dotenv import load_dotenv
+
+import blabber.cache
 
 load_dotenv()
 DISCORD_TOKEN = os.getenv('discord_token')
@@ -51,8 +53,13 @@ if __name__ == "__main__":
     handler.setFormatter(logging.Formatter(
         '%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
     logger.addHandler(handler)
-    
+
+    vpc = blabber.cache.VoiceProfileCache()
+    gpc = blabber.cache.PrefixCache()
+
     bot = commands.Bot(command_prefix=None, help_command=None)
-    
+    bot.voice_profile_cache = vpc
+    bot.prefix_cache = gpc
+
     load_cog_files(bot)
     bot.run(DISCORD_TOKEN)

@@ -11,7 +11,6 @@
 from discord.ext import commands
 from discord import Embed, Colour
 from blabber.checks import is_guild_owner
-from blabber.cache import PrefixCache
 
 class Settings(commands.Cog):
     """
@@ -24,7 +23,7 @@ class Settings(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        self.prefix_cache = PrefixCache()
+        self.prefix_cache = bot.prefix_cache
 
     @commands.group(name='settings')
     async def settings(self, ctx):
