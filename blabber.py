@@ -10,12 +10,11 @@
 
 import os
 import logging
-import asyncio
+import blabber.cache
 
 from discord.ext import commands
 from dotenv import load_dotenv
 
-import blabber.cache
 
 load_dotenv()
 DISCORD_TOKEN = os.getenv('discord_token')
@@ -42,7 +41,7 @@ def load_cog_files(bot):
             except Exception as exception:
                 print(f"{cog} can not be loaded: ")
                 raise exception
-                
+
 if __name__ == "__main__":
     logger = logging.getLogger('discord')
     logger.setLevel(logging.DEBUG)
