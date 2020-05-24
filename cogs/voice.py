@@ -23,17 +23,27 @@ class Voice(commands.Cog):
     Collection of commands for handling connection to Discord voice channel.
 
     parameters:
-        bot [discord.Bot]: discord Bot object
+        bot [Bot]: client object representing a Discord bot
     """
     def __init__(self, bot):
         self.bot = bot
-
         self._pool = TTSRequestHandlerPool()
 
     def cog_unload(self):
+        """
+        
+        """
         self._pool.teardown()
 
     async def _summon_blabber(self, ctx):
+        """
+        Helper method for connecting Blabber to a voice channel.
+
+        parameters:
+            ctx [Context]: context object produced by a command invocation
+        returns:
+            str: type of voice channel connection that occured
+        """
         if ctx.voice_client:
             await can_disconnect(ctx)
             await blabber_has_required_permissions(ctx)
@@ -47,31 +57,13 @@ class Voice(commands.Cog):
             await ctx.author.voice.channel.connect()
             return 'Connected'
 
-    @commands.command(name='connect', aliases=['c'])
-    @commands.check(is_connected)
-    async def connect(self, ctx):
-        """
-        Connects Blabber to the voice channel the command invoker is connected to.
-
-        parameters:
-            ctx [commands.Context]: discord Context object
-        raises:
-        """
-        if ctx.voice_client and ctx.author.voice.channel == ctx.voice_client.channel:
-            await ctx.send(":information_source: **Blabber is already in this voice channel**")
-        else:     
-            operation = await self._summon_blabber(ctx)
-            await ctx.send(f":white_check_mark: **{operation} to** `{ctx.author.voice.channel.name}`")
-        
     @commands.command(name='disconnect', aliases=['dc'])
     async def disconnect(self, ctx):
         """
         Disconnects Blabber from the voice channel it is connected to.
 
         parameters:
-            ctx [commands.Context]: discord Context object
-        raises:
-            
+            ctx [Context]: context object produced by a command invocation
         """
         if not ctx.voice_client:
             await ctx.send(":information_source: **Blabber is not in any voice channel**")
@@ -80,17 +72,33 @@ class Voice(commands.Cog):
             await ctx.voice_client.disconnect()
             await ctx.send(":white_check_mark: **Successfully disconnected**")
 
+    @commands.command(name='connect', aliases=['c'])
+    @commands.check(is_connected)
+    async def connect(self, ctx):
+        """
+        Connects Blabber to the voice channel the command invoker is connected
+        to.
 
+        parameters:
+            ctx [Context]: context object produced by a command invocation
+        """
+        if ctx.voice_client and ctx.author.voice.channel == ctx.voice_client.channel:
+            await ctx.send(":information_source: **Blabber is already in this voice channel**")
+        else:     
+            operation = await self._summon_blabber(ctx)
+            await ctx.send(f":white_check_mark: **{operation} to** `{ctx.author.voice.channel.name}`")
+        
     @commands.command(name='say', aliases=['s'])
     @commands.check(is_connected)
     @commands.check(tts_message_is_valid)
     async def say(self, ctx, *, message:str):
         """
-        To be created
+        Recites a message into the voice channel the command invoker is
+        connected to.
 
         parameters:
-            ctx [commands.Context]: discord Context object
-            *message [str]: array of words to be joined
+            ctx [Context]: context object produced by a command invocation
+            message [str]: message to recite
         """
         if not ctx.voice_client or ctx.author.voice.channel != ctx.voice_client.channel:
             await self._summon_blabber(ctx)
@@ -108,33 +116,40 @@ class Voice(commands.Cog):
 
         await ctx.message.add_reaction('📣')
 
-    @disconnect.error
-    async def disconnect_error(self, ctx, error):
-        """
-        Local error handler for Blabber's disconnect command.
-
-        parameters:
-            ctx [commands.Context]: discord Context object
-            error [Exception]: error object thrown by command
-        """
-        await ctx.send(f":x: **Unable to disconnect**\n{error}")
-
     @connect.error
     async def connect_error(self, ctx, error):
         """
         Local error handler for Blabber's connect command.
 
         parameters:
-            ctx [commands.Context]: discord Context object
+            ctx [Context]: context object produced by a command invocation
             error [Exception]: error object thrown by command function
         """
         # Check what kind of operation caused error
         operation = 'move' if ctx.voice_client else 'connect'
         await ctx.send(f":x: **Unable to {operation}**\n{error}")
     
+    @disconnect.error
+    async def disconnect_error(self, ctx, error):
+        """
+        Local error handler for Blabber's disconnect command.
+
+        parameters:
+            ctx [Context]: context object produced by a command invocation
+            error [Exception]: error object thrown by command
+        """
+        await ctx.send(f":x: **Unable to disconnect**\n{error}")
+
     @say.error
     async def say_error(self, ctx, error):
-        if not isinstance(error, TTSMessageTooLong):
+        """
+        Local error handler for Blabber's say command.
+
+        parameters:
+            ctx [Context]: context object produced by a command invocation
+            error [Exception]: error object thrown by command function
+        """
+        if isinstance(error, BlabberConnectError):
             operation = 'move' if ctx.voice_client else 'connect'
             await ctx.send(f":x: **Unable to {operation}**\n{error}")
         else:

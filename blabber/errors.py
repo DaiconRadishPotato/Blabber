@@ -10,15 +10,19 @@
 
 from discord.ext import commands
 
-class BlabberNotConnected(commands.CommandError):
+class BlabberConnectError(commands.CommandError):
+    def __init__(self, message):
+        super().__init__(message)
+
+class BlabberNotConnected(BlabberConnectError):
     def __init__(self):
         super().__init__("Blabber is currently not connected to any voice channel")
 
-class BlabberMissingConnectPermission(commands.CommandError):
+class BlabberMissingConnectPermission(BlabberConnectError):
     def __init__(self, channel_name):
         super().__init__(f"Blabber does not have permission to connect to `{channel_name}`")
 
-class BlabberMissingSpeakPermission(commands.CommandError):
+class BlabberMissingSpeakPermission(BlabberConnectError):
     def __init__(self, channel_name):
         super().__init__(f"Blabber does not have permission to speak in `{channel_name}`")
 
