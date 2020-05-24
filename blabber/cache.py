@@ -80,13 +80,12 @@ class VoiceProfileCache(TTLCache):
             key [tuple]: tuple of discord User and Channel objects
         returns:
             voice [tuple]: tuple with voice alias and other voice information
-        raises:
-            NotInDatabase: Does not exist in cache or database. TBD
         """
         voice = self._service.select(*key)
         if voice:
             return voice
         else:
+            super().__setitem__(key, self.DEFAULT_VOICE["voice_alias"])
             return self.DEFAULT_VOICE
 
 
