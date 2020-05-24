@@ -128,8 +128,6 @@ class PrefixCache(TTLCache):
             key [Guild]: discord Guild object
         returns:
             prefix [str]: string used for command prefix
-        raises:
-            NotInDatabase: Does not exist in cache or database. TBD
         """
         prefix = self._service.select(key)
         if prefix:
