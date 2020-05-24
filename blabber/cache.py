@@ -87,7 +87,7 @@ class VoiceProfileCache(TTLCache):
         if voice:
             return voice
         else:
-            return None
+            return self.DEFAULT_VOICE
 
 
 class PrefixCache(TTLCache):
@@ -135,4 +135,4 @@ class PrefixCache(TTLCache):
         if prefix:
             return prefix[0]
         else:
-            return None
+            return self.DEFAULT_PREFIX
