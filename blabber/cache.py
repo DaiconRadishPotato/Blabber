@@ -26,13 +26,13 @@ class VoiceProfileCache(TTLCache):
     """
     def __init__(self, max_size=500, time_to_live=60):
         super().__init__(maxsize=max_size, ttl=time_to_live)
-        self.DEFAULT_VOICE = {
-            "voice_alias": 'voice_97',
-            "voice_name": 'en-US-Standard-C',
-            "gender": 'FEMALE',
-            "language": 'en',
-            "lang_code": 'en-US'
-        }
+        self.DEFAULT_VOICE = (
+            'voice_97',
+            'en-US-Standard-C',
+            'FEMALE',
+            'en',
+            'en-US'
+        )
         self._service = UserService()
 
         with open(r'./blabber/data.json', 'r') as f:
@@ -68,7 +68,7 @@ class VoiceProfileCache(TTLCache):
         """
         super().__setitem__(key, value)
 
-        if value == self.DEFAULT_VOICE["voice_alias"]:
+        if value == self.DEFAULT_VOICE[0]:
             self._service.delete(*key)
         else:
             self._service.insert(*key, value)
@@ -80,13 +80,13 @@ class VoiceProfileCache(TTLCache):
         parameter:
             key [tuple]: tuple of discord User and Channel objects
         returns:
-            voice [tuple]: tuple with voice alias and other voice information
+            voice [tuple]: dict with voice alias and other voice information
         """
         voice = self._service.select(*key)
         if voice:
             return voice
         else:
-            super().__setitem__(key, self.DEFAULT_VOICE["voice_alias"])
+            super().__setitem__(key, self.DEFAULT_VOICE[0])
             return self.DEFAULT_VOICE
 
 
