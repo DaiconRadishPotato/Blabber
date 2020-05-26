@@ -4,7 +4,7 @@
 # Contributor:  Fanny Avila (Fa-Avila),
 #               Marcos Avila (DaiconV)
 # Date created: 12/16/2019
-# Date last modified: 5/10/2020
+# Date last modified: 5/26/2020
 # Python Version: 3.8.1
 # License: MIT License
 
@@ -19,7 +19,8 @@ from blabber.request import TTSRequest
 
 class Voice(commands.Cog):
     """
-    Collection of commands for handling connection to Discord voice channel.
+    Collection of commands for handling connection and speech within a Discord 
+    voice channel.
 
     parameters:
         bot [Bot]: client object representing a Discord bot
@@ -70,11 +71,14 @@ class Voice(commands.Cog):
             ctx [Context]: context object produced by a command invocation
         """
         # Check if Blabber is connected to command invoker's voice channel
-        if ctx.voice_client and ctx.author.voice.channel == ctx.voice_client.channel:
-            await ctx.send(":information_source: **Blabber is already in this voice channel**")
+        if ctx.voice_client and \
+            ctx.author.voice.channel == ctx.voice_client.channel:
+            await ctx.send(":information_source: "
+            "**Blabber is already in this voice channel**")
         else:
             operation = await self._connect(ctx)
-            await ctx.send(f":white_check_mark: **{operation} to** `{ctx.author.voice.channel.name}`")
+            await ctx.send(f":white_check_mark: **{operation} to** "
+            f"`{ctx.author.voice.channel.name}`")
 
     @commands.command(name='disconnect', aliases=['dc'])
     async def disconnect(self, ctx):
@@ -86,7 +90,8 @@ class Voice(commands.Cog):
         """
         # Check if Blabber is currently connected to a voice channel
         if not ctx.voice_client:
-            await ctx.send(":information_source: **Blabber is not connected to any voice channel**")
+            await ctx.send(":information_source: "
+            "**Blabber is not connected to any voice channel**")
         else:
             await can_disconnect(ctx)
 
@@ -107,7 +112,8 @@ class Voice(commands.Cog):
             message [str]: message to recite
         """
         # Ensure Blabber is connected to command invoker's voice channel
-        if not ctx.voice_client or ctx.author.voice.channel != ctx.voice_client.channel:
+        if not ctx.voice_client or \
+            ctx.author.voice.channel != ctx.voice_client.channel:
             await self._connect(ctx)
         
         # Check if AudioSource object already exists
@@ -164,11 +170,12 @@ class Voice(commands.Cog):
             ctx [Context]: context object produced by a command invocation
             error [Exception]: error object thrown by command function
         """
+        # Check if error was from a lack of voice client
         if isinstance(error, BlabberConnectError):
             await self.connect_error(ctx, error)
         else:
             await ctx.send(f":x: **Unable to convert to speech**\n{error}")
-                
+
 def setup(bot):
     """
     Adds Voice Cog to bot.
