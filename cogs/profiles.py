@@ -4,7 +4,7 @@
 # Contributor:  Jacky Zhang (jackyeightzhang),
 #               Marcos Avila (DaiconV)
 # Date created: 3/27/2020
-# Date last modified: 5/24/2020
+# Date last modified: 5/26/2020
 # Python Version: 3.8.1
 # License: MIT License
 
@@ -35,16 +35,17 @@ class Profiles(commands.Cog):
         message to user if set was successful or failed.
 
         parameter:
-            ctx [commands.Context]: discord Contxt object
+            ctx [Context]: context object produced by a command invocation
             alias [str]: string representing a specific alias
         raises:
             MissingRequiredArgument: an alias was not passed as an argument
         """
+        # Check if voice option exists
         if alias in self.voices:
             self.voice_profiles[(ctx.author, ctx.channel)] = alias
             await ctx.send(f":white_check_mark: **The new voice is **'{alias}'")
         else:
-            await ctx.send(f"**No.**")
+            raise KeyError
 
 
     @set_voice.error
@@ -54,8 +55,8 @@ class Profiles(commands.Cog):
         is being missing arguments
 
         parameters:
-            ctx [commands.Context]: discord Context object
-            error [Error]: general Error object
+            ctx [Context]: context object produced by a command invocation
+            error [Exception]: error object thrown by command function
         """
         if isinstance(error, commands.MissingRequiredArgument):
             voice = self.voice_profiles[(ctx.author, ctx.channel)]
