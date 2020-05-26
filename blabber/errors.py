@@ -19,11 +19,11 @@ class BlabberNotConnected(BlabberConnectError):
     def __init__(self):
         super().__init__("Blabber is currently not connected to any voice channel")
 
-class BlabberMissingConnectPermission(BlabberConnectError):
+class BlabberMissingConnectPermission(commands.CommandError):
     def __init__(self, channel_name):
         super().__init__(f"Blabber does not have permission to connect to `{channel_name}`")
 
-class BlabberMissingSpeakPermission(BlabberConnectError):
+class BlabberMissingSpeakPermission(commands.CommandError):
     def __init__(self, channel_name):
         super().__init__(f"Blabber does not have permission to speak in `{channel_name}`")
 
