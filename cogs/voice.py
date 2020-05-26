@@ -59,6 +59,23 @@ class Voice(commands.Cog):
             await ctx.author.voice.channel.connect()
             return 'Connected'
 
+    @commands.command(name='connect', aliases=['c'])
+    @commands.check(is_connected)
+    async def connect(self, ctx):
+        """
+        Connects Blabber to the voice channel the command invoker is connected
+        to.
+
+        parameters:
+            ctx [Context]: context object produced by a command invocation
+        """
+        # Check if Blabber is connected to command invoker's voice channel
+        if ctx.voice_client and ctx.author.voice.channel == ctx.voice_client.channel:
+            await ctx.send(":information_source: **Blabber is already in this voice channel**")
+        else:
+            operation = await self._connect(ctx)
+            await ctx.send(f":white_check_mark: **{operation} to** `{ctx.author.voice.channel.name}`")
+
     @commands.command(name='disconnect', aliases=['dc'])
     async def disconnect(self, ctx):
         """
@@ -77,23 +94,6 @@ class Voice(commands.Cog):
             await ctx.voice_client.disconnect()
             await ctx.send(":white_check_mark: **Successfully disconnected**")
 
-    @commands.command(name='connect', aliases=['c'])
-    @commands.check(is_connected)
-    async def connect(self, ctx):
-        """
-        Connects Blabber to the voice channel the command invoker is connected
-        to.
-
-        parameters:
-            ctx [Context]: context object produced by a command invocation
-        """
-        # Check if Blabber is connected to command invoker's voice channel
-        if ctx.voice_client and ctx.author.voice.channel == ctx.voice_client.channel:
-            await ctx.send(":information_source: **Blabber is already in this voice channel**")
-        else:
-            operation = await self._connect(ctx)
-            await ctx.send(f":white_check_mark: **{operation} to** `{ctx.author.voice.channel.name}`")
-        
     @commands.command(name='say', aliases=['s'])
     @commands.check(is_connected)
     @commands.check(tts_message_is_valid)
@@ -150,7 +150,7 @@ class Voice(commands.Cog):
         Local error handler for Blabber's disconnect command.
 
         parameters:
-            ctx [Context]: context object produced by a command invocation
+            ctx [commands.Context]: discord Context object
             error [Exception]: error object thrown by command
         """
         await ctx.send(f":x: **Unable to disconnect**\n{error}")
