@@ -103,8 +103,7 @@ class UserService:
         with ConnectionManager(os.getenv('db_user'), os.getenv('db_pw')) as cnx:
             cursor = cnx.cursor(buffered=True)
             cursor.execute(query, data)
-            record = cursor.fetchone()
-            return record
+            return cursor.fetchone()
 
     def delete(self, user, channel):
         """
@@ -176,8 +175,7 @@ class GuildService:
         with ConnectionManager(os.getenv('db_user'), os.getenv('db_pw')) as cnx:
             cursor = cnx.cursor(buffered=True)
             cursor.execute(query, data)
-            record = cursor.fetchone()
-            return record
+            return cursor.fetchone()
 
     def delete(self, guild):
         """
