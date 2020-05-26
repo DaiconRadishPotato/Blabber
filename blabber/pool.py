@@ -81,6 +81,10 @@ class TTSRequestHandler(threading.Thread):
                     'https://texttospeech.googleapis.com/v1/text:synthesize',
                     data=json.dumps(request), stream=True)
 
+                # Verify if request succeded
+                if not response.ok:
+                    continue
+
                 # Iterate through response in chunks for processing
                 b64_encoded_prefix = bytearray()
                 for chunk in response.iter_lines(chunk_size=CHUNK_SIZE):
