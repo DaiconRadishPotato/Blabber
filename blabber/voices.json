@@ -86,17 +86,17 @@
   },
   "voice_18": {
     "lang_code": "cmn-TW",
-    "name": "cmn-TW-Standard-A-Alpha",
+    "name": "cmn-TW-Standard-A",
     "gender": "FEMALE"
   },
   "voice_19": {
     "lang_code": "cmn-TW",
-    "name": "cmn-TW-Standard-B-Alpha",
+    "name": "cmn-TW-Standard-B",
     "gender": "MALE"
   },
   "voice_20": {
     "lang_code": "cmn-TW",
-    "name": "cmn-TW-Standard-C-Alpha",
+    "name": "cmn-TW-Standard-C",
     "gender": "MALE"
   },
   "voice_21": {
