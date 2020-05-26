@@ -16,7 +16,7 @@ from discord.ext import commands
 
 class Events(commands.Cog):
     """
-    Events Cog that handles events prints in the python shell.
+    Events Cog that handles events and prints in the python shell.
 
     attributes:
         bot [discord.Bot]: discord Bot object
@@ -27,15 +27,12 @@ class Events(commands.Cog):
     async def _change_presence(self, bot):
         """
         Sets up the bot's rich presence when it is online.
-        Sets its rich presence to a ready and waiting message.
-        Checks every 15 seconds in the background if bot is in use.
-        If so, then the rich presence does not change.
-        If not, rich presence message is changed back to ready and waiting.
 
         parameter:
-            bot [discord.Bot]: discord Bot object
+            bot [Bot]: discord Bot object
         """
         await bot.wait_until_ready()
+        # Checks if bot is not offline every 15 secs
         while not bot.is_closed():
             await bot.change_presence(activity=Activity(
                 name=f"@{bot.user.name} help | >help",
@@ -48,7 +45,7 @@ class Events(commands.Cog):
         Checks the author of the message and sees if they use blabber start.
 
         parameters:
-            message [discord.Message]: discord Message object
+            message [Message]: discord Message object
         """
         if message.author.id != self.bot.user.id:
             return None
@@ -69,12 +66,9 @@ class Events(commands.Cog):
         """
         Checks whenever there is a command error and prints information to the 
         guild chat room.
-        If command does not exist, let user know in chat and what the bot saw as
-        input.
-        If error is something else, let the user know for debugging purposes.
 
         paramters:
-            ctx [commands.Context]: discord Context object
+            ctx [Context]: discord Context object
             error [Error]: general Error object
         """
         if isinstance(error, commands.errors.CommandNotFound):
