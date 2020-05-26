@@ -64,6 +64,21 @@ class Events(commands.Cog):
         print("------------------")
         self.bot.loop.create_task(change_presence(self.bot))
 
+    @commands.Cog.listener()
+    async def on_command_error(self, ctx, error):
+        """
+        Checks whenever there is a command error and prints information to the 
+        guild chat room.
+        If command does not exist, let user know in chat and what the bot saw as
+        input.
+        If error is something else, let the user know for debugging purposes.
+
+        paramters:
+            ctx [commands.Context]: discord Context object
+            error [Error]: general Error object
+        """
+        if isinstance(error, commands.errors.CommandNotFound):
+            None
 
 def setup(bot):
     """
