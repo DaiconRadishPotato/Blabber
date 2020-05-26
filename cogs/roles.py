@@ -4,7 +4,7 @@
 # Contributor:  Fanny Avila (Fa-Avila),
 #               Marcos Avila (DaiconV)
 # Date created: 2/3/2019
-# Date last modified: 5/24/2020
+# Date last modified: 5/26/2020
 # Python Version: 3.8.1
 # License: MIT License
 
@@ -18,7 +18,7 @@ class _Roles(commands.Cog):
     certain users to use blabber
     """
     def __init__(self, bot):
-        self.bot = bot
+        pass
 
     @commands.command(name="give_blabby", aliases=['gb'])
     @commands.has_permissions(manage_roles=True)
