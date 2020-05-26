@@ -80,7 +80,7 @@ class VoiceProfileCache(TTLCache):
         parameter:
             key [tuple]: tuple of discord User and Channel objects
         returns:
-            voice [tuple]: dict with voice alias and other voice information
+            voice [tuple]: tuple with voice alias and other voice information
         """
         voice = self._service.select(*key)
         if voice:
