@@ -4,13 +4,14 @@
 #           Marcos Avila (DaiconV)
 # Contributors: Fanny Avila (Fa-Avila),
 # Date created: 4/9/2019
-# Date last modified: 5/5/2020
+# Date last modified: 5/24/2020
 # Python Version: 3.8.1
 # License: MIT License
 
 import json
 
 from cachetools import TTLCache
+
 from blabber.services import UserService, GuildService
 
 
@@ -99,7 +100,7 @@ class PrefixCache(TTLCache):
         Checks database for guild prefix if it does not exist in cache.
 
         parameter:
-            key [tuple]: tuple of discord User and Channel objects
+            key [Guild]: discord Guild object
         returns:
             str: string used for command prefix
         """

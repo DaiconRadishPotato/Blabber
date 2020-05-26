@@ -4,12 +4,14 @@
 # Contributor:  Jacky Zhang (jackyeightzhang),
 #               Marcos Avila (DaiconV)
 # Date created: 3/27/2020
-# Date last modified: 5/4/2020
+# Date last modified: 5/24/2020
 # Python Version: 3.8.1
 # License: MIT License
 
 import os
+
 import mysql.connector
+
 from dotenv import load_dotenv
 
 load_dotenv()

@@ -4,15 +4,14 @@
 # Contributor:  Jacky Zhang (jackyeightzhang),
 #               Marcos Avila (DaiconV)
 # Date created: 3/27/2020
-# Date last modified: 5/5/2020
+# Date last modified: 5/24/2020
 # Python Version: 3.8.1
 # License: MIT License
 
 import json
 
-from discord.ext import commands
 from discord import Embed, Colour
-from blabber.cache import VoiceProfileCache
+from discord.ext import commands
 
 
 class Profiles(commands.Cog):

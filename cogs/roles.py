@@ -4,14 +4,11 @@
 # Contributor:  Fanny Avila (Fa-Avila),
 #               Marcos Avila (DaiconV)
 # Date created: 2/3/2019
-# Date last modified: 3/4/2020
+# Date last modified: 5/24/2020
 # Python Version: 3.8.1
 # License: MIT License
 
-import json
-import asyncio
 import discord
-
 from discord.ext import commands
 
 

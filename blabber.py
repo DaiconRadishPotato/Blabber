@@ -16,11 +16,9 @@ import os
 from discord.ext import commands
 from dotenv import load_dotenv
 
-from blabber.cache import VoiceProfileCache
-from blabber.pool import TTSRequestHandlerPool
-
 load_dotenv()
 DISCORD_TOKEN = os.getenv('discord_token')
+
 
 def load_cog_files(bot):
     """

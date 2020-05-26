@@ -10,8 +10,8 @@
 
 import asyncio
 
-from discord.ext import commands
 from discord import Activity, ActivityType
+from discord.ext import commands
 
 
 async def change_presence(bot):    

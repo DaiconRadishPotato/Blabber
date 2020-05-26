@@ -4,11 +4,12 @@
 # Contributors: Fanny Avila (Fa-Avila),
 #               Jacky Zhang (jackyeightzhang)
 # Date created: 4/3/2020
-# Date last modified: 4/4/2020
+# Date last modified: 5/24/2020
 # Python Version: 3.8.1
 # License: MIT License
 
 from discord.ext import commands
+
 
 class BlabberConnectError(commands.CommandError):
     def __init__(self, message):
@@ -18,11 +19,11 @@ class BlabberNotConnected(BlabberConnectError):
     def __init__(self):
         super().__init__("Blabber is currently not connected to any voice channel")
 
-class BlabberMissingConnectPermission(BlabberConnectError):
+class BlabberMissingConnectPermission(commands.CommandError):
     def __init__(self, channel_name):
         super().__init__(f"Blabber does not have permission to connect to `{channel_name}`")
 
-class BlabberMissingSpeakPermission(BlabberConnectError):
+class BlabberMissingSpeakPermission(commands.CommandError):
     def __init__(self, channel_name):
         super().__init__(f"Blabber does not have permission to speak in `{channel_name}`")
 

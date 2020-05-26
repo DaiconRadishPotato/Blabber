@@ -10,8 +10,8 @@
 
 import json
 
-from discord.ext import commands
 from discord import Embed, Colour
+from discord.ext import commands
 
 
 class Info(commands.Cog):

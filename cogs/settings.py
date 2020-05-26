@@ -4,14 +4,15 @@
 # Contributor:  Fanny Avila (Fa-Avila),
 #               Marcos Avila (DaiconV)
 # Date created: 1/30/2020
-# Date last modified: 5/5/2020
+# Date last modified: 5/24/2020
 # Python Version: 3.8.1
 # License: MIT License
 
-from discord.ext import commands
 from discord import Embed, Colour
+from discord.ext import commands
+
 from blabber.checks import is_guild_owner
-from blabber.cache import PrefixCache
+
 
 class Settings(commands.Cog):
     """
@@ -24,8 +25,7 @@ class Settings(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        self.DEFAULT_PREFIX = '>'
-        self.prefix_cache = PrefixCache()
+        self.prefix_cache = bot.prefix_cache
 
     @commands.group(name='settings')
     async def settings(self, ctx):
@@ -77,11 +77,9 @@ class Settings(commands.Cog):
         returns:
             prefix [str]: that is used to call commands from the bot client
         """
-        try:
-            return commands.when_mentioned_or(
-                await self._get_prefix(message.guild))(bot, message)
-        except:
-            return self.DEFAULT_PREFIX
+        return commands.when_mentioned_or(
+            await self._get_prefix(message.guild))(bot, message)
+
 
 
     async def _get_prefix(self, guild):
