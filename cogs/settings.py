@@ -25,7 +25,7 @@ class Settings(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        self.prefix_cache = bot.prefix_cache
+        self.prefixes = bot.prefixes
 
     @commands.group(name='settings')
     async def settings(self, ctx):
@@ -62,7 +62,7 @@ class Settings(commands.Cog):
         raises:
             MissingRequiredArgument: New prefix was not passed as an argument
         """
-        self.prefix_cache[ctx.guild] = prefix
+        self.prefixes[ctx.guild] = prefix
         await ctx.send(f":white_check_mark: **The new prefix is **'{prefix}'")
 
     async def check_prefix(self, bot, message):
@@ -92,7 +92,7 @@ class Settings(commands.Cog):
         returns:
             prefix [str]: that is used to call commands from the bot client
         """
-        prefix = self.prefix_cache[guild]
+        prefix = self.prefixes[guild]
         return prefix
 
 
