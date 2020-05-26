@@ -170,7 +170,7 @@ class Voice(commands.Cog):
             ctx [Context]: context object produced by a command invocation
             error [Exception]: error object thrown by command function
         """
-        # Check if error was from a lack of voice client
+        # Check if a lack of voice client caused the error
         if isinstance(error, BlabberConnectError):
             await self.connect_error(ctx, error)
         else:
