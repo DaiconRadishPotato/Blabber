@@ -26,16 +26,11 @@ class Profiles(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        self.voice_profile_cache = VoiceProfileCache()
-
-        with open(r'./blabber/data.json', 'r') as f:
-            data = json.load(f)
-            self._aliases = dict()
-            for voice_alias in data['voice_info'].keys():
-                self._aliases[voice_alias] = voice_alias
+        self.voices = bot.voices
+        self.voice_profiles = bot.voice_profiles
 
     @commands.command(name='voice', aliases=['v'])
-    async def set_voice(self, ctx, *, alias):
+    async def set_voice(self, ctx, alias:str):
         """
         Sets up and updates a user voice profile in the database. Displays a
         message to user if set was successful or failed.
@@ -46,23 +41,12 @@ class Profiles(commands.Cog):
         raises:
             MissingRequiredArgument: an alias was not passed as an argument
         """
-        if self._aliases[alias]:
-            self.voice_profile_cache[(ctx.author, ctx.channel)] = alias
+        if alias in self.voices:
+            self.voice_profiles[(ctx.author, ctx.channel)] = alias
+            await ctx.send(f":white_check_mark: **The new voice is **'{alias}'")
+        else:
+            await ctx.send(f"**No.**")
 
-        await ctx.send(f":white_check_mark: **The new voice is **'{alias}'")
-
-    async def _get_voice(self, user, channel):
-        """
-        Prints current users current voice profile.
-
-        parameter:
-            user [User]: discord User object
-            channel_id [Channel]: discord Channel Object
-        returns:
-            voice [tuple]: tuple of voice information from database
-        """
-        voice = self.voice_profile_cache[(user, channel)]
-        return voice
 
     @set_voice.error
     async def set_voice_error(self, ctx, error):
@@ -75,7 +59,7 @@ class Profiles(commands.Cog):
             error [Error]: general Error object
         """
         if isinstance(error, commands.MissingRequiredArgument):
-            voice = (await self._get_voice(ctx.author, ctx.channel))[0]
+            voice = self.voice_profiles[(ctx.author, ctx.channel)]
             prefix = await self.bot.get_cog("Settings")._get_prefix(ctx.guild)
             member = ctx.message.author
 

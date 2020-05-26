@@ -1,0 +1,587 @@
+{
+  "voice_1": {
+    "lang_code": "de-DE",
+    "name": "de-DE-Standard-F",
+    "gender": "FEMALE"
+  },
+  "voice_2": {
+    "lang_code": "es-ES",
+    "name": "es-ES-Standard-A",
+    "gender": "FEMALE"
+  },
+  "voice_3": {
+    "lang_code": "ar-XA",
+    "name": "ar-XA-Standard-A",
+    "gender": "FEMALE"
+  },
+  "voice_4": {
+    "lang_code": "ar-XA",
+    "name": "ar-XA-Standard-B",
+    "gender": "MALE"
+  },
+  "voice_5": {
+    "lang_code": "ar-XA",
+    "name": "ar-XA-Standard-C",
+    "gender": "MALE"
+  },
+  "voice_6": {
+    "lang_code": "ar-XA",
+    "name": "ar-XA-Standard-D",
+    "gender": "FEMALE"
+  },
+  "voice_7": {
+    "lang_code": "fr-FR",
+    "name": "fr-FR-Standard-E",
+    "gender": "FEMALE"
+  },
+  "voice_8": {
+    "lang_code": "it-IT",
+    "name": "it-IT-Standard-A",
+    "gender": "FEMALE"
+  },
+  "voice_9": {
+    "lang_code": "ru-RU",
+    "name": "ru-RU-Standard-E",
+    "gender": "FEMALE"
+  },
+  "voice_10": {
+    "lang_code": "ru-RU",
+    "name": "ru-RU-Standard-A",
+    "gender": "FEMALE"
+  },
+  "voice_11": {
+    "lang_code": "ru-RU",
+    "name": "ru-RU-Standard-B",
+    "gender": "MALE"
+  },
+  "voice_12": {
+    "lang_code": "ru-RU",
+    "name": "ru-RU-Standard-C",
+    "gender": "FEMALE"
+  },
+  "voice_13": {
+    "lang_code": "ru-RU",
+    "name": "ru-RU-Standard-D",
+    "gender": "MALE"
+  },
+  "voice_14": {
+    "lang_code": "cmn-CN",
+    "name": "cmn-CN-Standard-D",
+    "gender": "FEMALE"
+  },
+  "voice_15": {
+    "lang_code": "cmn-CN",
+    "name": "cmn-CN-Standard-A",
+    "gender": "FEMALE"
+  },
+  "voice_16": {
+    "lang_code": "cmn-CN",
+    "name": "cmn-CN-Standard-B",
+    "gender": "MALE"
+  },
+  "voice_17": {
+    "lang_code": "cmn-CN",
+    "name": "cmn-CN-Standard-C",
+    "gender": "MALE"
+  },
+  "voice_18": {
+    "lang_code": "cmn-TW",
+    "name": "cmn-TW-Standard-A-Alpha",
+    "gender": "FEMALE"
+  },
+  "voice_19": {
+    "lang_code": "cmn-TW",
+    "name": "cmn-TW-Standard-B-Alpha",
+    "gender": "MALE"
+  },
+  "voice_20": {
+    "lang_code": "cmn-TW",
+    "name": "cmn-TW-Standard-C-Alpha",
+    "gender": "MALE"
+  },
+  "voice_21": {
+    "lang_code": "ko-KR",
+    "name": "ko-KR-Standard-A",
+    "gender": "FEMALE"
+  },
+  "voice_22": {
+    "lang_code": "ko-KR",
+    "name": "ko-KR-Standard-B",
+    "gender": "FEMALE"
+  },
+  "voice_23": {
+    "lang_code": "ko-KR",
+    "name": "ko-KR-Standard-C",
+    "gender": "MALE"
+  },
+  "voice_24": {
+    "lang_code": "ko-KR",
+    "name": "ko-KR-Standard-D",
+    "gender": "MALE"
+  },
+  "voice_25": {
+    "lang_code": "ja-JP",
+    "name": "ja-JP-Standard-A",
+    "gender": "FEMALE"
+  },
+  "voice_26": {
+    "lang_code": "ja-JP",
+    "name": "ja-JP-Standard-C",
+    "gender": "MALE"
+  },
+  "voice_27": {
+    "lang_code": "ja-JP",
+    "name": "ja-JP-Standard-B",
+    "gender": "FEMALE"
+  },
+  "voice_28": {
+    "lang_code": "ja-JP",
+    "name": "ja-JP-Standard-D",
+    "gender": "MALE"
+  },
+  "voice_29": {
+    "lang_code": "vi-VN",
+    "name": "vi-VN-Standard-A",
+    "gender": "FEMALE"
+  },
+  "voice_30": {
+    "lang_code": "vi-VN",
+    "name": "vi-VN-Standard-B",
+    "gender": "MALE"
+  },
+  "voice_31": {
+    "lang_code": "vi-VN",
+    "name": "vi-VN-Standard-C",
+    "gender": "FEMALE"
+  },
+  "voice_32": {
+    "lang_code": "vi-VN",
+    "name": "vi-VN-Standard-D",
+    "gender": "MALE"
+  },
+  "voice_33": {
+    "lang_code": "fil-PH",
+    "name": "fil-PH-Standard-A",
+    "gender": "FEMALE"
+  },
+  "voice_34": {
+    "lang_code": "id-ID",
+    "name": "id-ID-Standard-A",
+    "gender": "FEMALE"
+  },
+  "voice_35": {
+    "lang_code": "id-ID",
+    "name": "id-ID-Standard-B",
+    "gender": "MALE"
+  },
+  "voice_36": {
+    "lang_code": "id-ID",
+    "name": "id-ID-Standard-C",
+    "gender": "MALE"
+  },
+  "voice_37": {
+    "lang_code": "id-ID",
+    "name": "id-ID-Standard-D",
+    "gender": "FEMALE"
+  },
+  "voice_38": {
+    "lang_code": "nl-NL",
+    "name": "nl-NL-Standard-A",
+    "gender": "FEMALE"
+  },
+  "voice_39": {
+    "lang_code": "nl-NL",
+    "name": "nl-NL-Standard-B",
+    "gender": "MALE"
+  },
+  "voice_40": {
+    "lang_code": "nl-NL",
+    "name": "nl-NL-Standard-C",
+    "gender": "MALE"
+  },
+  "voice_41": {
+    "lang_code": "nl-NL",
+    "name": "nl-NL-Standard-D",
+    "gender": "FEMALE"
+  },
+  "voice_42": {
+    "lang_code": "nl-NL",
+    "name": "nl-NL-Standard-E",
+    "gender": "FEMALE"
+  },
+  "voice_43": {
+    "lang_code": "cs-CZ",
+    "name": "cs-CZ-Standard-A",
+    "gender": "FEMALE"
+  },
+  "voice_44": {
+    "lang_code": "el-GR",
+    "name": "el-GR-Standard-A",
+    "gender": "FEMALE"
+  },
+  "voice_45": {
+    "lang_code": "pt-BR",
+    "name": "pt-BR-Standard-A",
+    "gender": "FEMALE"
+  },
+  "voice_46": {
+    "lang_code": "hu-HU",
+    "name": "hu-HU-Standard-A",
+    "gender": "FEMALE"
+  },
+  "voice_47": {
+    "lang_code": "pl-PL",
+    "name": "pl-PL-Standard-E",
+    "gender": "FEMALE"
+  },
+  "voice_48": {
+    "lang_code": "pl-PL",
+    "name": "pl-PL-Standard-A",
+    "gender": "FEMALE"
+  },
+  "voice_49": {
+    "lang_code": "pl-PL",
+    "name": "pl-PL-Standard-B",
+    "gender": "MALE"
+  },
+  "voice_50": {
+    "lang_code": "pl-PL",
+    "name": "pl-PL-Standard-C",
+    "gender": "MALE"
+  },
+  "voice_51": {
+    "lang_code": "pl-PL",
+    "name": "pl-PL-Standard-D",
+    "gender": "FEMALE"
+  },
+  "voice_52": {
+    "lang_code": "sk-SK",
+    "name": "sk-SK-Standard-A",
+    "gender": "FEMALE"
+  },
+  "voice_53": {
+    "lang_code": "tr-TR",
+    "name": "tr-TR-Standard-A",
+    "gender": "FEMALE"
+  },
+  "voice_54": {
+    "lang_code": "tr-TR",
+    "name": "tr-TR-Standard-B",
+    "gender": "MALE"
+  },
+  "voice_55": {
+    "lang_code": "tr-TR",
+    "name": "tr-TR-Standard-C",
+    "gender": "FEMALE"
+  },
+  "voice_56": {
+    "lang_code": "tr-TR",
+    "name": "tr-TR-Standard-D",
+    "gender": "FEMALE"
+  },
+  "voice_57": {
+    "lang_code": "tr-TR",
+    "name": "tr-TR-Standard-E",
+    "gender": "MALE"
+  },
+  "voice_58": {
+    "lang_code": "uk-UA",
+    "name": "uk-UA-Standard-A",
+    "gender": "FEMALE"
+  },
+  "voice_59": {
+    "lang_code": "bn-IN",
+    "name": "bn-IN-Standard-A",
+    "gender": "FEMALE"
+  },
+  "voice_60": {
+    "lang_code": "bn-IN",
+    "name": "bn-IN-Standard-B",
+    "gender": "MALE"
+  },
+  "voice_61": {
+    "lang_code": "en-IN",
+    "name": "en-IN-Standard-D",
+    "gender": "FEMALE"
+  },
+  "voice_62": {
+    "lang_code": "en-IN",
+    "name": "en-IN-Standard-A",
+    "gender": "FEMALE"
+  },
+  "voice_63": {
+    "lang_code": "en-IN",
+    "name": "en-IN-Standard-B",
+    "gender": "MALE"
+  },
+  "voice_64": {
+    "lang_code": "en-IN",
+    "name": "en-IN-Standard-C",
+    "gender": "MALE"
+  },
+  "voice_65": {
+    "lang_code": "gu-IN",
+    "name": "gu-IN-Standard-A",
+    "gender": "FEMALE"
+  },
+  "voice_66": {
+    "lang_code": "gu-IN",
+    "name": "gu-IN-Standard-B",
+    "gender": "MALE"
+  },
+  "voice_67": {
+    "lang_code": "hi-IN",
+    "name": "hi-IN-Standard-D",
+    "gender": "FEMALE"
+  },
+  "voice_68": {
+    "lang_code": "hi-IN",
+    "name": "hi-IN-Standard-A",
+    "gender": "FEMALE"
+  },
+  "voice_69": {
+    "lang_code": "hi-IN",
+    "name": "hi-IN-Standard-B",
+    "gender": "MALE"
+  },
+  "voice_70": {
+    "lang_code": "hi-IN",
+    "name": "hi-IN-Standard-C",
+    "gender": "MALE"
+  },
+  "voice_71": {
+    "lang_code": "kn-IN",
+    "name": "kn-IN-Standard-A",
+    "gender": "FEMALE"
+  },
+  "voice_72": {
+    "lang_code": "kn-IN",
+    "name": "kn-IN-Standard-B",
+    "gender": "MALE"
+  },
+  "voice_73": {
+    "lang_code": "ml-IN",
+    "name": "ml-IN-Standard-A",
+    "gender": "FEMALE"
+  },
+  "voice_74": {
+    "lang_code": "ml-IN",
+    "name": "ml-IN-Standard-B",
+    "gender": "MALE"
+  },
+  "voice_75": {
+    "lang_code": "ta-IN",
+    "name": "ta-IN-Standard-A",
+    "gender": "FEMALE"
+  },
+  "voice_76": {
+    "lang_code": "ta-IN",
+    "name": "ta-IN-Standard-B",
+    "gender": "MALE"
+  },
+  "voice_77": {
+    "lang_code": "te-IN",
+    "name": "te-IN-Standard-A",
+    "gender": "FEMALE"
+  },
+  "voice_78": {
+    "lang_code": "te-IN",
+    "name": "te-IN-Standard-B",
+    "gender": "MALE"
+  },
+  "voice_79": {
+    "lang_code": "th-TH",
+    "name": "th-TH-Standard-A",
+    "gender": "FEMALE"
+  },
+  "voice_80": {
+    "lang_code": "da-DK",
+    "name": "da-DK-Standard-A",
+    "gender": "FEMALE"
+  },
+  "voice_81": {
+    "lang_code": "fi-FI",
+    "name": "fi-FI-Standard-A",
+    "gender": "FEMALE"
+  },
+  "voice_82": {
+    "lang_code": "pt-PT",
+    "name": "pt-PT-Standard-A",
+    "gender": "FEMALE"
+  },
+  "voice_83": {
+    "lang_code": "pt-PT",
+    "name": "pt-PT-Standard-B",
+    "gender": "MALE"
+  },
+  "voice_84": {
+    "lang_code": "pt-PT",
+    "name": "pt-PT-Standard-C",
+    "gender": "MALE"
+  },
+  "voice_85": {
+    "lang_code": "pt-PT",
+    "name": "pt-PT-Standard-D",
+    "gender": "FEMALE"
+  },
+  "voice_86": {
+    "lang_code": "nb-NO",
+    "name": "nb-no-Standard-E",
+    "gender": "FEMALE"
+  },
+  "voice_87": {
+    "lang_code": "nb-NO",
+    "name": "nb-NO-Standard-A",
+    "gender": "FEMALE"
+  },
+  "voice_88": {
+    "lang_code": "nb-NO",
+    "name": "nb-NO-Standard-B",
+    "gender": "MALE"
+  },
+  "voice_89": {
+    "lang_code": "nb-NO",
+    "name": "nb-NO-Standard-C",
+    "gender": "FEMALE"
+  },
+  "voice_90": {
+    "lang_code": "nb-NO",
+    "name": "nb-NO-Standard-D",
+    "gender": "MALE"
+  },
+  "voice_91": {
+    "lang_code": "sv-SE",
+    "name": "sv-SE-Standard-A",
+    "gender": "FEMALE"
+  },
+  "voice_92": {
+    "lang_code": "en-GB",
+    "name": "en-GB-Standard-A",
+    "gender": "FEMALE"
+  },
+  "voice_93": {
+    "lang_code": "en-GB",
+    "name": "en-GB-Standard-B",
+    "gender": "MALE"
+  },
+  "voice_94": {
+    "lang_code": "en-GB",
+    "name": "en-GB-Standard-C",
+    "gender": "FEMALE"
+  },
+  "voice_95": {
+    "lang_code": "en-GB",
+    "name": "en-GB-Standard-D",
+    "gender": "MALE"
+  },
+  "voice_96": {
+    "lang_code": "en-US",
+    "name": "en-US-Standard-B",
+    "gender": "MALE"
+  },
+  "voice_97": {
+    "lang_code": "en-US",
+    "name": "en-US-Standard-C",
+    "gender": "FEMALE"
+  },
+  "voice_98": {
+    "lang_code": "en-US",
+    "name": "en-US-Standard-D",
+    "gender": "MALE"
+  },
+  "voice_99": {
+    "lang_code": "en-US",
+    "name": "en-US-Standard-E",
+    "gender": "FEMALE"
+  },
+  "voice_100": {
+    "lang_code": "de-DE",
+    "name": "de-DE-Standard-A",
+    "gender": "FEMALE"
+  },
+  "voice_101": {
+    "lang_code": "de-DE",
+    "name": "de-DE-Standard-B",
+    "gender": "MALE"
+  },
+  "voice_102": {
+    "lang_code": "de-DE",
+    "name": "de-DE-Standard-E",
+    "gender": "MALE"
+  },
+  "voice_103": {
+    "lang_code": "en-AU",
+    "name": "en-AU-Standard-A",
+    "gender": "FEMALE"
+  },
+  "voice_104": {
+    "lang_code": "en-AU",
+    "name": "en-AU-Standard-B",
+    "gender": "MALE"
+  },
+  "voice_105": {
+    "lang_code": "en-AU",
+    "name": "en-AU-Standard-C",
+    "gender": "FEMALE"
+  },
+  "voice_106": {
+    "lang_code": "en-AU",
+    "name": "en-AU-Standard-D",
+    "gender": "MALE"
+  },
+  "voice_107": {
+    "lang_code": "fr-CA",
+    "name": "fr-CA-Standard-A",
+    "gender": "FEMALE"
+  },
+  "voice_108": {
+    "lang_code": "fr-CA",
+    "name": "fr-CA-Standard-B",
+    "gender": "MALE"
+  },
+  "voice_109": {
+    "lang_code": "fr-CA",
+    "name": "fr-CA-Standard-C",
+    "gender": "FEMALE"
+  },
+  "voice_110": {
+    "lang_code": "fr-CA",
+    "name": "fr-CA-Standard-D",
+    "gender": "MALE"
+  },
+  "voice_111": {
+    "lang_code": "fr-FR",
+    "name": "fr-FR-Standard-A",
+    "gender": "FEMALE"
+  },
+  "voice_112": {
+    "lang_code": "fr-FR",
+    "name": "fr-FR-Standard-B",
+    "gender": "MALE"
+  },
+  "voice_113": {
+    "lang_code": "fr-FR",
+    "name": "fr-FR-Standard-C",
+    "gender": "FEMALE"
+  },
+  "voice_114": {
+    "lang_code": "fr-FR",
+    "name": "fr-FR-Standard-D",
+    "gender": "MALE"
+  },
+  "voice_115": {
+    "lang_code": "it-IT",
+    "name": "it-IT-Standard-B",
+    "gender": "FEMALE"
+  },
+  "voice_116": {
+    "lang_code": "it-IT",
+    "name": "it-IT-Standard-C",
+    "gender": "MALE"
+  },
+  "voice_117": {
+    "lang_code": "it-IT",
+    "name": "it-IT-Standard-D",
+    "gender": "MALE"
+  }
+}

@@ -26,7 +26,6 @@ class TTSRequest(dict):
     def __init__(
             self,
             message,
-            encoding='OGG_OPUS',
             lang_code='en-GB',
             name='en-GB-Standard-A',
             gender='FEMALE'):
