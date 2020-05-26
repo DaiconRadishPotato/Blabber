@@ -71,7 +71,7 @@ class Settings(commands.Cog):
         parameters:
             guild [Guild]: discord Guild object
         returns:
-            prefix [str]: that is used to call commands from the bot client
+            str: used to call commands from the bot client
         """
         prefix = self.prefixes[guild]
         return prefix
@@ -86,7 +86,7 @@ class Settings(commands.Cog):
             message [Message]: the message or context from the guild that 
                                called the bot.
         returns:
-            prefix [str]: that is used to call commands from the bot client
+            str: used to call commands from the bot client
         """
         return commands.when_mentioned_or(
             await self._get_prefix(message.guild))(bot, message)
