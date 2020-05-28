@@ -51,16 +51,10 @@ if __name__ == "__main__":
     logger.addHandler(handler)
 
     pool = TTSRequestHandlerPool()
-    with open(r'./blabber/voices.json') as data:
-        voices = json.load(data)
-    with open(r'./blabber/languages.json') as data:
-        languages = json.load(data)
     try:
         bot = commands.Bot(command_prefix=None, help_command=None)
 
         bot.pool = pool
-        bot.voices = voices
-        bot.languages = languages
         bot.voice_profiles = VoiceProfileCache()
         bot.prefixes = PrefixCache()
 
