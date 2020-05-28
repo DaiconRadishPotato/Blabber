@@ -42,3 +42,7 @@ class MissingCredentials(commands.CommandError):
 class NotConnected(commands.CommandError):
     def __init__(self):
         super().__init__("You must be in a voice channel to use this command")
+
+class VoiceNotSupported(commands.CommandError):
+    def __init__(self, alias):
+        super().__init__(f"`{alias}` is not a supported voice")

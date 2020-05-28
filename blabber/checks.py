@@ -9,6 +9,7 @@
 
 from discord.ext import commands
 
+from blabber import supported_voices
 from blabber.errors import *
 
 
@@ -75,7 +76,16 @@ async def can_disconnect(ctx):
             except:
                 raise MissingCredentials()
 
+
 async def tts_message_is_valid(ctx):
-    if len(ctx.message.content) > 600:
+    message = ctx.message.content.split(ctx.prefix + ctx.invoked_with)[1].strip()
+    if len(message) > 600:
         raise TTSMessageTooLong()
+    return True
+
+
+async def voice_is_valid(ctx):
+    alias = ctx.message.content.split(ctx.prefix + ctx.invoked_with)[1].strip()
+    if alias not in supported_voices:
+        raise VoiceNotSupported(alias)
     return True
