@@ -4,13 +4,14 @@
 # Contributor:  Fanny Avila (Fa-Avila),
 #               Marcos Avila (DaiconV)
 # Date created: 12/16/2019
-# Date last modified: 5/10/2020
+# Date last modified: 5/28/2020
 # Python Version: 3.8.1
 # License: MIT License
 
-from discord import ClientException
+from discord import Embed, Colour
 from discord.ext import commands
 
+from blabber import supported_voices
 from blabber.audio import TTSAudio
 from blabber.checks import *
 from blabber.errors import *
@@ -26,7 +27,6 @@ class Voice(commands.Cog):
     """
     def __init__(self, bot):
         self.pool = bot.pool
-        self.voices = bot.voices
         self.voice_profiles = bot.voice_profiles
 
     async def _connect(self, ctx):
@@ -70,11 +70,20 @@ class Voice(commands.Cog):
             ctx [Context]: context object produced by a command invocation
         """
         # Check if Blabber is connected to command invoker's voice channel
-        if ctx.voice_client and ctx.author.voice.channel == ctx.voice_client.channel:
-            await ctx.send(":information_source: **Blabber is already in this voice channel**")
+        if (ctx.voice_client
+            and ctx.author.voice.channel == ctx.voice_client.channel):
+            embed = Embed(
+                title=(":information_source: **Blabber is already in this "
+                       "voice channel**"),
+                colour=Colour.blue())
         else:
             operation = await self._connect(ctx)
-            await ctx.send(f":white_check_mark: **{operation} to** `{ctx.author.voice.channel.name}`")
+            embed = Embed(
+                title=(f":white_check_mark: **{operation} to** "
+                       f"`{ctx.author.voice.channel.name}`"),
+                colour=Colour.green())
+
+        await ctx.send(embed=embed)
 
     @commands.command(name='disconnect', aliases=['dc'])
     async def disconnect(self, ctx):
@@ -86,18 +95,25 @@ class Voice(commands.Cog):
         """
         # Check if Blabber is currently connected to a voice channel
         if not ctx.voice_client:
-            await ctx.send(":information_source: **Blabber is not connected to any voice channel**")
+            embed = Embed(
+                title=(":information_source: **Blabber is not connected to "
+                       "any voice channel**"),
+                colour=Colour.blue())
         else:
             await can_disconnect(ctx)
 
             # Disconnect Blabber from voice channel
             await ctx.voice_client.disconnect()
-            await ctx.send(":white_check_mark: **Successfully disconnected**")
+            embed = Embed(
+                title=":white_check_mark: **Successfully disconnected**",
+                colour=Colour.green())
+
+        await ctx.send(embed=embed)
 
     @commands.command(name='say', aliases=['s'])
     @commands.check(is_connected)
     @commands.check(tts_message_is_valid)
-    async def say(self, ctx, *, message:str):
+    async def say(self, ctx, *, message: str=''):
         """
         Recites a message into the voice channel the command invoker is
         connected to.
@@ -106,29 +122,37 @@ class Voice(commands.Cog):
             ctx [Context]: context object produced by a command invocation
             message [str]: message to recite
         """
-        # Ensure Blabber is connected to command invoker's voice channel
-        if not ctx.voice_client or ctx.author.voice.channel != ctx.voice_client.channel:
-            await self._connect(ctx)
-        
-        # Check if AudioSource object already exists
-        if ctx.voice_client._player:
-            audio = ctx.voice_client._player.source
+        # Ensure message is not empty
+        if not message:
+            embed = Embed(
+                title=":information_source: **No message to recite**",
+                colour=Colour.blue())
+            await ctx.send(embed=embed)
         else:
-            audio = TTSAudio(self.pool)
+            # Ensure Blabber is connected to command invoker's voice channel
+            if (not ctx.voice_client
+                or ctx.author.voice.channel != ctx.voice_client.channel):
+                await self._connect(ctx)
 
-        # Retrieve command invoker's voice profile
-        alias = self.voice_profiles[(ctx.author, ctx.channel)]
-        voice = self.voices[alias]
+            # Check if AudioSource object already exists
+            if ctx.voice_client._player:
+                audio = ctx.voice_client._player.source
+            else:
+                audio = TTSAudio(self.pool)
 
-        # Submit TTS request
-        request = TTSRequest(message, **voice)
-        await audio.submit_request(request)
+            # Retrieve command invoker's voice profile
+            alias = self.voice_profiles[(ctx.author, ctx.channel)]
+            voice = supported_voices[alias]
 
-        # Ensure AudioSource object is playing
-        if not ctx.voice_client.is_playing():
-            ctx.voice_client.play(audio)
+            # Submit TTS request
+            request = TTSRequest(message, **voice)
+            await audio.submit_request(request)
 
-        await ctx.message.add_reaction('📣')
+            # Ensure AudioSource object is playing
+            if not ctx.voice_client.is_playing():
+                ctx.voice_client.play(audio)
+
+            await ctx.message.add_reaction('📣')
 
     @connect.error
     async def connect_error(self, ctx, error):
@@ -142,8 +166,12 @@ class Voice(commands.Cog):
         # Check what type of voice channel operation caused the error
         operation = 'move' if ctx.voice_client else 'connect'
 
-        await ctx.send(f":x: **Unable to {operation}**\n{error}")
-    
+        embed = Embed(
+            title=f":x: **Unable to {operation}**",
+            description=f"{error}",
+            colour=Colour.red())
+        await ctx.send(embed=embed)
+
     @disconnect.error
     async def disconnect_error(self, ctx, error):
         """
@@ -153,7 +181,11 @@ class Voice(commands.Cog):
             ctx [commands.Context]: discord Context object
             error [Exception]: error object thrown by command
         """
-        await ctx.send(f":x: **Unable to disconnect**\n{error}")
+        embed = Embed(
+            title=f":x: **Unable to disconnect**",
+            description=f"{error}",
+            colour=Colour.red())
+        await ctx.send(embed=embed)
 
     @say.error
     async def say_error(self, ctx, error):
@@ -167,13 +199,18 @@ class Voice(commands.Cog):
         if isinstance(error, BlabberConnectError):
             await self.connect_error(ctx, error)
         else:
-            await ctx.send(f":x: **Unable to convert to speech**\n{error}")
-                
+            embed = Embed(
+                title=f":x: **Unable to convert to speech**",
+                description=f"{error}",
+                colour=Colour.red())
+            await ctx.send(embed=embed)
+
+
 def setup(bot):
     """
     Adds Voice Cog to bot.
 
-    parameter: 
+    parameter:
         bot [discord.Bot]: discord Bot object
     """
     bot.add_cog(Voice(bot))
