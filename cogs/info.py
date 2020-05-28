@@ -44,42 +44,55 @@ class Info(commands.Cog):
         paramters:
             ctx [commands.Context]: discord Context object
         """
-        prefix = await self.bot.get_cog("Settings")._get_prefix(ctx.guild)
         embed = Embed(title="Help Directory",
                       description="",
                       colour=Colour.gold())
 
-        embed.add_field(name=f"`{prefix}help` or `{prefix}h`",
-                        value=f"Displays this message.",
+        # Generate help for voice.py functions
+        embed.add_field(name=f"`{prefix}connect` or `{prefix}c`",
+                        value="Connect/Move Blabber into the voice channel you"
+                        "are in",
                         inline=False)
-
-        embed.add_field(name=f"`{prefix}voice [alias]` or `{prefix}v [alias]`",
-                        value="Set a specific voice for your say commands "
-                        "unique to the guild",
-                        inline=False)
-
         embed.add_field(name=f"`{prefix}disconnect` or `{prefix}dc`",
                         value="Disconnect Blabber from its voice channel",
                         inline=False)
-
         embed.add_field(name=f"`{prefix}say [message]` or `{prefix}s "
                         "[message]`",
                         value="Tell Blabber to say something. If Blabber is "
                         "not in the same voice channel, then it will join.",
                         inline=False)
 
+        # Generate help for info.py functions
+        prefix = await self.bot.get_cog("Settings")._get_prefix(ctx.guild)
+        embed.add_field(name=f"`{prefix}help` or `{prefix}h`",
+                        value=f"Displays this message.",
+                        inline=False)
         embed.add_field(name=f"`{prefix}list` or `{prefix}l`",
                         value="Displays the Voice Directory and voices.",
                         inline=False)
 
+        # Generate help for profiles.py functions
+        embed.add_field(name=f"`{prefix}voice [alias]` or `{prefix}v [alias]`",
+                        value="Set a specific voice for your say commands "
+                        "unique to the guild",
+                        inline=False)
+
+        # Generate help for settings.py functions
         embed.add_field(name=f"`{prefix}settings`",
                         value="Displays settings menu, which allows the "
                         "certain users to change Blabber Bot settings such as "
                         "the prefix",
                         inline=False)
-
         embed.add_field(name=f"`{prefix}settings prefix` or `{prefix}settings "
-                        "p`", value="Displays current guild prefix.",
+                        "p`", 
+                        value="Displays current guild prefix.",
+                        inline=False)
+
+        # Generate help for roles.py functions
+        embed.add_field(name=f"`{prefix}give_blabby [user]` or "
+                        f"`{prefix}gb [user]`", 
+                        value="Gives blabby role to user so they have priorty"
+                        "when using blabber.",
                         inline=False)
 
         await ctx.send(embed=embed)
@@ -93,18 +106,18 @@ class Info(commands.Cog):
         parameters:
             ctx [commands.Context]: discord Context object
         """
+        # Check if subcommand invoked
         if ctx.invoked_subcommand is None:
             prefix = await self.bot.get_cog("Settings")._get_prefix(ctx.guild)
-
             embed = Embed(title="Voice Directory", description="Use the "
                           f"command `{prefix}list [option]`"
                           "to show filter options.",
                           colour=Colour.green())
 
+            # Generate information about possible subcommands
             embed.add_field(name="Gender",
                             value=f"`{prefix}list gender`",
                             inline=False)
-
             embed.add_field(name="Language",
                             value=f"`{prefix}list language`",
                             inline=False)
@@ -125,13 +138,19 @@ class Info(commands.Cog):
             KeyError: gender is not available or was improperly inputted
         """
         gender = gender.upper()
+
+        # Generate a list of available voices of a particular gender
         records = [
             (voice, info['language'], info['gender'])
             for voice, info in self._voices_map.items()
             if info['gender'] == gender
         ]
+
+        # Check if language exists
         if len(records) == 0:
             raise KeyError
+
+        # Create embed of all the available voices with the particular gender
         page_num = 1
         embed = Embed(title="Voice Directory - List of Voices"
                       " - Gender Filter - Page " + str(page_num),
@@ -140,6 +159,7 @@ class Info(commands.Cog):
         for record_num in range(len(records)):
             alias = records[record_num]
 
+            # Check if the number of fields in the embed had exceed 25
             if (record_num % (self.MAX_EMBED_FIELDS + 1) ==
                     self.MAX_EMBED_FIELDS):
                 await ctx.send(embed=embed)
@@ -169,13 +189,19 @@ class Info(commands.Cog):
             KeyError: language is not available or was improperly inputted
         """
         language = language.lower()
+
+        # Generate a list of available voices of a particular language
         records = [
             (voice, info['language'], info['gender'])
             for voice, info in self._voices_map.items()
             if info['language'] == language
         ]
+
+        # Check if language exists
         if len(records) == 0:
             raise KeyError
+
+        # Create embed of all the available voices with the particular language
         page_num = 1
         embed = Embed(title="Voice Directory - List of Voices - "
                       "Language Filter - Page " + str(page_num),
@@ -184,6 +210,7 @@ class Info(commands.Cog):
         for record_num in range(len(records)):
             alias = records[record_num]
 
+            # Check if the number of fields in the embed had exceed 25
             if (record_num % (self.MAX_EMBED_FIELDS + 1) ==
                     self.MAX_EMBED_FIELDS):
                 await ctx.send(embed=embed)
@@ -206,13 +233,14 @@ class Info(commands.Cog):
         If key error, display the invalid argument and valid arguments.
 
         parameters:
-            ctx [commands.Context]: discord Context object
-            error [Error]: general Error object
+            ctx [Context]: context object produced by a command invocation
+            error [Exception]: error object thrown by command function
         """
         embed = Embed(title="Voice Directory - List of Voices"
                       " - Gender Filter Options", colour=Colour.green())
         prefix = await self.bot.get_cog("Settings")._get_prefix(ctx.guild)
 
+        # Create a string of all the available genders
         available_genders = ", ".join(gender for gender in self._genders_set)
 
         if isinstance(error, commands.MissingRequiredArgument):
@@ -240,13 +268,14 @@ class Info(commands.Cog):
         If key error, display the invalid argument and valid languages.
 
         parameters:
-            ctx [commands.Context]: discord Context object
-            error [Error]: general Error object
+            ctx [Context]: context object produced by a command invocation
+            error [Exception]: error object thrown by command function
         """
         embed = Embed(title="Voice Directory - List of Voices - "
                       "Language Filter Menu", colour=Colour.green())
         prefix = await self.bot.get_cog("Settings")._get_prefix(ctx.guild)
 
+        # Create a string of all available languages
         available_languages = ", ".join(
             sorted(lang for lang in self._languages_set)
             )
