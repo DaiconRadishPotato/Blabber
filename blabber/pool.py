@@ -88,8 +88,8 @@ class TTSRequestHandler(threading.Thread):
                 # Iterate through response in chunks for processing
                 b64_encoded_prefix = bytearray()
                 for chunk in response.iter_lines(chunk_size=CHUNK_SIZE):
-                    b64_encoded_chunk = b64_encoded_prefix + \
-                        bytes(extract_b64_data(chunk))
+                    b64_encoded_chunk = (b64_encoded_prefix
+                                         + bytes(extract_b64_data(chunk)))
 
                     # Calculate maximum number of bytes to decode
                     decode_limit = (len(b64_encoded_chunk) // 4) * 4
