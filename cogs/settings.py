@@ -33,7 +33,7 @@ class Settings(commands.Cog):
             ctx [Context]: context object representing command invocation
         """
         # Check if user invoked a subcommand
-        if ctx.invoked_subcommand is None:
+        if not ctx.invoked_subcommand:
             prefix = self.prefixes[ctx.guild]
             embed = Embed(
                 title=":gear: Server Settings",

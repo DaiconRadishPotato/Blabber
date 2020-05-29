@@ -101,7 +101,7 @@ class Info(commands.Cog):
             ctx [Context]: context object representing command invocation
         """
         # Check if subcommand invoked
-        if ctx.invoked_subcommand is None:
+        if not ctx.invoked_subcommand:
             prefix = self.prefixes[ctx.guild]
             embed = Embed(title="Voice Directory", description="Use the "
                           f"command `{prefix}list [option]`"
