@@ -34,7 +34,6 @@ class _Roles(commands.Cog):
             ctx [commands.Context]: discord Context object
             user [str]: username or nickname of user
         raises:
-            MissingRequiredArgument: raised when no user is given
             AttributeError: raised when user or blabby role does not exist 
         """
         # Check if user was provided
@@ -42,8 +41,8 @@ class _Roles(commands.Cog):
             embed = Embed(title=":x: Unable to give Blabby role",
                           description="You must input a user or nickname to "
                           "use this command",
-                          Colour=Colour.red())
-
+                          colour=Colour.red())
+            await ctx.send(embed=embed)
         else:
             # Ensure that user exists
             member = ctx.guild.get_member(user)
@@ -65,7 +64,8 @@ class _Roles(commands.Cog):
         if isinstance(error, InvalidUser):
             prefix = self.prefixes[ctx.guild]
             embed = Embed(title=":x: Unable to give Blabby role",
-                          Colour=Colour.red())
+                          description="",
+                          colour=Colour.red())
             embed.add_field(name="Input User:",
                             value=f"{error}",
                             inline=False)
