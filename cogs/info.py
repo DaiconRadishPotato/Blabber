@@ -158,6 +158,9 @@ class Info(commands.Cog):
                 if info['gender'] == gender
             ]
 
+            if len(records) == 0:
+                raise KeyError
+
             # Create embed of all the available voices with the particular gender
             page_num = 1
             embed = Embed(title="Voice Directory - List of Voices"
@@ -194,38 +197,58 @@ class Info(commands.Cog):
         """
         language = language.lower()
 
-        # Generate a list of available voices of a particular language
-        records = [
-            (voice, info['language'], info['gender'])
-            for voice, info in self._voices_map.items()
-            if info['language'] == language
-        ]
+        # Check if language was provided
+        if not language:
+            prefix = await self.bot.get_cog("Settings")._get_prefix(ctx.guild)
 
-        # Check if language exists
-        if len(records) == 0:
-            raise KeyError
+            # Create a string of all available languages
+            languages = ", ".join(
+                sorted(lang for lang in supported_languages.keys())
+                )
 
-        # Create embed of all the available voices with the particular language
-        page_num = 1
-        embed = Embed(title="Voice Directory - List of Voices - "
-                      "Language Filter - Page " + str(page_num),
-                      colour=Colour.green())
+            embed = Embed(title="List of Voices - Language Filter",
+                          colour=Colour.green())
 
-        for record_num in range(len(records)):
-            alias = records[record_num]
+            embed.add_field(name='Available Languages Options:',
+                            value=f"`{languages}`",
+                            inline=False)
 
-            # Check if the number of fields in the embed had exceed 25
-            if (record_num % (self.MAX_EMBED_FIELDS + 1) ==
-                    self.MAX_EMBED_FIELDS):
-                await ctx.send(embed=embed)
-                page_num += 1
-                embed = Embed(title="Voice Directory - List of Voices"
-                              " - Language Filter - Page " + str(page_num),
-                              colour=Colour.green())
+            embed.add_field(name="To list voices filtered by a language:",
+                            value=f"`{prefix}list lang [language_option]`",
+                            infine=False)
 
-            embed.add_field(name=f"{alias[0]}",
-                            value=f"language: {alias[1]}\ngender: {alias[2]}",
-                            inline=True)
+        else:
+            # Generate a list of available voices of a particular language
+            records = [
+                (voice, info['language'], info['gender'])
+                for voice, info in self._voices_map.items()
+                if info['language'] == language
+            ]
+
+            if len(records) == 0:
+                raise KeyError
+
+            # Create embed of all the available voices with the particular language
+            page_num = 1
+            embed = Embed(title="Voice Directory - List of Voices - "
+                        "Language Filter - Page " + str(page_num),
+                        colour=Colour.green())
+
+            for record_num in range(len(records)):
+                alias = records[record_num]
+
+                # Check if the number of fields in the embed had exceed 25
+                if (record_num % (self.MAX_EMBED_FIELDS + 1) ==
+                        self.MAX_EMBED_FIELDS):
+                    await ctx.send(embed=embed)
+                    page_num += 1
+                    embed = Embed(title="Voice Directory - List of Voices"
+                                " - Language Filter - Page " + str(page_num),
+                                colour=Colour.green())
+
+                embed.add_field(name=f"{alias[0]}",
+                                value=f"language: {alias[1]}\ngender: {alias[2]}",
+                                inline=True)
 
         await ctx.send(embed=embed)
 
@@ -275,15 +298,7 @@ class Info(commands.Cog):
             sorted(lang for lang in supported_languages.keys())
             )
 
-        if isinstance(error, commands.MissingRequiredArgument):
-            embed.add_field(name='Available Languages Options:',
-                            value=f"`{available_languages}`")
-
-            embed.add_field(name="To list voices filtered by a language:",
-                            value=f"`{prefix}list lang [language_option]`")
-
-            await ctx.send(embed=embed)
-        elif isinstance(error.original, KeyError):
+        if isinstance(error.original, KeyError):
             embed.add_field(name="Input Language:",
                             value=f"`{ctx.args[2]}` is not available.")
 
