@@ -9,7 +9,7 @@
 
 from discord.ext import commands
 
-from blabber import supported_voices
+from blabber import supported_voices, supported_genders, supported_languages
 from blabber.errors import *
 
 
@@ -68,6 +68,18 @@ async def tts_message_is_valid(message):
 async def voice_is_valid(alias):
     if alias not in supported_voices:
         raise VoiceNotSupported(alias)
+    return True
+
+
+async def gender_is_valid(gender):
+    if not any(g == gender for g in supported_genders):
+        raise GenderNotSupported(gender)
+    return True
+
+
+async def language_is_valid(language):
+    if language not in supported_languages:
+        raise LanguageNotSupported(language)
     return True
 
 

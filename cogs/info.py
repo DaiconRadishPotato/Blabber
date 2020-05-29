@@ -8,12 +8,12 @@
 # Python Version: 3.8.1
 # License: MIT License
 
-import json
-
 from discord import Embed, Colour
 from discord.ext import commands
 
-from blabber import supported_languages, supported_genders
+from blabber import supported_languages, supported_voices
+from blabber.checks import *
+from blabber.errors import *
 
 
 class Info(commands.Cog):
@@ -29,9 +29,6 @@ class Info(commands.Cog):
         self.MAX_EMBED_FIELDS = 25
         self.prefixes = bot.prefixes
 
-        with open(r'./blabber/data.json', 'r') as data:
-            self._voices_map = json.load(data)['voice_info']
-
     @commands.command(name='help', aliases=['h'])
     async def help(self, ctx):
         """
@@ -43,7 +40,7 @@ class Info(commands.Cog):
         """
         embed = Embed(title="Help Directory",
                       description="",
-                      colour=Colour.gold())
+                      colour=Colour.blue())
         prefix = self.prefixes[ctx.guild]
 
         # Generate help for voice.py functions
@@ -109,7 +106,7 @@ class Info(commands.Cog):
             embed = Embed(title="Voice Directory", description="Use the "
                           f"command `{prefix}list [option]`"
                           "to show filter options.",
-                          colour=Colour.green())
+                          colour=Colour.blue())
 
             # Generate information about possible subcommands
             embed.add_field(name="Gender",
@@ -131,8 +128,6 @@ class Info(commands.Cog):
             ctx [Context]: context object representing command invocation
             gender [str]: string object representing a gender option
         """
-        gender = gender.upper()
-
         # Check if a gender was provided
         if not gender:
             prefix = self.prefixes[ctx.guild]
@@ -141,7 +136,7 @@ class Info(commands.Cog):
             genders = ", ".join(gender for gender in supported_genders)
 
             embed = Embed(title="List of Voices - Gender Filter", 
-                          colour=Colour.green())
+                          colour=Colour.gold())
 
             embed.add_field(name=f"Available Genders Options:",
                             value=f"`{genders}`",
@@ -151,21 +146,23 @@ class Info(commands.Cog):
                             value=f"`{prefix}list gender [gender_option]`",
                             inline=False)
         else:
+            # Ensure that gender is supported
+            await gender_is_valid(gender)
+
+            gender = gender.upper()
+
             # Generate a list of available voices of a particular gender
             records = [
-                (voice, info['language'], info['gender'])
+                (voice, info['language'], gender)
                 for voice, info in self._voices_map.items()
                 if info['gender'] == gender
             ]
-
-            if len(records) == 0:
-                raise KeyError
 
             # Create embed of all the available voices with the particular gender
             page_num = 1
             embed = Embed(title="Voice Directory - List of Voices"
                         " - Gender Filter - Page " + str(page_num),
-                        colour=Colour.green())
+                        colour=Colour.blue())
 
             for record_num in range(len(records)):
                 alias = records[record_num]
@@ -177,7 +174,7 @@ class Info(commands.Cog):
                     page_num += 1
                     embed = Embed(title="Voice Directory - List of Voices"
                                 " - Gender Filter - Page " + str(page_num),
-                                colour=Colour.green())
+                                colour=Colour.blue())
 
                 embed.add_field(name=f"{alias[0]}",
                                 value=f"language: {alias[1]}\ngender: {alias[2]}",
@@ -195,8 +192,6 @@ class Info(commands.Cog):
             ctx [Context]: context object representing command invocation
             language [str]: string object representing a language option
         """
-        language = language.lower()
-
         # Check if language was provided
         if not language:
             prefix = self.prefixes[ctx.guild]
@@ -206,7 +201,7 @@ class Info(commands.Cog):
                 sorted(lang for lang in supported_languages.keys())
                 )
             embed = Embed(title="List of Voices - Language Filter",
-                          colour=Colour.green())
+                          colour=Colour.gold())
 
             embed.add_field(name='Available Languages Options:',
                             value=f"`{languages}`",
@@ -216,21 +211,24 @@ class Info(commands.Cog):
                             value=f"`{prefix}list lang [language_option]`",
                             inline=False)
         else:
+            # Ensure that language is supported
+            await language_is_valid(language)
+
+            language = language.lower()
+
+            lang_codes = supported_languages[language]
             # Generate a list of available voices of a particular language
             records = [
-                (voice, info['language'], info['gender'])
-                for voice, info in self._voices_map.items()
-                if info['language'] == language
+                (voice, language, info['gender'])
+                for voice, info in supported_voices.items()
+                if any(info['lang_code'] == lc for lc in lang_codes)
             ]
-
-            if len(records) == 0:
-                raise KeyError
 
             # Create embed of all the available voices with the particular language
             page_num = 1
             embed = Embed(title="Voice Directory - List of Voices - "
                         "Language Filter - Page " + str(page_num),
-                        colour=Colour.green())
+                        colour=Colour.blue())
 
             for record_num in range(len(records)):
                 alias = records[record_num]
@@ -242,7 +240,7 @@ class Info(commands.Cog):
                     page_num += 1
                     embed = Embed(title="Voice Directory - List of Voices"
                                 " - Language Filter - Page " + str(page_num),
-                                colour=Colour.green())
+                                colour=Colour.blue())
 
                 embed.add_field(name=f"{alias[0]}",
                                 value=f"language: {alias[1]}\ngender: {alias[2]}",
@@ -260,20 +258,17 @@ class Info(commands.Cog):
             ctx [Context]: context object produced by a command invocation
             error [Exception]: error object thrown by command function
         """
-        embed = Embed(title="Voice Directory - List of Voices"
-                      " - Gender Filter Options", colour=Colour.green())
-        prefix = self.prefixes[ctx.guild]
+        if isinstance(error, GenderNotSupported):
+            prefix = self.prefixes[ctx.guild]
 
-        # Create a string of all the available genders
-        available_genders = ", ".join(gender for gender in supported_genders)
-
-        if isinstance(error.original, KeyError):
+            embed = Embed(title="List of Voices - Gender Filter", 
+                          colour=Colour.red())
             embed.add_field(name="Input Gender:",
-                            value=f"`{ctx.args[2]}` is not available.")
+                            value=f"{error}")
+            embed.add_field(name=f"To List Gender Filter Options:",
+                            value=f"`{prefix}list gender`")
 
-            embed.add_field(name=f"Available Genders Options:",
-                            value=f"`{available_genders}`")
-            await ctx.send(embed=embed)
+        await ctx.send(embed=embed)
 
     @voice_language_filter.error
     async def voice_language_filter_error(self, ctx, error):
@@ -286,23 +281,20 @@ class Info(commands.Cog):
             ctx [Context]: context object produced by a command invocation
             error [Exception]: error object thrown by command function
         """
-        embed = Embed(title="Voice Directory - List of Voices - "
-                      "Language Filter Menu", colour=Colour.green())
-        prefix = self.prefixes[ctx.guild]
+        if isinstance(error, LanguageNotSupported):
+            prefix = self.prefixes[ctx.guild]
 
-        # Create a string of all available languages
-        available_languages = ", ".join(
-            sorted(lang for lang in supported_languages.keys())
-            )
+            embed = Embed(title="List of Voices - Language Filter",
+                          colour=Colour.red())
+            embed.add_field(name='Input Language:',
+                            value=f"{error}",
+                            inline=False)
+            embed.add_field(name="To list language filter options:",
+                            value=f"`{prefix}list lang`",
+                            inline=False)
 
-        if isinstance(error.original, KeyError):
-            embed.add_field(name="Input Language:",
-                            value=f"`{ctx.args[2]}` is not available.")
+        await ctx.send(embed=embed)
 
-            embed.add_field(name='Available Languages Options:',
-                            value=f"`{available_languages}`")
-
-            await ctx.send(embed=embed)
 
 
 def setup(bot):
