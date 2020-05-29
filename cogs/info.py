@@ -13,7 +13,8 @@ import json
 from discord import Embed, Colour
 from discord.ext import commands
 
-from blabber import supported_languages, supported_genders
+from blabber.checks import *
+from blabber.errors import *
 
 
 class Info(commands.Cog):
@@ -151,15 +152,15 @@ class Info(commands.Cog):
                             value=f"`{prefix}list gender [gender_option]`",
                             inline=False)
         else:
+            # Ensure that gender is supported
+            await gender_is_valid(gender)
+
             # Generate a list of available voices of a particular gender
             records = [
                 (voice, info['language'], info['gender'])
                 for voice, info in self._voices_map.items()
                 if info['gender'] == gender
             ]
-
-            if len(records) == 0:
-                raise KeyError
 
             # Create embed of all the available voices with the particular gender
             page_num = 1
@@ -216,15 +217,15 @@ class Info(commands.Cog):
                             value=f"`{prefix}list lang [language_option]`",
                             inline=False)
         else:
+            # Ensure that language is supported
+            await language_is_valid(language)
+
             # Generate a list of available voices of a particular language
             records = [
                 (voice, info['language'], info['gender'])
                 for voice, info in self._voices_map.items()
                 if info['language'] == language
             ]
-
-            if len(records) == 0:
-                raise KeyError
 
             # Create embed of all the available voices with the particular language
             page_num = 1
@@ -260,20 +261,17 @@ class Info(commands.Cog):
             ctx [Context]: context object produced by a command invocation
             error [Exception]: error object thrown by command function
         """
-        embed = Embed(title="Voice Directory - List of Voices"
-                      " - Gender Filter Options", colour=Colour.green())
-        prefix = self.prefixes[ctx.guild]
+        if isinstance(error, GenderNotSupported):
+            prefix = self.prefixes[ctx.guild]
 
-        # Create a string of all the available genders
-        available_genders = ", ".join(gender for gender in supported_genders)
-
-        if isinstance(error.original, KeyError):
+            embed = Embed(title="List of Voices - Gender Filter", 
+                          colour=Colour.green())
             embed.add_field(name="Input Gender:",
-                            value=f"`{ctx.args[2]}` is not available.")
+                            value=f"{error}")
+            embed.add_field(name=f"To List Gender Filter Options:",
+                            value=f"`{prefix}list gender`")
 
-            embed.add_field(name=f"Available Genders Options:",
-                            value=f"`{available_genders}`")
-            await ctx.send(embed=embed)
+        await ctx.send(embed=embed)
 
     @voice_language_filter.error
     async def voice_language_filter_error(self, ctx, error):
@@ -286,23 +284,20 @@ class Info(commands.Cog):
             ctx [Context]: context object produced by a command invocation
             error [Exception]: error object thrown by command function
         """
-        embed = Embed(title="Voice Directory - List of Voices - "
-                      "Language Filter Menu", colour=Colour.green())
-        prefix = self.prefixes[ctx.guild]
+        if isinstance(error, LanguageNotSupported):
+            prefix = self.prefixes[ctx.guild]
 
-        # Create a string of all available languages
-        available_languages = ", ".join(
-            sorted(lang for lang in supported_languages.keys())
-            )
+            embed = Embed(title="List of Voices - Language Filter",
+                          colour=Colour.green())
+            embed.add_field(name='Input Language:',
+                            value=f"{error}",
+                            inline=False)
+            embed.add_field(name="To list language filter options:",
+                            value=f"`{prefix}list lang`",
+                            inline=False)
 
-        if isinstance(error.original, KeyError):
-            embed.add_field(name="Input Language:",
-                            value=f"`{ctx.args[2]}` is not available.")
+        await ctx.send(embed=embed)
 
-            embed.add_field(name='Available Languages Options:',
-                            value=f"`{available_languages}`")
-
-            await ctx.send(embed=embed)
 
 
 def setup(bot):
