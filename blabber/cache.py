@@ -24,7 +24,7 @@ class VoiceProfileCache(TTLCache):
         max_size [int]: maximum size of cache
         time_to_live [int]: time in secs before a cache object expires
     """
-    def __init__(self, max_size=500, time_to_live=60):
+    def __init__(self, max_size=512, time_to_live=60):
         super().__init__(maxsize=max_size, ttl=time_to_live)
         self.DEFAULT_VOICE = 'voice_92'
         self._service = UserService()
@@ -74,7 +74,7 @@ class PrefixCache(TTLCache):
         max_size [int]: maximum size of cache
         time_to_live [int]: time in secs before a cache object expires
     """
-    def __init__(self, max_size=500, time_to_live=3600):
+    def __init__(self, max_size=512, time_to_live=3600):
         super().__init__(maxsize=max_size, ttl=time_to_live)
         self._service = GuildService()
         self.DEFAULT_PREFIX = '>'
