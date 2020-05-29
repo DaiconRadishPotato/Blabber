@@ -87,3 +87,9 @@ async def prefix_is_valid(prefix):
     if len(prefix) > 5:
         raise InvalidPrefix(prefix)
     return True
+
+
+async def member_is_valid(member):
+    if not member:
+        raise InvalidUser(member)
+    return True
