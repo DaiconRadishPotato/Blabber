@@ -4,7 +4,7 @@
 # Contributor:  Fanny Avila (Fa-Avila),
 #               Marcos Avila (DaiconV)
 # Date created: 1/30/2020
-# Date last modified: 5/7/2020
+# Date last modified: 5/28/2020
 # Python Version: 3.8.1
 # License: MIT License
 
@@ -12,6 +12,8 @@ import json
 
 from discord import Embed, Colour
 from discord.ext import commands
+
+from blabber import supported_languages, supported_genders
 
 
 class Info(commands.Cog):
@@ -26,14 +28,9 @@ class Info(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.MAX_EMBED_FIELDS = 25
-        self._languages_set = set()
 
-        with open(r'./blabber/data.json', 'r') as f:
-            data = json.load(f)
-            for voice in data['voice_info'].values():
-                self._languages_set.add(voice["language"])
-            self._genders_set = set(data['genders'])
-            self._voices_map = data['voice_info']
+        with open(r'./blabber/data.json', 'r') as data:
+            self._voices_map = json.load(data)['voice_info']
 
     @commands.command(name='help', aliases=['h'])
     async def help(self, ctx):
@@ -44,9 +41,11 @@ class Info(commands.Cog):
         paramters:
             ctx [commands.Context]: discord Context object
         """
+        print("enter")
         embed = Embed(title="Help Directory",
                       description="",
                       colour=Colour.gold())
+        prefix = await self.bot.get_cog("Settings")._get_prefix(ctx.guild)
 
         # Generate help for voice.py functions
         embed.add_field(name=f"`{prefix}connect` or `{prefix}c`",
@@ -63,7 +62,6 @@ class Info(commands.Cog):
                         inline=False)
 
         # Generate help for info.py functions
-        prefix = await self.bot.get_cog("Settings")._get_prefix(ctx.guild)
         embed.add_field(name=f"`{prefix}help` or `{prefix}h`",
                         value=f"Displays this message.",
                         inline=False)
@@ -241,7 +239,7 @@ class Info(commands.Cog):
         prefix = await self.bot.get_cog("Settings")._get_prefix(ctx.guild)
 
         # Create a string of all the available genders
-        available_genders = ", ".join(gender for gender in self._genders_set)
+        available_genders = ", ".join(gender for gender in supported_genders)
 
         if isinstance(error, commands.MissingRequiredArgument):
             embed.add_field(name=f"Available Genders Options:",
@@ -277,7 +275,7 @@ class Info(commands.Cog):
 
         # Create a string of all available languages
         available_languages = ", ".join(
-            sorted(lang for lang in self._languages_set)
+            sorted(lang for lang in supported_languages.keys())
             )
 
         if isinstance(error, commands.MissingRequiredArgument):
