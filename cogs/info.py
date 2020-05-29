@@ -26,8 +26,8 @@ class Info(commands.Cog):
     """
 
     def __init__(self, bot):
-        self.bot = bot
         self.MAX_EMBED_FIELDS = 25
+        self.prefixes = bot.prefixes
 
         with open(r'./blabber/data.json', 'r') as data:
             self._voices_map = json.load(data)['voice_info']
@@ -44,7 +44,7 @@ class Info(commands.Cog):
         embed = Embed(title="Help Directory",
                       description="",
                       colour=Colour.gold())
-        prefix = await self.bot.get_cog("Settings")._get_prefix(ctx.guild)
+        prefix = self.prefixes[ctx.guild]
 
         # Generate help for voice.py functions
         embed.add_field(name=f"`{prefix}connect` or `{prefix}c`",
@@ -105,7 +105,7 @@ class Info(commands.Cog):
         """
         # Check if subcommand invoked
         if ctx.invoked_subcommand is None:
-            prefix = await self.bot.get_cog("Settings")._get_prefix(ctx.guild)
+            prefix = self.prefixes[ctx.guild]
             embed = Embed(title="Voice Directory", description="Use the "
                           f"command `{prefix}list [option]`"
                           "to show filter options.",
@@ -135,7 +135,7 @@ class Info(commands.Cog):
 
         # Check if a gender was provided
         if not gender:
-            prefix = await self.bot.get_cog("Settings")._get_prefix(ctx.guild)
+            prefix = self.prefixes[ctx.guild]
 
             # Create a string of all the available genders
             genders = ", ".join(gender for gender in supported_genders)
@@ -199,7 +199,7 @@ class Info(commands.Cog):
 
         # Check if language was provided
         if not language:
-            prefix = await self.bot.get_cog("Settings")._get_prefix(ctx.guild)
+            prefix = self.prefixes[ctx.guild]
 
             # Create a string of all available languages
             languages = ", ".join(
@@ -262,7 +262,7 @@ class Info(commands.Cog):
         """
         embed = Embed(title="Voice Directory - List of Voices"
                       " - Gender Filter Options", colour=Colour.green())
-        prefix = await self.bot.get_cog("Settings")._get_prefix(ctx.guild)
+        prefix = self.prefixes[ctx.guild]
 
         # Create a string of all the available genders
         available_genders = ", ".join(gender for gender in supported_genders)
@@ -288,7 +288,7 @@ class Info(commands.Cog):
         """
         embed = Embed(title="Voice Directory - List of Voices - "
                       "Language Filter Menu", colour=Colour.green())
-        prefix = await self.bot.get_cog("Settings")._get_prefix(ctx.guild)
+        prefix = self.prefixes[ctx.guild]
 
         # Create a string of all available languages
         available_languages = ", ".join(
