@@ -8,11 +8,10 @@
 # Python Version: 3.8.1
 # License: MIT License
 
-import json
-
 from discord import Embed, Colour
 from discord.ext import commands
 
+from blabber import supported_languages, supported_voices
 from blabber.checks import *
 from blabber.errors import *
 
@@ -29,9 +28,6 @@ class Info(commands.Cog):
     def __init__(self, bot):
         self.MAX_EMBED_FIELDS = 25
         self.prefixes = bot.prefixes
-
-        with open(r'./blabber/data.json', 'r') as data:
-            self._voices_map = json.load(data)['voice_info']
 
     @commands.command(name='help', aliases=['h'])
     async def help(self, ctx):
@@ -157,7 +153,7 @@ class Info(commands.Cog):
 
             # Generate a list of available voices of a particular gender
             records = [
-                (voice, info['language'], info['gender'])
+                (voice, info['language'], gender)
                 for voice, info in self._voices_map.items()
                 if info['gender'] == gender
             ]
@@ -220,11 +216,12 @@ class Info(commands.Cog):
 
             language = language.lower()
 
+            lang_codes = supported_languages[language]
             # Generate a list of available voices of a particular language
             records = [
-                (voice, info['language'], info['gender'])
-                for voice, info in self._voices_map.items()
-                if info['language'] == language
+                (voice, language, info['gender'])
+                for voice, info in supported_voices.items()
+                if any(info['lang_code'] == lc for lc in lang_codes)
             ]
 
             # Create embed of all the available voices with the particular language
