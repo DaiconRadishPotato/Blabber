@@ -11,6 +11,8 @@
 from discord import utils, Embed, Colour
 from discord.ext import commands
 
+from blabber.checks import *
+
 
 class _Roles(commands.Cog):
     """
