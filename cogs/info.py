@@ -132,8 +132,6 @@ class Info(commands.Cog):
             ctx [Context]: context object representing command invocation
             gender [str]: string object representing a gender option
         """
-        gender = gender.upper()
-
         # Check if a gender was provided
         if not gender:
             prefix = self.prefixes[ctx.guild]
@@ -154,6 +152,8 @@ class Info(commands.Cog):
         else:
             # Ensure that gender is supported
             await gender_is_valid(gender)
+
+            gender = gender.upper()
 
             # Generate a list of available voices of a particular gender
             records = [
@@ -196,8 +196,6 @@ class Info(commands.Cog):
             ctx [Context]: context object representing command invocation
             language [str]: string object representing a language option
         """
-        language = language.lower()
-
         # Check if language was provided
         if not language:
             prefix = self.prefixes[ctx.guild]
@@ -219,6 +217,8 @@ class Info(commands.Cog):
         else:
             # Ensure that language is supported
             await language_is_valid(language)
+
+            language = language.lower()
 
             # Generate a list of available voices of a particular language
             records = [
