@@ -59,6 +59,6 @@ class InvalidPrefix(commands.CommandError):
     def __init__(self, prefix):
         super().__init__(f"`{prefix}` is not a valid prefix")
 
-class InvalidMember(commands.CommandError):
-    def __init__(self, member):
-        super().__init__(f"`{member}` is not a valid member")
+class InvalidUser(commands.CommandError):
+    def __init__(self, user):
+        super().__init__(f"`{user}` is not a valid user")

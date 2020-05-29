@@ -4,7 +4,7 @@
 # Contributor:  Fanny Avila (Fa-Avila),
 #               Marcos Avila (DaiconV)
 # Date created: 2/3/2019
-# Date last modified: 5/26/2020
+# Date last modified: 5/28/2020
 # Python Version: 3.8.1
 # License: MIT License
 
@@ -12,6 +12,7 @@ from discord import utils, Embed, Colour
 from discord.ext import commands
 
 from blabber.checks import *
+from blabber.errors import *
 
 
 class _Roles(commands.Cog):
@@ -20,7 +21,7 @@ class _Roles(commands.Cog):
     certain users to use blabber
     """
     def __init__(self, bot):
-        pass
+        self.prefixes = bot.prefixes
 
     @commands.command(name="give_blabby", aliases=['gb'])
     @commands.has_permissions(manage_roles=True)
@@ -42,10 +43,11 @@ class _Roles(commands.Cog):
                           description="You must input a user or nickname to "
                           "use this command",
                           Colour=Colour.red())
+
         else:
             # Ensure that user exists
-            member = ctx.guild.get_member_named(user)
-            await member_is_valid(member)
+            member = ctx.guild.get_member(user)
+            await user_is_valid(user, member)
 
             blabby_role = utils.get(ctx.guild.roles, name="Blabby")
             await member.add_roles(blabby_role)
@@ -60,7 +62,7 @@ class _Roles(commands.Cog):
             ctx [commands.Context]: discord Context object
             error [commands.CommandError]: discord Command Error object
         """
-        if isinstance(error, InvalidMember):
+        if isinstance(error, InvalidUser):
             prefix = self.prefixes[ctx.guild]
             embed = Embed(title=":x: Unable to give Blabby role",
                           Colour=Colour.red())
