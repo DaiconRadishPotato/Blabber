@@ -205,7 +205,6 @@ class Info(commands.Cog):
             languages = ", ".join(
                 sorted(lang for lang in supported_languages.keys())
                 )
-
             embed = Embed(title="List of Voices - Language Filter",
                           colour=Colour.green())
 
@@ -215,8 +214,7 @@ class Info(commands.Cog):
 
             embed.add_field(name="To list voices filtered by a language:",
                             value=f"`{prefix}list lang [language_option]`",
-                            infine=False)
-
+                            inline=False)
         else:
             # Generate a list of available voices of a particular language
             records = [
@@ -249,7 +247,6 @@ class Info(commands.Cog):
                 embed.add_field(name=f"{alias[0]}",
                                 value=f"language: {alias[1]}\ngender: {alias[2]}",
                                 inline=True)
-
         await ctx.send(embed=embed)
 
     @voice_gender_filter.error
@@ -270,7 +267,7 @@ class Info(commands.Cog):
         # Create a string of all the available genders
         available_genders = ", ".join(gender for gender in supported_genders)
 
-        elif isinstance(error.original, KeyError):
+        if isinstance(error.original, KeyError):
             embed.add_field(name="Input Gender:",
                             value=f"`{ctx.args[2]}` is not available.")
 
