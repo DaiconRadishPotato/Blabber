@@ -74,7 +74,7 @@ async def voice_is_valid(alias):
     return True
 
 async def gender_is_valid(gender):
-    if gender not in supported_genders:
+    if not any(g == gender for g in supported_genders):
         raise GenderNotSupported(gender)
     return True
 
