@@ -60,20 +60,23 @@ class _Roles(commands.Cog):
             ctx [commands.Context]: discord Context object
             error [commands.CommandError]: discord Command Error object
         """
-        if isinstance(error.original, AttributeError):
-            # If user does not exist, warns invoker that the user does not
-            # exist or that they have mispelled the name.
-            if(utils.get(ctx.guild.roles, name="Blabby") is not None):
-                await ctx.send(f"Roles::give_blabby User {ctx.args[2]} does not"
-                " exist")
-            # If Blabby role does not exist, creates Blabby role for guild and
-            # adds role to invoker
-            else:
-                blabby = await ctx.guild.create_role(name='Blabby', reason="To "
-                "allow certain people to use Blabber Bot.")
-                await ctx.send("Roles::give_blabby Created Blabby role for "
-                "users of Blabber")
-                await self.give_blabby(ctx, ctx.args[2])
+        if isinstance(error, InvalidMember):
+            prefix = self.prefixes[ctx.guild]
+            embed = Embed(title=":x: Unable to give Blabby role",
+                          Colour=Colour.red())
+            embed.add_field(name="Input User:",
+                            value=f"{error}",
+                            inline=False)
+            embed.add_field(name="To user give_blabby:",
+                            value=f"'{prefix}give_blabby [user/nickname]'",
+                            inline=False)
+            await ctx.send(embed=embed)
+        elif not utils.get(ctx.guild.roles, name="Blabby"):
+            blabby = await ctx.guild.create_role(name='Blabby', reason="To "
+            "allow certain people to use Blabber Bot.")
+            await ctx.send("Roles::give_blabby Created Blabby role for "
+            "users of Blabber")
+            await self.give_blabby(ctx, ctx.args[2])
 
 
 def setup(bot):
