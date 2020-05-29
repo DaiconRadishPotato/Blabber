@@ -38,28 +38,29 @@ class Profiles(commands.Cog):
 
         # Check if an alias was provided
         if not alias:
-            prefix = self.prefixes[ctx.guild]
-
-            # Retrieve current alias
+            # Retrieve command invoker's current alias
             alias = self.voice_profiles[(ctx.author, ctx.channel)]
 
+            prefix = self.prefixes[ctx.guild]
             embed = Embed(
                 title=":gear: Voice Settings",
                 description="Changes the voice of your TTS narrator",
                 colour=Colour.gold())
-
-            embed.add_field(name=f"**{member}'s Current Voice:**",
-                            value=f"`{alias}`",
-                            inline=False)
-
-            embed.add_field(name="**Update Voice:**",
-                            value=f"`{prefix}voice [New Voice]`",
-                            inline=False)
+            embed.add_field(
+                name=f"**{member}'s Current Voice:**",
+                value=f"`{alias}`",
+                inline=False)
+            embed.add_field(
+                name="**Update Voice:**",
+                value=f"`{prefix}voice [New Voice]`",
+                inline=False)
         elif await voice_is_valid(alias):
+            # Set the command invoker's new alias
             self.voice_profiles[(ctx.author, ctx.channel)] = alias
-            embed = Embed(title=(f":white_check_mark: **{member}'s new voice "
-                                 f"is** `{alias}`"),
-                          colour=Colour.green())
+            embed = Embed(
+                title=(f":white_check_mark: **{member}'s new voice is **"
+                       f"`{alias}`"),
+                colour=Colour.green())
 
         await ctx.send(embed=embed)
 
@@ -73,17 +74,17 @@ class Profiles(commands.Cog):
             error [Exception]: exception object raised from command function
         """
         prefix = self.prefixes[ctx.guild]
-        embed = Embed(title=":x: **Unable to set voice**",
-                      description=(f"{error}\n\n**:wrench: Use the** `>list` "
-                                   "**command to search for supported "
-                                   "voices**"),
-                      colour=Colour.red())
+        embed = Embed(
+            title=":x: **Unable to set voice**",
+            description=(f"{error}\n\n**:wrench: Use the** `>list` "
+                          "**command to search for supported voices**"),
+            colour=Colour.red())
         await ctx.send(embed=embed)
 
 
 def setup(bot):
     """
-    Adds Settings Cog to bot.
+    Adds Profiles Cog to bot.
 
     parameter:
         bot [Bot]: client object representing a Discord bot
