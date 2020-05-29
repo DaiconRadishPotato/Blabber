@@ -41,7 +41,6 @@ class Info(commands.Cog):
         paramters:
             ctx [Context]: context object representing command invocation
         """
-        print("enter")
         embed = Embed(title="Help Directory",
                       description="",
                       colour=Colour.gold())
@@ -134,38 +133,52 @@ class Info(commands.Cog):
         """
         gender = gender.upper()
 
-        # Generate a list of available voices of a particular gender
-        records = [
-            (voice, info['language'], info['gender'])
-            for voice, info in self._voices_map.items()
-            if info['gender'] == gender
-        ]
+        # Check if a gender was provided
+        if not gender:
+            prefix = await self.bot.get_cog("Settings")._get_prefix(ctx.guild)
 
-        # Check if language exists
-        if len(records) == 0:
-            raise KeyError
+            # Create a string of all the available genders
+            genders = ", ".join(gender for gender in supported_genders)
 
-        # Create embed of all the available voices with the particular gender
-        page_num = 1
-        embed = Embed(title="Voice Directory - List of Voices"
-                      " - Gender Filter - Page " + str(page_num),
-                      colour=Colour.green())
+            embed = Embed(title="List of Voices - Gender Filter", 
+                          colour=Colour.green())
 
-        for record_num in range(len(records)):
-            alias = records[record_num]
+            embed.add_field(name=f"Available Genders Options:",
+                            value=f"`{genders}`",
+                            inline=False)
 
-            # Check if the number of fields in the embed had exceed 25
-            if (record_num % (self.MAX_EMBED_FIELDS + 1) ==
-                    self.MAX_EMBED_FIELDS):
-                await ctx.send(embed=embed)
-                page_num += 1
-                embed = Embed(title="Voice Directory - List of Voices"
-                              " - Gender Filter - Page " + str(page_num),
-                              colour=Colour.green())
+            embed.add_field(name="To list voices filtered by a gender:",
+                            value=f"`{prefix}list gender [gender_option]`",
+                            inline=False)
+        else:
+            # Generate a list of available voices of a particular gender
+            records = [
+                (voice, info['language'], info['gender'])
+                for voice, info in self._voices_map.items()
+                if info['gender'] == gender
+            ]
 
-            embed.add_field(name=f"{alias[0]}",
-                            value=f"language: {alias[1]}\ngender: {alias[2]}",
-                            inline=True)
+            # Create embed of all the available voices with the particular gender
+            page_num = 1
+            embed = Embed(title="Voice Directory - List of Voices"
+                        " - Gender Filter - Page " + str(page_num),
+                        colour=Colour.green())
+
+            for record_num in range(len(records)):
+                alias = records[record_num]
+
+                # Check if the number of fields in the embed had exceed 25
+                if (record_num % (self.MAX_EMBED_FIELDS + 1) ==
+                        self.MAX_EMBED_FIELDS):
+                    await ctx.send(embed=embed)
+                    page_num += 1
+                    embed = Embed(title="Voice Directory - List of Voices"
+                                " - Gender Filter - Page " + str(page_num),
+                                colour=Colour.green())
+
+                embed.add_field(name=f"{alias[0]}",
+                                value=f"language: {alias[1]}\ngender: {alias[2]}",
+                                inline=True)
 
         await ctx.send(embed=embed)
 
@@ -233,15 +246,6 @@ class Info(commands.Cog):
 
         # Create a string of all the available genders
         available_genders = ", ".join(gender for gender in supported_genders)
-
-        if isinstance(error, commands.MissingRequiredArgument):
-            embed.add_field(name=f"Available Genders Options:",
-                            value=f"`{available_genders}`")
-
-            embed.add_field(name="To list voices filtered by a gender:",
-                            value=f"`{prefix}list gender [gender_option]`")
-
-            await ctx.send(embed=embed)
 
         elif isinstance(error.original, KeyError):
             embed.add_field(name="Input Gender:",
