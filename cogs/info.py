@@ -145,10 +145,9 @@ class Info(commands.Cog):
             embed.add_field(name="To list voices filtered by a gender:",
                             value=f"`{prefix}list gender [gender_option]`",
                             inline=False)
-        else:
-            # Ensure that gender is supported
-            await gender_is_valid(gender)
 
+        # Ensure that gender is supported
+        elif await gender_is_valid(gender):
             gender = gender.upper()
 
             # Generate a list of available voices of a particular gender
@@ -210,10 +209,9 @@ class Info(commands.Cog):
             embed.add_field(name="To list voices filtered by a language:",
                             value=f"`{prefix}list lang [language_option]`",
                             inline=False)
-        else:
-            # Ensure that language is supported
-            await language_is_valid(language)
 
+        # Ensure that language is supported
+        elif await language_is_valid(language):
             language = language.lower()
 
             lang_codes = supported_languages[language]
@@ -264,9 +262,11 @@ class Info(commands.Cog):
             embed = Embed(title="List of Voices - Gender Filter", 
                           colour=Colour.red())
             embed.add_field(name="Input Gender:",
-                            value=f"{error}")
+                            value=f"{error}",
+                            inline=False)
             embed.add_field(name=f"To List Gender Filter Options:",
-                            value=f"`{prefix}list gender`")
+                            value=f"`{prefix}list gender`",
+                            inline=False)
 
         await ctx.send(embed=embed)
 
