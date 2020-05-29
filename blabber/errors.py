@@ -46,3 +46,11 @@ class NotConnected(commands.CommandError):
 class VoiceNotSupported(commands.CommandError):
     def __init__(self, alias):
         super().__init__(f"`{alias}` is not a supported voice")
+ 
+class GenderNotSupported(commands.CommandError):
+    def __init__(self, gender):
+        super().__init__(f"`{gender}` is not a supported gender.")
+
+class LanguageNotSupported(commands.CommandError):
+    def __init__(self, language):
+        super().__init__(f"`{language}` is not a supported language.")
