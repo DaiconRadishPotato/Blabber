@@ -91,5 +91,5 @@ async def prefix_is_valid(prefix):
 
 async def member_is_valid(member):
     if not member:
-        raise InvalidUser(member)
+        raise InvalidMember(member)
     return True
