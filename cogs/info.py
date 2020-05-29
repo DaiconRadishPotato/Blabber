@@ -39,7 +39,7 @@ class Info(commands.Cog):
         text channel where the bot was invoked.
 
         paramters:
-            ctx [commands.Context]: discord Context object
+            ctx [Context]: context object representing command invocation
         """
         print("enter")
         embed = Embed(title="Help Directory",
@@ -102,7 +102,7 @@ class Info(commands.Cog):
         version based on either gender or language.
 
         parameters:
-            ctx [commands.Context]: discord Context object
+            ctx [Context]: context object representing command invocation
         """
         # Check if subcommand invoked
         if ctx.invoked_subcommand is None:
@@ -123,17 +123,14 @@ class Info(commands.Cog):
             await ctx.send(embed=embed)
 
     @list_available_voices.command(name='gender', aliases=['g'])
-    async def voice_gender_filter(self, ctx, gender: str):
+    async def voice_gender_filter(self, ctx, gender: str=''):
         """
         Subcommand of list that displays all available voices that have the
         specified gender.
 
         parameters:
-            ctx [commands.Context]: discord Context object
-            gender [str]: string object used to represent the gender to filter
-        raises:
-            MissingRequiredArgument: gender was not passed as an argument
-            KeyError: gender is not available or was improperly inputted
+            ctx [Context]: context object representing command invocation
+            gender [str]: string object representing a gender option
         """
         gender = gender.upper()
 
@@ -173,18 +170,14 @@ class Info(commands.Cog):
         await ctx.send(embed=embed)
 
     @list_available_voices.command(name='language', aliases=['lang'])
-    async def voice_language_filter(self, ctx, language: str):
+    async def voice_language_filter(self, ctx, language: str=''):
         """
         Subcommand of list that displays all available voices that have the
         specified language.
 
         parameters:
-            ctx [commands.Context]: discord Context object
-            language [str]: string object used to represent the gender to
-            filter
-        raises:
-            MissingRequiredArgument: language was not passed as an argument
-            KeyError: language is not available or was improperly inputted
+            ctx [Context]: context object representing command invocation
+            language [str]: string object representing a language option
         """
         language = language.lower()
 
