@@ -4,7 +4,7 @@
 # Contributor:  Fanny Avila (Fa-Avila),
 #               Marcos Avila (DaiconV)
 # Date created: 12/16/2019
-# Date last modified: 5/24/2020
+# Date last modified: 5/28/2020
 # Python Version: 3.8.1
 # License: MIT License
 
