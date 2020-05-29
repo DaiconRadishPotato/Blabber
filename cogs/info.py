@@ -44,7 +44,7 @@ class Info(commands.Cog):
         """
         embed = Embed(title="Help Directory",
                       description="",
-                      colour=Colour.gold())
+                      colour=Colour.blue())
         prefix = self.prefixes[ctx.guild]
 
         # Generate help for voice.py functions
@@ -110,7 +110,7 @@ class Info(commands.Cog):
             embed = Embed(title="Voice Directory", description="Use the "
                           f"command `{prefix}list [option]`"
                           "to show filter options.",
-                          colour=Colour.green())
+                          colour=Colour.blue())
 
             # Generate information about possible subcommands
             embed.add_field(name="Gender",
@@ -142,7 +142,7 @@ class Info(commands.Cog):
             genders = ", ".join(gender for gender in supported_genders)
 
             embed = Embed(title="List of Voices - Gender Filter", 
-                          colour=Colour.green())
+                          colour=Colour.gold())
 
             embed.add_field(name=f"Available Genders Options:",
                             value=f"`{genders}`",
@@ -166,7 +166,7 @@ class Info(commands.Cog):
             page_num = 1
             embed = Embed(title="Voice Directory - List of Voices"
                         " - Gender Filter - Page " + str(page_num),
-                        colour=Colour.green())
+                        colour=Colour.blue())
 
             for record_num in range(len(records)):
                 alias = records[record_num]
@@ -178,7 +178,7 @@ class Info(commands.Cog):
                     page_num += 1
                     embed = Embed(title="Voice Directory - List of Voices"
                                 " - Gender Filter - Page " + str(page_num),
-                                colour=Colour.green())
+                                colour=Colour.blue())
 
                 embed.add_field(name=f"{alias[0]}",
                                 value=f"language: {alias[1]}\ngender: {alias[2]}",
@@ -207,7 +207,7 @@ class Info(commands.Cog):
                 sorted(lang for lang in supported_languages.keys())
                 )
             embed = Embed(title="List of Voices - Language Filter",
-                          colour=Colour.green())
+                          colour=Colour.gold())
 
             embed.add_field(name='Available Languages Options:',
                             value=f"`{languages}`",
@@ -231,7 +231,7 @@ class Info(commands.Cog):
             page_num = 1
             embed = Embed(title="Voice Directory - List of Voices - "
                         "Language Filter - Page " + str(page_num),
-                        colour=Colour.green())
+                        colour=Colour.blue())
 
             for record_num in range(len(records)):
                 alias = records[record_num]
@@ -243,7 +243,7 @@ class Info(commands.Cog):
                     page_num += 1
                     embed = Embed(title="Voice Directory - List of Voices"
                                 " - Language Filter - Page " + str(page_num),
-                                colour=Colour.green())
+                                colour=Colour.blue())
 
                 embed.add_field(name=f"{alias[0]}",
                                 value=f"language: {alias[1]}\ngender: {alias[2]}",
@@ -265,7 +265,7 @@ class Info(commands.Cog):
             prefix = self.prefixes[ctx.guild]
 
             embed = Embed(title="List of Voices - Gender Filter", 
-                          colour=Colour.green())
+                          colour=Colour.red())
             embed.add_field(name="Input Gender:",
                             value=f"{error}")
             embed.add_field(name=f"To List Gender Filter Options:",
@@ -288,7 +288,7 @@ class Info(commands.Cog):
             prefix = self.prefixes[ctx.guild]
 
             embed = Embed(title="List of Voices - Language Filter",
-                          colour=Colour.green())
+                          colour=Colour.red())
             embed.add_field(name='Input Language:',
                             value=f"{error}",
                             inline=False)
