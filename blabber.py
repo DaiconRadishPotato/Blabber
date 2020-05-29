@@ -23,6 +23,21 @@ load_dotenv()
 DISCORD_TOKEN = os.getenv('discord_token')
 
 
+def _prefix_callable(bot, message):
+    """
+    Determines whether a user message is a command by checking if it has a
+    specified prefix or @mention
+
+    parameters:
+        bot [Bot]: client object representing a Discord bot
+        message [Message]: the message or context from the guild that 
+                               called the bot.
+    returns:
+        callable:
+    """
+    return commands.when_mentioned_or(bot.prefixes[message.guild])(bot, message)
+
+
 def load_cog_files(bot):
     """
     Traverse through cogs directory and loads each cog module in the directory.
@@ -52,7 +67,7 @@ if __name__ == "__main__":
 
     pool = TTSRequestHandlerPool()
     try:
-        bot = commands.Bot(command_prefix=None, help_command=None)
+        bot = commands.Bot(command_prefix=_prefix_callable, help_command=None)
 
         bot.pool = pool
         bot.voice_profiles = VoiceProfileCache()
