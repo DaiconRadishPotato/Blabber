@@ -55,11 +55,7 @@ class Profiles(commands.Cog):
             embed.add_field(name="**Update Voice:**",
                             value=f"`{prefix}voice [New Voice]`",
                             inline=False)
-
-        else:
-            # Ensure alias provided is valid
-            await voice_is_valid(ctx)
-
+        elif await voice_is_valid(alias):
             self.voice_profiles[(ctx.author, ctx.channel)] = alias
             embed = Embed(title=(f":white_check_mark: **{member}'s new voice "
                                  f"is** `{alias}`"),
