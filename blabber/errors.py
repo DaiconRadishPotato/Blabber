@@ -46,3 +46,8 @@ class NotConnected(commands.CommandError):
 class VoiceNotSupported(commands.CommandError):
     def __init__(self, alias):
         super().__init__(f"`{alias}` is not a supported voice")
+
+class InvalidPrefix(commands.CommandError):
+    def __init__(self, prefix):
+        super().__init__(f"`{prefix}` is not a valid prefix")
+

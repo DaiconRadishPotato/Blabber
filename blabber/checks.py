@@ -13,9 +13,6 @@ from blabber import supported_voices
 from blabber.errors import *
 
 
-
-
-
 async def is_guild_owner(ctx):
     """
     Checks if invoker is the owner of the guild.
@@ -71,4 +68,10 @@ async def tts_message_is_valid(message):
 async def voice_is_valid(alias):
     if alias not in supported_voices:
         raise VoiceNotSupported(alias)
+    return True
+
+
+async def prefix_is_valid(prefix):
+    if len(prefix) > 5:
+        raise InvalidPrefix(prefix)
     return True
