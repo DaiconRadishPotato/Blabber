@@ -72,7 +72,9 @@ class Events(commands.Cog):
             error [Error]: general Error object
         """
         if isinstance(error, commands.errors.CommandNotFound):
-            return
+            pass
+        # else:
+        #     raise error
 
 def setup(bot):
     """
