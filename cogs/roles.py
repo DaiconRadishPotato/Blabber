@@ -8,7 +8,7 @@
 # Python Version: 3.8.1
 # License: MIT License
 
-from discord import utils, Embed, Colour
+from discord import utils, Embed, Colour, User
 from discord.ext import commands
 
 from blabber.checks import *
@@ -42,15 +42,26 @@ class _Roles(commands.Cog):
                           description="You must input a user or nickname to "
                           "use this command",
                           colour=Colour.red())
-            await ctx.send(embed=embed)
         else:
             # Ensure that user exists
-            member = ctx.guild.get_member(user)
+            member = utils.find(
+                lambda m: m.name == user or m.nick == user,
+                ctx.guild.members)
             await user_is_valid(user, member)
 
+            # Ensure that Blabby role exists
             blabby_role = utils.get(ctx.guild.roles, name="Blabby")
+            if not blabby_role:
+                blabby = await ctx.guild.create_role(
+                    name='Blabby', 
+                    reason="To allow certain people to use Blabber Bot.")
+
             await member.add_roles(blabby_role)
-            await ctx.send(f"Blabber::Roles User {user} has Blabby now")
+
+            embed = Embed(title=f":white_check_mark: {user} has the `Blabby`"
+                                 "Role Now",
+                          colour=Colour.green())
+        await ctx.send(embed=embed)
     
     @give_blabby.error
     async def give_blabby_error(self, ctx, error):
@@ -73,12 +84,6 @@ class _Roles(commands.Cog):
                             value=f"'{prefix}give_blabby [user/nickname]'",
                             inline=False)
             await ctx.send(embed=embed)
-        elif not utils.get(ctx.guild.roles, name="Blabby"):
-            blabby = await ctx.guild.create_role(name='Blabby', reason="To "
-            "allow certain people to use Blabber Bot.")
-            await ctx.send("Roles::give_blabby Created Blabby role for "
-            "users of Blabber")
-            await self.give_blabby(ctx, ctx.args[2])
 
 
 def setup(bot):
