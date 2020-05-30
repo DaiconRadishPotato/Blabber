@@ -37,7 +37,7 @@ class Info(commands.Cog):
         paramters:
             ctx [Context]: context object representing command invocation
         """
-        embed = Embed(title="Help Directory",
+        embed = Embed(title=":blue_book: Help Directory",
                       description="",
                       colour=Colour.blue())
         prefix = self.prefixes[ctx.guild]
