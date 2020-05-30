@@ -96,10 +96,8 @@ class UserService:
         returns:
             record [tuple]: voice profile retrieved from the database
         """
-        query = (
-            "SELECT * FROM available_voices "
-            "WHERE voice_alias IN (SELECT voice_alias FROM voice_profiles "
-            "WHERE user = %s AND channel = %s)")
+        query = ("SELECT voice_alias FROM voice_profiles "
+                 "WHERE user = %s AND channel = %s")
         data = (int(hash(user)), int(hash(channel)))
 
         with ConnectionManager(os.getenv('db_user'), os.getenv('db_pw')) as cnx:

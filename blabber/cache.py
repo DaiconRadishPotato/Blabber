@@ -26,7 +26,7 @@ class VoiceProfileCache(TTLCache):
     """
     def __init__(self, max_size=512, time_to_live=60):
         super().__init__(maxsize=max_size, ttl=time_to_live)
-        self.DEFAULT_VOICE = 'voice_92'
+        self.DEFAULT_VOICE = 'english_14'
         self._service = UserService()
 
     def __setitem__(self, key, value):
