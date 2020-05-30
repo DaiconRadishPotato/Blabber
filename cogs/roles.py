@@ -58,8 +58,8 @@ class _Roles(commands.Cog):
 
             await member.add_roles(blabby_role)
 
-            embed = Embed(title=f":white_check_mark: {user} has the `Blabby`"
-                                 "Role Now",
+            embed = Embed(title=f":white_check_mark: {user} has been given "
+                                 "`Blabby` role",
                           colour=Colour.green())
         await ctx.send(embed=embed)
     
@@ -83,7 +83,12 @@ class _Roles(commands.Cog):
             embed.add_field(name="To user give_blabby:",
                             value=f"'{prefix}give_blabby [user/nickname]'",
                             inline=False)
-            await ctx.send(embed=embed)
+        elif isinstance(error, commands.errors.MissingPermissions):
+            embed = Embed(title=":x: Unable to give Blabby role",
+                          description="`Manage Roles` permission required "
+                          "to give `Blabby` role",
+                          colour=Colour.red())
+        await ctx.send(embed=embed)
 
 
 def setup(bot):
