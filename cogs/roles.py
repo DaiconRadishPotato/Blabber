@@ -27,14 +27,16 @@ class _Roles(commands.Cog):
     @commands.has_permissions(manage_roles=True)
     async def give_blabby(self, ctx, *, user: str=''):
         """
-        Gives Blabby role to inputted user, which allows user to invoke blabber
-        bot commands.
+        Gives Blabby role to inputted user, which allows user to have priority
+        when using blabber bot commands.
 
         parameters:
-            ctx [commands.Context]: discord Context object
-            user [str]: username or nickname of user
+            ctx [Context]: context object produced by a command invocation
+            user    [str] (default=''): string object representing a username
+                                        or nickname
         raises:
-            AttributeError: raised when user or blabby role does not exist 
+            InvalidUser: 
+            MissingPermissions: 
         """
         # Check if user was provided
         if not user:
@@ -66,11 +68,13 @@ class _Roles(commands.Cog):
     @give_blabby.error
     async def give_blabby_error(self, ctx, error):
         """
-        Local On_Error Function for give_blabby
+        Local error handler for give_blabby.
+        If user parameter is invalid, send an error message.
+        If invoker does not have permission to use command, send error message.
 
         parameters:
-            ctx [commands.Context]: discord Context object
-            error [commands.CommandError]: discord Command Error object
+            ctx     [Context]: context object produced by a command invocation
+            error [Exception]: error object thrown by command function
         """
         if isinstance(error, InvalidUser):
             prefix = self.prefixes[ctx.guild]
