@@ -4,7 +4,7 @@
 # Contributor:  Fanny Avila (Fa-Avila),
 #               Marcos Avila (DaiconV)
 # Date created: 1/30/2020
-# Date last modified: 5/28/2020
+# Date last modified: 5/29/2020
 # Python Version: 3.8.1
 # License: MIT License
 
@@ -22,9 +22,8 @@ class Info(commands.Cog):
     particular guild.
 
     parameters:
-        bot [discord.Bot]: discord Bot object
+        bot [Bot]: client object representing a Discord bot
     """
-
     def __init__(self, bot):
         self.MAX_EMBED_FIELDS = 25
         self.prefixes = bot.prefixes
@@ -126,7 +125,7 @@ class Info(commands.Cog):
 
         parameters:
             ctx [Context]: context object representing command invocation
-            gender [str]: string object representing a gender option
+            gender  [str] (default=''): string object representing gender option
         """
         # Check if a gender was provided
         if not gender:
@@ -188,8 +187,9 @@ class Info(commands.Cog):
         specified language.
 
         parameters:
-            ctx [Context]: context object representing command invocation
-            language [str]: string object representing a language option
+            ctx  [Context]: context object representing command invocation
+            language [str] (default=''): string object representing
+                                         language option
         """
         # Check if language was provided
         if not language:
@@ -253,7 +253,7 @@ class Info(commands.Cog):
         If key error, display the invalid argument and valid arguments.
 
         parameters:
-            ctx [Context]: context object produced by a command invocation
+            ctx     [Context]: context object produced by a command invocation
             error [Exception]: error object thrown by command function
         """
         if isinstance(error, GenderNotSupported):
@@ -278,7 +278,7 @@ class Info(commands.Cog):
         If key error, display the invalid argument and valid languages.
 
         parameters:
-            ctx [Context]: context object produced by a command invocation
+            ctx     [Context]: context object produced by a command invocation
             error [Exception]: error object thrown by command function
         """
         if isinstance(error, LanguageNotSupported):

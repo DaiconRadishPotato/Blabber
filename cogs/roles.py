@@ -4,7 +4,7 @@
 # Contributor:  Fanny Avila (Fa-Avila),
 #               Marcos Avila (DaiconV)
 # Date created: 2/3/2019
-# Date last modified: 5/28/2020
+# Date last modified: 5/29/2020
 # Python Version: 3.8.1
 # License: MIT License
 
@@ -19,6 +19,9 @@ class _Roles(commands.Cog):
     """
     Private Permission Cog that allows role managers to give permission for 
     certain users to use blabber
+
+    parameters:
+        bot [Bot]: client object representing a Discord bot
     """
     def __init__(self, bot):
         self.prefixes = bot.prefixes
@@ -34,9 +37,6 @@ class _Roles(commands.Cog):
             ctx [Context]: context object produced by a command invocation
             user    [str] (default=''): string object representing a username
                                         or nickname
-        raises:
-            InvalidUser: 
-            MissingPermissions: 
         """
         # Check if user was provided
         if not user:

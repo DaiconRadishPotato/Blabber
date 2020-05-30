@@ -3,7 +3,7 @@
 # Contributor:  Fanny Avila (Fa-Avila),
 #               Marcos Avila (DaiconV)
 # Date created: 3/9/2020
-# Date last modified: 5/26/2020
+# Date last modified: 5/29/2020
 # Python Version: 3.8.1
 # License: MIT License
 

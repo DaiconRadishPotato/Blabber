@@ -4,7 +4,7 @@
 # Contributor:  Fanny Avila (Fa-Avila),
 #               Marcos Avila (DaiconV)
 # Date created: 1/27/2020
-# Date last modified: 5/26/2020
+# Date last modified: 5/28/2020
 # Python Version: 3.8.1
 # License: MIT License
 
@@ -19,7 +19,7 @@ class Events(commands.Cog):
     Events Cog that handles events and prints in the python shell.
 
     attributes:
-        bot [discord.Bot]: discord Bot object
+        bot [Bot]: client object representing a Discord bot
     """
     def __init__(self, bot):
         self.bot = bot
@@ -29,7 +29,7 @@ class Events(commands.Cog):
         Sets up the bot's rich presence when it is online.
 
         parameter:
-            bot [Bot]: discord Bot object
+            bot [Bot]: client object representing a Discord bot
         """
         await bot.wait_until_ready()
         # Checks if bot is not offline every 15 secs
@@ -45,7 +45,7 @@ class Events(commands.Cog):
         Checks the author of the message and sees if they use blabber start.
 
         parameters:
-            message [Message]: discord Message object
+            message [Message]: message object representing a message from a user
         """
         if message.author.id != self.bot.user.id:
             return None
@@ -54,8 +54,8 @@ class Events(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         """
-        When bot has successfully loaded and online, print out a ready message
-        and create a rich presense.
+        Print out a ready message into python shell and create a rich presense
+        task when bot successfully loads and is online.
         """
         print(f"{self.bot.user.name} logged in")
         print("------------------")
