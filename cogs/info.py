@@ -4,7 +4,7 @@
 # Contributor:  Fanny Avila (Fa-Avila),
 #               Marcos Avila (DaiconV)
 # Date created: 1/30/2020
-# Date last modified: 5/29/2020
+# Date last modified: 5/31/2020
 # Python Version: 3.8.1
 # License: MIT License
 
@@ -90,7 +90,7 @@ class Info(commands.Cog):
 
         await ctx.send(embed=embed)
 
-    @commands.group(name='list', aliases=['l', 'ls'])
+    @commands.group(name='list', aliases=['l'])
     async def list(self, ctx):
         """
         Displays list voice options for the user to display a filter

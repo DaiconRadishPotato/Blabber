@@ -4,7 +4,7 @@
 # Contributor:  Fanny Avila (Fa-Avila),
 #               Marcos Avila (DaiconV)
 # Date created: 1/30/2020
-# Date last modified: 5/28/2020
+# Date last modified: 5/31/2020
 # Python Version: 3.8.1
 # License: MIT License
 
@@ -24,7 +24,7 @@ class Settings(commands.Cog):
     def __init__(self, bot):
         self.prefixes = bot.prefixes
 
-    @commands.group(name='settings')
+    @commands.group(name='settings', aliases=['set'])
     async def settings(self, ctx):
         """
         Displays guild settings commands for Blabber.
