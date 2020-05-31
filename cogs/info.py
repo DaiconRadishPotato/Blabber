@@ -131,16 +131,12 @@ class Info(commands.Cog):
             # Create a string of all the available genders
             genders = ", ".join(gender for gender in supported_genders)
 
-            embed = Embed(title="List of Voices - Gender Filter", 
-                          colour=Colour.gold())
+            embed = Embed(title=":book: Voice Directory - Gender",
+                          description=f":information_source: **Use** `{prefix}list gender [Gender]` **to display available voices**",
+                          colour=Colour.blue())
 
-            embed.add_field(name=f"Available Genders Options:",
-                            value=f"`{genders}`",
-                            inline=False)
-
-            embed.add_field(name="To list voices filtered by a gender:",
-                            value=f"`{prefix}list gender [gender_option]`",
-                            inline=False)
+            embed.add_field(name=f"**Available Genders Options:**",
+                            value=f"`{genders}`")
 
         # Ensure that gender is supported
         elif await gender_is_valid(gender):
@@ -196,15 +192,12 @@ class Info(commands.Cog):
             languages = ", ".join(
                 sorted(lang for lang in supported_languages.keys())
                 )
-            embed = Embed(title="List of Voices - Language Filter",
-                          colour=Colour.gold())
+            embed = Embed(title=":book: Voice Directory - Language",
+                          description=f":information_source: **Use** `{prefix}list language [Language]` **to display available voices**",
+                          colour=Colour.blue())
 
-            embed.add_field(name='Available Languages Options:',
+            embed.add_field(name="**Available Languages Options:**",
                             value=f"`{languages}`",
-                            inline=False)
-
-            embed.add_field(name="To list voices filtered by a language:",
-                            value=f"`{prefix}list lang [language_option]`",
                             inline=False)
 
         # Ensure that language is supported
