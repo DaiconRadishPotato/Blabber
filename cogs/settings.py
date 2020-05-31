@@ -41,7 +41,7 @@ class Settings(commands.Cog):
                               "[Option]` **to see more options**"),
                 colour=Colour.blue())
             embed.add_field(
-                name="**Prefix**",
+                name="**Prefix:**",
                 value=f"`{prefix}settings prefix`")
 
             await ctx.send(embed=embed)

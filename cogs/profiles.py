@@ -44,7 +44,6 @@ class Profiles(commands.Cog):
             prefix = self.prefixes[ctx.guild]
             embed = Embed(
                 title=":gear: Voice Settings",
-                description="Changes the voice of your TTS narrator",
                 colour=Colour.gold())
             embed.add_field(
                 name=f"**{member}'s Current Voice:**",

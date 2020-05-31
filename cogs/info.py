@@ -91,7 +91,7 @@ class Info(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.group(name='list', aliases=['l', 'ls'])
-    async def list_available_voices(self, ctx):
+    async def list(self, ctx):
         """
         Displays list voice options for the user to display a filter
         version based on either gender or language.
@@ -102,23 +102,20 @@ class Info(commands.Cog):
         # Check if subcommand invoked
         if not ctx.invoked_subcommand:
             prefix = self.prefixes[ctx.guild]
-            embed = Embed(title="Voice Directory", description="Use the "
-                          f"command `{prefix}list [option]`"
-                          "to show filter options.",
+            embed = Embed(title=":book: Voice Directory",
+                          description=f":information_source: **Use** `{prefix}list [Option]` **to see more filter options**",
                           colour=Colour.blue())
 
             # Generate information about possible subcommands
-            embed.add_field(name="Gender",
-                            value=f"`{prefix}list gender`",
-                            inline=False)
-            embed.add_field(name="Language",
-                            value=f"`{prefix}list language`",
-                            inline=False)
+            embed.add_field(name="**Gender:**",
+                            value=f"`{prefix}list gender`")
+            embed.add_field(name="**Language:**",
+                            value=f"`{prefix}list language`")
 
             await ctx.send(embed=embed)
 
-    @list_available_voices.command(name='gender', aliases=['g'])
-    async def voice_gender_filter(self, ctx, gender: str=''):
+    @list.command(name='gender', aliases=['g'])
+    async def list_gender(self, ctx, gender: str=''):
         """
         Subcommand of list that displays all available voices that have the
         specified gender.
@@ -180,8 +177,8 @@ class Info(commands.Cog):
 
         await ctx.send(embed=embed)
 
-    @list_available_voices.command(name='language', aliases=['lang'])
-    async def voice_language_filter(self, ctx, language: str=''):
+    @list.command(name='language', aliases=['lang'])
+    async def list_language(self, ctx, language: str=''):
         """
         Subcommand of list that displays all available voices that have the
         specified language.
@@ -245,8 +242,8 @@ class Info(commands.Cog):
                                 inline=True)
         await ctx.send(embed=embed)
 
-    @voice_gender_filter.error
-    async def voice_gender_filter_error(self, ctx, error):
+    @list_gender.error
+    async def list_gender_error(self, ctx, error):
         """
         Local error handler for subcommand list gender.
         If no gender argument, display how to invoke command.
@@ -270,8 +267,8 @@ class Info(commands.Cog):
 
         await ctx.send(embed=embed)
 
-    @voice_language_filter.error
-    async def voice_language_filter_error(self, ctx, error):
+    @list_language.error
+    async def list_language_error(self, ctx, error):
         """
         Local error handler for subcommand list language.
         If no language argument, display how to invoke command.
