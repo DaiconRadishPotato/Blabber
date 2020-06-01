@@ -49,11 +49,11 @@ class VoiceNotSupported(commands.CommandError):
  
 class GenderNotSupported(commands.CommandError):
     def __init__(self, gender):
-        super().__init__(f"`{gender}` is not a supported gender.")
+        super().__init__(f"`{gender}` is not a supported gender")
 
 class LanguageNotSupported(commands.CommandError):
     def __init__(self, language):
-        super().__init__(f"`{language}` is not a supported language.")
+        super().__init__(f"`{language}` is not a supported language")
 
 class InvalidPrefix(commands.CommandError):
     def __init__(self, prefix):
