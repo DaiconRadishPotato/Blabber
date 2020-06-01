@@ -1,586 +1,586 @@
 {
   "arabic_1": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "ar-XA",
     "name": "ar-XA-Standard-A"
   },
   "arabic_2": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "ar-XA",
     "name": "ar-XA-Standard-B"
   },
   "arabic_3": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "ar-XA",
     "name": "ar-XA-Standard-C"
   },
   "arabic_4": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "ar-XA",
     "name": "ar-XA-Standard-D"
   },
   "bengali_1": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "bn-IN",
     "name": "bn-IN-Standard-A"
   },
   "bengali_2": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "bn-IN",
     "name": "bn-IN-Standard-B"
   },
   "czech_1": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "cs-CZ",
     "name": "cs-CZ-Standard-A"
   },
   "danish_1": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "da-DK",
     "name": "da-DK-Standard-A"
   },
   "dutch_1": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "nl-NL",
     "name": "nl-NL-Standard-A"
   },
   "dutch_2": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "nl-NL",
     "name": "nl-NL-Standard-B"
   },
   "dutch_3": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "nl-NL",
     "name": "nl-NL-Standard-C"
   },
   "dutch_4": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "nl-NL",
     "name": "nl-NL-Standard-D"
   },
   "dutch_5": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "nl-NL",
     "name": "nl-NL-Standard-E"
   },
   "english_1": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "en-AU",
     "name": "en-AU-Standard-A"
   },
   "english_2": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "en-AU",
     "name": "en-AU-Standard-B"
   },
   "english_3": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "en-AU",
     "name": "en-AU-Standard-C"
   },
   "english_4": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "en-AU",
     "name": "en-AU-Standard-D"
   },
   "english_5": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "en-IN",
     "name": "en-IN-Standard-A"
   },
   "english_6": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "en-IN",
     "name": "en-IN-Standard-B"
   },
   "english_7": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "en-IN",
     "name": "en-IN-Standard-C"
   },
   "english_8": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "en-IN",
     "name": "en-IN-Standard-D"
   },
   "english_9": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "en-GB",
     "name": "en-GB-Standard-A"
   },
   "english_10": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "en-GB",
     "name": "en-GB-Standard-B"
   },
   "english_11": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "en-GB",
     "name": "en-GB-Standard-C"
   },
   "english_12": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "en-GB",
     "name": "en-GB-Standard-D"
   },
   "english_13": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "en-US",
     "name": "en-US-Standard-B"
   },
   "english_14": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "en-US",
     "name": "en-US-Standard-C"
   },
   "english_15": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "en-US",
     "name": "en-US-Standard-D"
   },
   "english_16": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "en-US",
     "name": "en-US-Standard-E"
   },
   "filipino_1": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "fil-PH",
     "name": "fil-PH-Standard-A"
   },
   "finnish_1": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "fi-FI",
     "name": "fi-FI-Standard-A"
   },
   "french_1": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "fr-CA",
     "name": "fr-CA-Standard-A"
   },
   "french_2": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "fr-CA",
     "name": "fr-CA-Standard-B"
   },
   "french_3": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "fr-CA",
     "name": "fr-CA-Standard-C"
   },
   "french_4": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "fr-CA",
     "name": "fr-CA-Standard-D"
   },
   "french_5": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "fr-FR",
     "name": "fr-FR-Standard-A"
   },
   "french_6": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "fr-FR",
     "name": "fr-FR-Standard-B"
   },
   "french_7": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "fr-FR",
     "name": "fr-FR-Standard-C"
   },
   "french_8": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "fr-FR",
     "name": "fr-FR-Standard-D"
   },
   "french_9": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "fr-FR",
     "name": "fr-FR-Standard-E"
   },
   "german_1": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "de-DE",
     "name": "de-DE-Standard-A"
   },
   "german_2": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "de-DE",
     "name": "de-DE-Standard-B"
   },
   "german_3": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "de-DE",
     "name": "de-DE-Standard-E"
   },
   "german_4": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "de-DE",
     "name": "de-DE-Standard-F"
   },
   "greek_1": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "el-GR",
     "name": "el-GR-Standard-A"
   },
   "gujarati_1": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "gu-IN",
     "name": "gu-IN-Standard-A"
   },
   "gujarati_2": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "gu-IN",
     "name": "gu-IN-Standard-B"
   },
   "hindi_1": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "hi-IN",
     "name": "hi-IN-Standard-A"
   },
   "hindi_2": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "hi-IN",
     "name": "hi-IN-Standard-B"
   },
   "hindi_3": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "hi-IN",
     "name": "hi-IN-Standard-C"
   },
   "hindi_4": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "hi-IN",
     "name": "hi-IN-Standard-D"
   },
   "hungarian_1": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "hu-HU",
     "name": "hu-HU-Standard-A"
   },
   "indonesian_1": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "id-ID",
     "name": "id-ID-Standard-A"
   },
   "indonesian_2": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "id-ID",
     "name": "id-ID-Standard-B"
   },
   "indonesian_3": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "id-ID",
     "name": "id-ID-Standard-C"
   },
   "indonesian_4": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "id-ID",
     "name": "id-ID-Standard-D"
   },
   "italian_1": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "it-IT",
     "name": "it-IT-Standard-A"
   },
   "italian_2": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "it-IT",
     "name": "it-IT-Standard-B"
   },
   "italian_3": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "it-IT",
     "name": "it-IT-Standard-C"
   },
   "italian_4": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "it-IT",
     "name": "it-IT-Standard-D"
   },
   "japanese_1": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "ja-JP",
     "name": "ja-JP-Standard-A"
   },
   "japanese_2": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "ja-JP",
     "name": "ja-JP-Standard-B"
   },
   "japanese_3": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "ja-JP",
     "name": "ja-JP-Standard-C"
   },
   "japanese_4": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "ja-JP",
     "name": "ja-JP-Standard-D"
   },
   "kannada_1": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "kn-IN",
     "name": "kn-IN-Standard-A"
   },
   "kannada_2": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "kn-IN",
     "name": "kn-IN-Standard-B"
   },
   "korean_1": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "ko-KR",
     "name": "ko-KR-Standard-A"
   },
   "korean_2": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "ko-KR",
     "name": "ko-KR-Standard-B"
   },
   "korean_3": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "ko-KR",
     "name": "ko-KR-Standard-C"
   },
   "korean_4": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "ko-KR",
     "name": "ko-KR-Standard-D"
   },
   "malayalam_1": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "ml-IN",
     "name": "ml-IN-Standard-A"
   },
   "malayalam_2": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "ml-IN",
     "name": "ml-IN-Standard-B"
   },
   "mandarin_1": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "cmn-CN",
     "name": "cmn-CN-Standard-A"
   },
   "mandarin_2": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "cmn-CN",
     "name": "cmn-CN-Standard-B"
   },
   "mandarin_3": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "cmn-CN",
     "name": "cmn-CN-Standard-C"
   },
   "mandarin_4": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "cmn-CN",
     "name": "cmn-CN-Standard-D"
   },
   "mandarin_5": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "cmn-TW",
     "name": "cmn-TW-Standard-A"
   },
   "mandarin_6": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "cmn-TW",
     "name": "cmn-TW-Standard-B"
   },
   "mandarin_7": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "cmn-TW",
     "name": "cmn-TW-Standard-C"
   },
   "norwegian_1": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "nb-NO",
     "name": "nb-NO-Standard-A"
   },
   "norwegian_2": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "nb-NO",
     "name": "nb-NO-Standard-B"
   },
   "norwegian_3": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "nb-NO",
     "name": "nb-NO-Standard-C"
   },
   "norwegian_4": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "nb-NO",
     "name": "nb-NO-Standard-D"
   },
   "norwegian_5": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "nb-NO",
     "name": "nb-no-Standard-E"
   },
   "polish_1": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "pl-PL",
     "name": "pl-PL-Standard-A"
   },
   "polish_2": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "pl-PL",
     "name": "pl-PL-Standard-B"
   },
   "polish_3": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "pl-PL",
     "name": "pl-PL-Standard-C"
   },
   "polish_4": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "pl-PL",
     "name": "pl-PL-Standard-D"
   },
   "polish_5": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "pl-PL",
     "name": "pl-PL-Standard-E"
   },
   "portuguese_1": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "pt-BR",
     "name": "pt-BR-Standard-A"
   },
   "portuguese_2": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "pt-PT",
     "name": "pt-PT-Standard-A"
   },
   "portuguese_3": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "pt-PT",
     "name": "pt-PT-Standard-B"
   },
   "portuguese_4": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "pt-PT",
     "name": "pt-PT-Standard-C"
   },
   "portuguese_5": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "pt-PT",
     "name": "pt-PT-Standard-D"
   },
   "russian_1": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "ru-RU",
     "name": "ru-RU-Standard-A"
   },
   "russian_2": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "ru-RU",
     "name": "ru-RU-Standard-B"
   },
   "russian_3": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "ru-RU",
     "name": "ru-RU-Standard-C"
   },
   "russian_4": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "ru-RU",
     "name": "ru-RU-Standard-D"
   },
   "russian_5": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "ru-RU",
     "name": "ru-RU-Standard-E"
   },
   "slovak_1": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "sk-SK",
     "name": "sk-SK-Standard-A"
   },
   "spanish_1": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "es-ES",
     "name": "es-ES-Standard-A"
   },
   "swedish_1": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "sv-SE",
     "name": "sv-SE-Standard-A"
   },
   "tamil_1": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "ta-IN",
     "name": "ta-IN-Standard-A"
   },
   "tamil_2": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "ta-IN",
     "name": "ta-IN-Standard-B"
   },
   "telugu_1": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "te-IN",
     "name": "te-IN-Standard-A"
   },
   "telugu_2": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "te-IN",
     "name": "te-IN-Standard-B"
   },
   "thai_1": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "th-TH",
     "name": "th-TH-Standard-A"
   },
   "turkish_1": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "tr-TR",
     "name": "tr-TR-Standard-A"
   },
   "turkish_2": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "tr-TR",
     "name": "tr-TR-Standard-B"
   },
   "turkish_3": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "tr-TR",
     "name": "tr-TR-Standard-C"
   },
   "turkish_4": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "tr-TR",
     "name": "tr-TR-Standard-D"
   },
   "turkish_5": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "tr-TR",
     "name": "tr-TR-Standard-E"
   },
   "ukrainian_1": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "uk-UA",
     "name": "uk-UA-Standard-A"
   },
   "vietnamese_1": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "vi-VN",
     "name": "vi-VN-Standard-A"
   },
   "vietnamese_2": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "vi-VN",
     "name": "vi-VN-Standard-B"
   },
   "vietnamese_3": {
-    "gender": "FEMALE",
+    "gender": "female",
     "lang_code": "vi-VN",
     "name": "vi-VN-Standard-C"
   },
   "vietnamese_4": {
-    "gender": "MALE",
+    "gender": "male",
     "lang_code": "vi-VN",
     "name": "vi-VN-Standard-D"
   }
