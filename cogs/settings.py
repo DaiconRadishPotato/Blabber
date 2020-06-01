@@ -36,7 +36,7 @@ class Settings(commands.Cog):
         if not ctx.invoked_subcommand:
             prefix = self.prefixes[ctx.guild]
             embed = Embed(
-                title=":gear: Server Settings",
+                title=":gear: **Server Settings**",
                 description=(f":information_source: **Use** `{prefix}settings "
                               "[Option]` **to see more options**"),
                 colour=Colour.blue())
@@ -62,7 +62,7 @@ class Settings(commands.Cog):
             prefix = self.prefixes[ctx.guild]
 
             embed = Embed(
-                title=":gear: Prefix Settings",
+                title=":gear: **Prefix Settings**",
                 description="Changes the prefix for the server",
                 colour=Colour.gold())
             embed.add_field(

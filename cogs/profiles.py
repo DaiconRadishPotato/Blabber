@@ -43,7 +43,7 @@ class Profiles(commands.Cog):
 
             prefix = self.prefixes[ctx.guild]
             embed = Embed(
-                title=":gear: Voice Settings",
+                title=":gear: **Voice Settings**",
                 colour=Colour.gold())
             embed.add_field(
                 name=f"**{member}'s Current Voice:**",
@@ -75,7 +75,7 @@ class Profiles(commands.Cog):
         prefix = self.prefixes[ctx.guild]
         embed = Embed(
             title=":x: **Unable to set voice**",
-            description=(f"{error}\n\n**:wrench: Use the** `>list` "
+            description=(f"{error}\n\n:wrench: **Use the** `>list` "
                           "**command to search for supported voices**"),
             colour=Colour.red())
         await ctx.send(embed=embed)
