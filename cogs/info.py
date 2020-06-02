@@ -4,7 +4,7 @@
 # Contributor:  Fanny Avila (Fa-Avila),
 #               Marcos Avila (DaiconV)
 # Date created: 1/30/2020
-# Date last modified: 5/31/2020
+# Date last modified: 6/2/2020
 # Python Version: 3.8.1
 # License: MIT License
 
@@ -174,7 +174,8 @@ class Info(commands.Cog):
 
         # Ensure that gender is supported
         elif await gender_is_valid(gender):
-            # Create embed of all the available voices with the particular gender
+            # Create embed displaying all the available voices 
+            # of a the particular gender
             page_number = 1
             embed = Embed(
                 title=( ":book: Voice Directory - Gender - "
@@ -238,7 +239,8 @@ class Info(commands.Cog):
             language = language.lower()
             lang_codes = supported_languages[language]
 
-            # Create embed of all the available voices with the particular language
+            # Create embed displaying all the available voices
+            # of a the particular language
             page_num = 1
             embed = Embed(
                 title=( ":book: Voice Directory - Language - "
@@ -261,7 +263,8 @@ class Info(commands.Cog):
                     embed.set_footer(text=f"Page #{page_num}")
 
                 embed.add_field(name=f"{voice_info[0]}",
-                                value=f"Region: {voice_info[1]}\nGender: {voice_info[2]}",
+                                value=f"Region: {voice_info[1]}\n"
+                                "Gender: {voice_info[2]}",
                                 inline=True)
                 field_index += 1
 

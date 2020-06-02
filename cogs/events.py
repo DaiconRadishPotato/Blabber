@@ -4,7 +4,7 @@
 # Contributor:  Fanny Avila (Fa-Avila),
 #               Marcos Avila (DaiconV)
 # Date created: 1/27/2020
-# Date last modified: 5/29/2020
+# Date last modified: 6/2/2020
 # Python Version: 3.8.1
 # License: MIT License
 
@@ -64,7 +64,7 @@ class Events(commands.Cog):
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
         """
-        Checks whenever there is a command error and prints information to the 
+        Checks whenever there is a command error and prints information to the
         guild chat room.
 
         paramters:
