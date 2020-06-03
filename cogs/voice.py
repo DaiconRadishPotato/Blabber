@@ -210,6 +210,7 @@ class Voice(commands.Cog):
         """
         if isinstance(error, BlabberConnectError):
             await self.connect_error(ctx, error)
+            return None
 
         elif (isinstance(error, TTSMessageTooLong)
               or isinstance(error, NotConnected)):
