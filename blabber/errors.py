@@ -37,7 +37,7 @@ class TTSMessageTooLong(commands.CommandError):
 class MissingCredentials(BlabberConnectError):
     def __init__(self):
         super().__init__("`Blabby` role or `Manage Channels` permission "
-                         "required when others are in voice channel")
+                         "needed if others are in voice channel")
 
 
 class NotConnected(commands.CommandError):
