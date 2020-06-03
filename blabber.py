@@ -20,7 +20,6 @@ from blabber.cache import VoiceProfileCache, PrefixCache
 from blabber.pool import TTSRequestHandlerPool
 
 load_dotenv()
-DISCORD_TOKEN = os.getenv('discord_token')
 
 
 def _prefix_callable(bot, message):
@@ -74,6 +73,6 @@ if __name__ == "__main__":
         bot.prefixes = PrefixCache()
 
         load_cog_files(bot)
-        bot.run(DISCORD_TOKEN)
+        bot.run(os.getenv('discord_token'))
     finally:
         pool.teardown()
