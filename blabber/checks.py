@@ -3,7 +3,7 @@
 # Contributor:  Fanny Avila (Fa-Avila),
 #               Marcos Avila (DaiconV)
 # Date created: 3/9/2020
-# Date last modified: 5/29/2020
+# Date last modified: 6/2/2020
 # Python Version: 3.8.1
 # License: MIT License
 
@@ -86,10 +86,4 @@ async def language_is_valid(language):
 async def prefix_is_valid(prefix):
     if len(prefix) > 5:
         raise InvalidPrefix(prefix)
-    return True
-
-
-async def user_is_valid(user, member):
-    if not member:
-        raise InvalidUser(user)
     return True
