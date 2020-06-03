@@ -127,7 +127,7 @@ class Voice(commands.Cog):
                 title=":information_source: **No message to recite**",
                 colour=Colour.blue())
             await ctx.send(embed=embed)
-        elif  await tts_message_is_valid(message):
+        elif await tts_message_is_valid(message):
             # Ensure Blabber is connected to command invoker's voice channel
             if (not ctx.voice_client
                 or ctx.author.voice.channel != ctx.voice_client.channel):
