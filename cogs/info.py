@@ -4,7 +4,7 @@
 # Contributor:  Fanny Avila (Fa-Avila),
 #               Marcos Avila (DaiconV)
 # Date created: 1/30/2020
-# Date last modified: 5/31/2020
+# Date last modified: 6/2/2020
 # Python Version: 3.8.1
 # License: MIT License
 
@@ -18,12 +18,12 @@ from blabber.errors import *
 
 class Info(commands.Cog):
     """
-    Collection of commands for displaying information about Blabber Bot for the
-    particular guild.
+    Collection of commands for displaying information about Blabber.
 
     parameters:
         bot [Bot]: client object representing a Discord bot
     """
+
     def __init__(self, bot):
         self.MAX_EMBED_FIELDS = 24
         self.prefixes = bot.prefixes
@@ -36,7 +36,7 @@ class Info(commands.Cog):
             field    [str]: field to filter voices by
             values [tuple]: acceptable values
         yields:
-            tuple: voice information to display 
+            tuple: voice information to display
         """
         for alias, info in supported_voices.items():
             # Extract voice region code
@@ -58,70 +58,67 @@ class Info(commands.Cog):
     @commands.command(name='help', aliases=['h'])
     async def help(self, ctx):
         """
-        Prints out description of all available commands for Blabber to the
-        text channel where the bot was invoked.
+        Displays descriptions of all available commands for Blabber.
 
         paramters:
             ctx [Context]: context object representing command invocation
         """
-        embed = Embed(title=":blue_book: Help Directory",
-                      description="",
-                      colour=Colour.blue())
+        embed = Embed(
+            title=":blue_book: **List of Commands**",
+            colour=Colour.blue())
         prefix = self.prefixes[ctx.guild]
 
-        # Generate help for voice.py functions
-        embed.add_field(name=f"`{prefix}connect` or `{prefix}c`",
-                        value="Connect/Move Blabber into the voice channel you"
-                        "are in",
-                        inline=False)
-        embed.add_field(name=f"`{prefix}disconnect` or `{prefix}dc`",
-                        value="Disconnect Blabber from its voice channel",
-                        inline=False)
-        embed.add_field(name=f"`{prefix}say [message]` or `{prefix}s "
-                        "[message]`",
-                        value="Tell Blabber to say something. If Blabber is "
-                        "not in the same voice channel, then it will join.",
-                        inline=False)
+        # Generate information for voice.py commands
+        embed.add_field(
+            name="**Connect:**",
+            value=(f"`{prefix}connect`, `{prefix}c`\n"
+                    "Summon Blabber to your voice channel"),
+            inline=False)
+        embed.add_field(
+            name="**Disconnect:**",
+            value=(f"`{prefix}disconnect`, `{prefix}dc`\n"
+                    "Dismiss Blabber from voice channel"),
+            inline=False)
+        embed.add_field(
+            name="**Say:**",
+            value=(f"`{prefix}say [Message]`, `{prefix}s [Message]`\n"
+                    "Recite a message to your voice channel"),
+            inline=False)
 
-        # Generate help for info.py functions
-        embed.add_field(name=f"`{prefix}help` or `{prefix}h`",
-                        value=f"Displays this message.",
-                        inline=False)
-        embed.add_field(name=f"`{prefix}list` or `{prefix}l`",
-                        value="Displays the Voice Directory and voices.",
-                        inline=False)
+        # Generate information for info.py commands
+        embed.add_field(
+            name="**List:**",
+            value=(f"`{prefix}list`, `{prefix}l`\n"
+                    "Display supported TTS narrator voices"),
+            inline=False)
 
-        # Generate help for profiles.py functions
-        embed.add_field(name=f"`{prefix}voice [alias]` or `{prefix}v [alias]`",
-                        value="Set a specific voice for your say commands "
-                        "unique to the guild",
-                        inline=False)
+        # Generate information for profiles.py commands
+        embed.add_field(
+            name="**Voice:**",
+            value=(f"`{prefix}voice`, `{prefix}v`\n"
+                    "Display and change your TTS narrator voice"),
+            inline=False)
 
-        # Generate help for settings.py functions
-        embed.add_field(name=f"`{prefix}settings`",
-                        value="Displays settings menu, which allows the "
-                        "certain users to change Blabber Bot settings such as "
-                        "the prefix",
-                        inline=False)
-        embed.add_field(name=f"`{prefix}settings prefix` or `{prefix}settings "
-                        "p`", 
-                        value="Displays current guild prefix.",
-                        inline=False)
+        # Generate information for settings.py commands
+        embed.add_field(
+            name="**Settings:**",
+            value=(f"`{prefix}settings`, `{prefix}set`\n"
+                    "Display and change server settings for Blabber"),
+            inline=False)
 
-        # Generate help for roles.py functions
-        embed.add_field(name=f"`{prefix}give_blabby [user]` or "
-                        f"`{prefix}gb [user]`", 
-                        value="Gives blabby role to user so they have priorty"
-                        "when using blabber.",
-                        inline=False)
+        # Generate information for roles.py commands
+        embed.add_field(
+            name="**Give Blabby:**",
+            value=(f"`{prefix}giveblabby [Member]`, `{prefix}gb [Member]`\n"
+                    "Assigns `Blabby` role to a server member"),
+            inline=False)
 
         await ctx.send(embed=embed)
 
     @commands.group(name='list', aliases=['l'])
     async def list(self, ctx):
         """
-        Displays list voice options for the user to display a filter
-        version based on either gender or language.
+        Displays options for filtering list of TTS narrator voices.
 
         parameters:
             ctx [Context]: context object representing command invocation
@@ -138,22 +135,21 @@ class Info(commands.Cog):
             # Generate information about possible subcommands
             embed.add_field(
                 name="**Gender:**",
-                value=f"`{prefix}list gender`")
+                value=f"`{prefix}list gender`,\n`{prefix}list gend`")
             embed.add_field(
                 name="**Language:**",
-                value=f"`{prefix}list language`")
+                value=f"`{prefix}list language`,\n`{prefix}list lang`")
 
             await ctx.send(embed=embed)
 
     @list.command(name='gender', aliases=['gend'])
     async def list_gender(self, ctx, gender: str=''):
         """
-        Subcommand of list that displays all available voices that have the
-        specified gender.
+        Displays TTS narrator voices filtered by gender.
 
         parameters:
             ctx [Context]: context object representing command invocation
-            gender  [str] (default=''): string object representing gender option
+            gender  [str] (default=''): gender to filter by
         """
         # Check if a gender was provided
         if not gender:
@@ -161,7 +157,6 @@ class Info(commands.Cog):
 
             # Create a string of all the available genders
             genders = "`, `".join(gender for gender in supported_genders)
-
             embed = Embed(
                 title=":book: Voice Directory - Gender",
                 description=(f":information_source: **Use** `{prefix}list "
@@ -174,34 +169,41 @@ class Info(commands.Cog):
 
         # Ensure that gender is supported
         elif await gender_is_valid(gender):
-            # Create embed of all the available voices with the particular gender
+            field_index = 0
             page_number = 1
+
+            # Generate embed page
             embed = Embed(
                 title=( ":book: Voice Directory - Gender - "
                        f"{gender.capitalize()}"),
                 colour=Colour.blue())
             embed.set_footer(text=f"Page #{page_number}")
 
-            field_index = 0
             for voice_info in self._voice_filter('gender', gender):
-                # Check if the number of fields in the embed had exceed 24
-                if(field_index >= self.MAX_EMBED_FIELDS):
-                    await ctx.send(embed=embed)
-
+                # Check if the number of fields exceeds embed page limit
+                if (field_index >= self.MAX_EMBED_FIELDS):
                     field_index = 0
                     page_number += 1
+
+                    # Send old embed page
+                    await ctx.send(embed=embed)
+
+                    # Generate new embed page
                     embed = Embed(
                         title=(f":book: Voice Directory - Gender - "
                                f"{gender.capitalize()}"),
                         colour=Colour.blue())
                     embed.set_footer(text=f"Page #{page_number}")
-                # Add voice to display
+
+                # Add voice to embed
                 embed.add_field(
                     name=f"{voice_info[0]}",
                     value=f"Region: {voice_info[1]}\nGender: {voice_info[2]}")
+
                 field_index += 1
 
-            if field_index > 3 and field_index % 3  == 2:
+            # Add padding field if needed
+            if field_index > 3 and field_index % 3 == 2:
                 embed.add_field(name="⠀", value="⠀")
 
         await ctx.send(embed=embed)
@@ -209,13 +211,11 @@ class Info(commands.Cog):
     @list.command(name='language', aliases=['lang'])
     async def list_language(self, ctx, language: str=''):
         """
-        Subcommand of list that displays all available voices that have the
-        specified language.
+        Displays TTS narrator voices filtered by language.
 
         parameters:
             ctx  [Context]: context object representing command invocation
-            language [str] (default=''): string object representing
-                                         language option
+            language [str] (default=''): language to filter by
         """
         # Check if language was provided
         if not language:
@@ -238,34 +238,41 @@ class Info(commands.Cog):
             language = language.lower()
             lang_codes = supported_languages[language]
 
-            # Create embed of all the available voices with the particular language
-            page_num = 1
+            field_index = 0
+            page_number = 1
+
+            # Generate embed page
             embed = Embed(
                 title=( ":book: Voice Directory - Language - "
                        f"{language.capitalize()}"),
                 colour=Colour.blue())
-            embed.set_footer(text=f"Page #{page_num}")
+            embed.set_footer(text=f"Page #{page_number}")
 
-            field_index = 0
             for voice_info in self._voice_filter('lang_code', *lang_codes):
-                # Check if the number of fields in the embed had exceed 24
-                if(field_index >= self.MAX_EMBED_FIELDS):
+                # Check if the number of fields exceeds embed page limit
+                if (field_index >= self.MAX_EMBED_FIELDS):
+                    field_index = 0
+                    page_number += 1
+
+                    # Send old embed page
                     await ctx.send(embed=embed)
 
-                    field_index = 0
-                    page_num += 1
+                    # Generate new embed page
                     embed = Embed(
                         title=( ":book: Voice Directory - Language - "
                                f"{language.capitalize()}"),
                         colour=Colour.blue())
-                    embed.set_footer(text=f"Page #{page_num}")
+                    embed.set_footer(text=f"Page #{page_number}")
 
-                embed.add_field(name=f"{voice_info[0]}",
-                                value=f"Region: {voice_info[1]}\nGender: {voice_info[2]}",
-                                inline=True)
+                # Add voice to embed
+                embed.add_field(
+                    name=f"{voice_info[0]}",
+                    value=f"Region: {voice_info[1]}\nGender: {voice_info[2]}")
+
                 field_index += 1
 
-            if field_index > 3 and field_index % 3  == 2:
+            # Add padding field if needed
+            if field_index > 3 and field_index % 3 == 2:
                 embed.add_field(name="⠀", value="⠀")
 
         await ctx.send(embed=embed)
@@ -274,8 +281,6 @@ class Info(commands.Cog):
     async def list_gender_error(self, ctx, error):
         """
         Local error handler for subcommand list gender.
-        If no gender argument, display how to invoke command.
-        If key error, display the invalid argument and valid arguments.
 
         parameters:
             ctx     [Context]: context object produced by a command invocation
@@ -285,8 +290,8 @@ class Info(commands.Cog):
 
         embed = Embed(
             title=":x: **Unsupported Gender**",
-            description=(f"{error}\n\n:wrench: **Use the** `>list gender` "
-                          "**command to view all supported genders**"),
+            description=(f"{error}\n\n:wrench: **Use** `>list gender` **to "
+                          "view all supported genders**"),
             colour=Colour.red())
         await ctx.send(embed=embed)
 
@@ -294,8 +299,6 @@ class Info(commands.Cog):
     async def list_language_error(self, ctx, error):
         """
         Local error handler for subcommand list language.
-        If no language argument, display how to invoke command.
-        If key error, display the invalid argument and valid languages.
 
         parameters:
             ctx     [Context]: context object produced by a command invocation
@@ -305,11 +308,10 @@ class Info(commands.Cog):
 
         embed = Embed(
             title=":x: **Unsupported Language**",
-            description=(f"{error}\n\n:wrench: **Use the** `>list language` "
-                          "**command to view all supported languages**"),
+            description=(f"{error}\n\n:wrench: **Use** `>list language` **to "
+                          "view all supported languages**"),
             colour=Colour.red())
         await ctx.send(embed=embed)
-
 
 
 def setup(bot):
