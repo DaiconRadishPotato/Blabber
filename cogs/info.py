@@ -23,7 +23,6 @@ class Info(commands.Cog):
     parameters:
         bot [Bot]: client object representing a Discord bot
     """
-
     def __init__(self, bot):
         self.MAX_EMBED_FIELDS = 24
         self.prefixes = bot.prefixes
