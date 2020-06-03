@@ -25,6 +25,22 @@ class TTSAudio(AudioSource):
         self._dispatch = TTSRequestDispatcher(pool)
         self._packets = self._dispatch.iter_packets()
 
+    def is_opus(self):
+        """
+        Query to determine if AudioSource read data is Opus encoded.
+
+        returns:
+            bool: value of 'True'
+        """
+        return True
+
+    def clear(self):
+        """
+        Re-initializes internal audio data buffer.
+        """
+        self._dispatch.clear()
+        self._packets = self._dispatch.iter_packets()
+
     def read(self):
         """
         Reads one packet of Opus encoded audio data from TTS request responses.
@@ -48,12 +64,3 @@ class TTSAudio(AudioSource):
             request [TTSRequest]: TTS request object to be submitted
         """
         await self._dispatch.submit_request(request)
-
-    def is_opus(self):
-        """
-        Query to determine if AudioSource read data is Opus encoded.
-
-        returns:
-            bool: value of 'True'
-        """
-        return True

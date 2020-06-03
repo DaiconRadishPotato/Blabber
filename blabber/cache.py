@@ -4,13 +4,14 @@
 #           Marcos Avila (DaiconV)
 # Contributors: Fanny Avila (Fa-Avila),
 # Date created: 4/9/2019
-# Date last modified: 5/5/2020
+# Date last modified: 5/24/2020
 # Python Version: 3.8.1
 # License: MIT License
 
 import json
 
 from cachetools import TTLCache
+
 from blabber.services import UserService, GuildService
 
 
@@ -23,38 +24,10 @@ class VoiceProfileCache(TTLCache):
         max_size [int]: maximum size of cache
         time_to_live [int]: time in secs before a cache object expires
     """
-    def __init__(self, max_size=500, time_to_live=60):
+    def __init__(self, max_size=512, time_to_live=60):
         super().__init__(maxsize=max_size, ttl=time_to_live)
-        self.DEFAULT_VOICE = {
-            "voice_alias": 'voice_97',
-            "voice_name": 'en-US-Standard-C',
-            "gender": 'FEMALE',
-            "language": 'en',
-            "lang_code": 'en-US'
-        }
+        self.DEFAULT_VOICE = 'english_14'
         self._service = UserService()
-
-        with open(r'./blabber/data.json', 'r') as f:
-            data = json.load(f)
-            self._available_voices = data["voice_info"]
-
-    def __getitem__(self, key):
-        """
-        Checks if a voice preference is in cache or database and returns it.
-
-        parameters:
-            key [tuple]: tuple of discord User and Channel objects
-        returns:
-            voice_alias [tuple]: tuple of voice information
-        """
-        voice_alias = super().__getitem__(key)
-
-        if isinstance(voice_alias, str):
-            return (voice_alias, *self._available_voices[voice_alias].values())
-        elif isinstance(voice_alias, tuple):
-            return voice_alias
-        else:
-            return None
 
     def __setitem__(self, key, value):
         """
@@ -67,7 +40,7 @@ class VoiceProfileCache(TTLCache):
         """
         super().__setitem__(key, value)
 
-        if value == self.DEFAULT_VOICE["voice_alias"]:
+        if value == self.DEFAULT_VOICE:
             self._service.delete(*key)
         else:
             self._service.insert(*key, value)
@@ -79,15 +52,17 @@ class VoiceProfileCache(TTLCache):
         parameter:
             key [tuple]: tuple of discord User and Channel objects
         returns:
-            voice [tuple]: tuple with voice alias and other voice information
-        raises:
-            NotInDatabase: Does not exist in cache or database. TBD
+            str: voice alias
         """
-        voice = self._service.select(*key)
-        if voice:
-            return voice
+        row = self._service.select(*key)
+        if row:
+            value = row[0]
         else:
-            return None
+            value = self.DEFAULT_VOICE
+
+        super().__setitem__(key, value)
+
+        return value
 
 
 class PrefixCache(TTLCache):
@@ -99,7 +74,7 @@ class PrefixCache(TTLCache):
         max_size [int]: maximum size of cache
         time_to_live [int]: time in secs before a cache object expires
     """
-    def __init__(self, max_size=500, time_to_live=3600):
+    def __init__(self, max_size=512, time_to_live=3600):
         super().__init__(maxsize=max_size, ttl=time_to_live)
         self._service = GuildService()
         self.DEFAULT_PREFIX = '>'
@@ -125,14 +100,16 @@ class PrefixCache(TTLCache):
         Checks database for guild prefix if it does not exist in cache.
 
         parameter:
-            key [tuple]: tuple of discord User and Channel objects
+            key [Guild]: discord Guild object
         returns:
-            prefix [str]: string used for command prefix
-        raises:
-            NotInDatabase: Does not exist in cache or database. TBD
+            str: string used for command prefix
         """
-        prefix = self._service.select(key)
-        if prefix:
-            return prefix[0]
+        row = self._service.select(key)
+        if row:
+            value = row[0]
         else:
-            return None
+            value = self.DEFAULT_PREFIX
+
+        super().__setitem__(key, value)
+
+        return value

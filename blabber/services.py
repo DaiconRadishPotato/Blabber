@@ -4,11 +4,12 @@
 # Contributor:  Jacky Zhang (jackyeightzhang),
 #               Marcos Avila (DaiconV)
 # Date created: 3/27/2020
-# Date last modified: 5/4/2020
+# Date last modified: 5/28/2020
 # Python Version: 3.8.1
 # License: MIT License
 
 import os
+
 import mysql.connector
 from dotenv import load_dotenv
 
@@ -23,7 +24,6 @@ class ConnectionManager:
         username [str]: username for connction to MySQLConnection
         password [str]: password for connction to MySQLConnection
     """
-
     def __init__(self, username, password):
         """Initializes connection."""
         self._cnx = mysql.connector.connect(
@@ -54,7 +54,6 @@ class UserService:
     Object that handles the connection, disconnection, and data updates
     pertaining to user data.
     """
-
     def __init__(self):
         pass
 
@@ -64,12 +63,11 @@ class UserService:
         can have a distinct voice profile on a given channel.
 
         parameters:
-            user [User]: discord User Object
+            user       [User]: discord User Object
             channel [Channel]: discord Channel Object
-            alias [str]: new voice
+            alias       [str]: string object representing a voice
         returns:
-            cusor.rowcout [int]: integer representing successful insertion or
-                                 update
+            int: integer representing successful insertion or update
         """
         query = ("INSERT INTO voice_profiles "
                  "(user, channel, voice_alias) "
@@ -89,33 +87,30 @@ class UserService:
         Retrieves user's voice profile for a specified channel.
 
         parameters:
-            user [User]: discord User Object
+            user       [User]: discord User Object
             channel [Channel]: discord Channel object
         returns:
-            record [tuple]: voice profile retrieved from the database
+            tuple: voice profile retrieved from the database
         """
-        query = (
-            "SELECT * FROM available_voices "
-            "WHERE voice_alias IN (SELECT voice_alias FROM voice_profiles "
-            "WHERE user = %s AND channel = %s)")
+        query = ("SELECT voice_alias "
+                 "FROM   voice_profiles "
+                 "WHERE  user = %s AND channel = %s")
         data = (int(hash(user)), int(hash(channel)))
 
         with ConnectionManager(os.getenv('db_user'), os.getenv('db_pw')) as cnx:
             cursor = cnx.cursor(buffered=True)
             cursor.execute(query, data)
-            record = cursor.fetchone()
-            return record
+            return cursor.fetchone()
 
     def delete(self, user, channel):
         """
         Deletes specified row from the voice_profile table.
 
         parameters:
-            user [User]: discord User Object
+            user       [User]: discord User Object
             channel [Channel]: discord Channel object
         returns:
-            cursor.rowcount [int]: integer representing a voice successfully
-                                   removed
+            int: integer representing a voice successfully removed
         """
         query = ("DELETE FROM voice_profiles "
                  "WHERE user = %s AND channel = %s")
@@ -144,10 +139,9 @@ class GuildService:
 
         parameters:
             guild [Guild]: discord Guild object
-            prefix [str]: new prefix
+            prefix  [str]: new prefix
         returns:
-            cursor.rowcount [int]: integer representing successful insertion or
-                                   update
+            int: integer representing successful insertion or update
         """
         query = ("INSERT INTO guilds (guild, prefix) "
                  "VALUES (%s, %s) ON DUPLICATE KEY UPDATE prefix = %s")
@@ -165,10 +159,10 @@ class GuildService:
         Retrieves user's voice profile for a specified channel.
 
         parameters:
-            user [User]: discord User Object
+            user       [User]: discord User Object
             channel [Channel]: discord Channel object
         returns:
-            record [tuple]: voice profile retrieved from the database
+            tuple: voice profile retrieved from the database
         """
         query = ("SELECT prefix FROM guilds WHERE guild = %s LIMIT 1")
         data = (int(hash(guild)),)
@@ -176,8 +170,7 @@ class GuildService:
         with ConnectionManager(os.getenv('db_user'), os.getenv('db_pw')) as cnx:
             cursor = cnx.cursor(buffered=True)
             cursor.execute(query, data)
-            record = cursor.fetchone()
-            return record
+            return cursor.fetchone()
 
     def delete(self, guild):
         """
@@ -186,7 +179,7 @@ class GuildService:
         parameters:
             guild [Guild]: discord Guild object
         returns:
-            cursor.rowcount [int]: integer representing successful removal.
+            int: integer representing successful removal.
         """
         query = ("DELETE FROM guilds WHERE guild = %s")
         data = (int(hash(guild)),)

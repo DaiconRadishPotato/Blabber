@@ -4,174 +4,236 @@
 # Contributor:  Fanny Avila (Fa-Avila),
 #               Marcos Avila (DaiconV)
 # Date created: 12/16/2019
-# Date last modified: 5/4/2020
+# Date last modified: 6/2/2020
 # Python Version: 3.8.1
 # License: MIT License
 
-from discord import ClientException
+from discord import Embed, Colour
 from discord.ext import commands
 
-from blabber.checks import is_guild_owner, is_bot_alone
+from blabber import supported_voices
 from blabber.audio import TTSAudio
+from blabber.checks import *
+from blabber.errors import *
 from blabber.request import TTSRequest
-from blabber.pool import TTSRequestHandlerPool
+
 
 class Voice(commands.Cog):
     """
     Collection of commands for handling connection to Discord voice channel.
 
     parameters:
-        bot [discord.Bot]: discord Bot object
+        bot [Bot]: client object representing a Discord bot
     """
     def __init__(self, bot):
-        self.bot = bot
+        self.pool = bot.pool
+        self.voice_profiles = bot.voice_profiles
 
-        self._pool = TTSRequestHandlerPool()
-
-    def cog_unload(self):
-        self._pool.teardown()
-
-    @commands.command(name='disconnect', aliases=['dc'])
-    @commands.check_any(is_guild_owner, commands.has_role("Blabby"), 
-    is_bot_alone)
-    async def disconnect_from_voice_channel(self, ctx):
+    async def _connect(self, ctx):
         """
-        Disconnects bot's voice client from it's current voice channel.
-        Changes rich presence message to convey that the bot has left the voice
+        Helper method for connecting Blabber to the command invoker's voice
         channel.
 
         parameters:
-            ctx [commands.Context]: discord Context object
-        raises:
-            CheckAnyFailure: Invoker does not have permission to use the bot ie
-            not the guild owner, nor do they have "Blabby" role, and bot is not
-            with other users.
-            AttributeError: Bot is not connected to a voice channel
+            ctx [Context]: context object representing command invocation
+        returns:
+            str: voice channel operation performed by Blabber
         """
-        await ctx.send("Voice::disconnect_from_VC disconnecting from "
-        f"{ctx.voice_client.channel}")
-        await ctx.voice_client.disconnect()
-        
+        # Check if Blabber is currently connected to a voice channel
+        if ctx.voice_client:
+            await can_disconnect(ctx)
+            await blabber_has_required_permissions(ctx)
+
+            # Clear audio channel before moving Blabber
+            player = ctx.voice_client._player
+            if player is not None:
+                player.source.clear()
+
+            # Move Blabber to the command invoker's voice channel
+            await ctx.voice_client.move_to(ctx.author.voice.channel)
+            return 'Moved'
+        else:
+            await blabber_has_required_permissions(ctx)
+
+            # Connect Blabber to the command invoker's voice channel
+            await ctx.author.voice.channel.connect()
+            return 'Connected'
 
     @commands.command(name='connect', aliases=['c'])
-    @commands.check_any(is_guild_owner, commands.has_role("Blabby"),
-    is_bot_alone)
-    async def connect_to_voice_channel(self, ctx):
+    @commands.check(is_connected)
+    async def connect(self, ctx):
         """
-        Creates a voice client with voice channel for discord bot to speak
-        through.
-        Changes rich presence message to show that bot is connected to the 
-        voice chat.
-        If requester of connection is in a different voice channel, voice 
-        client will change.
+        Connects Blabber to the voice channel the command invoker is connected
+        to.
 
         parameters:
-            ctx [commands.Context]: discord Context object
-        raises:
-            CheckAnyFailure: Invoker does not have permission to use the bot ie
-                             not the guild owner, nor do they have "Blabby" 
-                             role, and bot is not with other users.
-            AttributeError: Invoker is not in a voice channel.
-            ClientException: Bot is already connected to a voice channel.
+            ctx [Context]: context object representing command invocation
         """
-        await ctx.author.voice.channel.connect()
-        await ctx.send("Voice::connect_to_VC connecting to "
-        f"{ctx.author.voice.channel.name}.")
+        # Check if Blabber is connected to command invoker's voice channel
+        if (ctx.voice_client
+            and ctx.author.voice.channel == ctx.voice_client.channel):
+            embed = Embed(
+                title=(":information_source: **Blabber is already in this "
+                       "voice channel**"),
+                colour=Colour.blue())
+        else:
+            operation = await self._connect(ctx)
+            embed = Embed(
+                title=(f":white_check_mark: **{operation} to** "
+                       f"`{ctx.author.voice.channel.name}`"),
+                colour=Colour.green())
+
+        await ctx.send(embed=embed)
+
+    @commands.command(name='disconnect', aliases=['dc'])
+    async def disconnect(self, ctx):
+        """
+        Disconnects Blabber from the voice channel it is connected to.
+
+        parameters:
+            ctx [Context]: context object representing command invocation
+        """
+        # Check if Blabber is currently connected to a voice channel
+        if not ctx.voice_client:
+            embed = Embed(
+                title=(":information_source: **Blabber is not connected to "
+                       "any voice channel**"),
+                colour=Colour.blue())
+        else:
+            await can_disconnect(ctx)
+
+            # Disconnect Blabber from voice channel
+            await ctx.voice_client.disconnect()
+            embed = Embed(
+                title=":white_check_mark: **Successfully disconnected**",
+                colour=Colour.green())
+
+        await ctx.send(embed=embed)
 
     @commands.command(name='say', aliases=['s'])
-    @commands.has_role("Blabby")
-    async def say_message(self, ctx, *, message:str):
+    @commands.check(is_connected)
+    async def say(self, ctx, *, message: str=''):
         """
-        To be created
+        Recites a message into the voice channel the command invoker is
+        connected to.
 
         parameters:
-            ctx [commands.Context]: discord Context object
-            *message [str]: array of words to be joined
+            ctx [Context]: context object representing command invocation
+            message [str]: message to recite
         """
-        if ctx.voice_client is None:
-            await self.connect_to_voice_channel(ctx)
-            
-        if ctx.voice_client is not None and len(message) != 0:
-            if len(message) <= 600:
-                request = TTSRequest(message)
-                if ctx.voice_client._player:
-                    audio = ctx.voice_client._player.source
-                else:
-                    audio = TTSAudio(self._pool)
+        # Ensure message is not empty
+        if not message:
+            embed = Embed(
+                title=":information_source: **No message to recite**",
+                colour=Colour.blue())
+            await ctx.send(embed=embed)
+        elif await tts_message_is_valid(message):
+            # Ensure Blabber is connected to command invoker's voice channel
+            if (not ctx.voice_client
+                or ctx.author.voice.channel != ctx.voice_client.channel):
+                await self._connect(ctx)
 
-                await audio.submit_request(request)
-
-                if not ctx.voice_client.is_playing():
-                    ctx.voice_client.play(audio)
+            # Check if AudioSource object already exists
+            if ctx.voice_client._player:
+                audio = ctx.voice_client._player.source
             else:
-                await ctx.send("Voice::say_message Please make your message "
-                               "shorter. We have set the character limit to"
-                               "600 to be considerate for others.")
-        else:
-            await ctx.send("Voice::say_message Please input a message")
+                audio = TTSAudio(self.pool)
 
-    @disconnect_from_voice_channel.error
-    async def disconnect_error(self, ctx, error):
-        """
-        Local error handler for command disconnect.
-        If user does not have permission, warn user.
-        If bot is not connected, warn user.
+            # Retrieve command invoker's voice profile
+            alias = self.voice_profiles[(ctx.author, ctx.channel)]
+            voice = supported_voices[alias]
 
-        parameters:
-            ctx [commands.Context]: discord Context object
-            error [Error]: general Error object
-        """
-        if isinstance(error, commands.CheckAnyFailure):
-            await ctx.send("Voice::disconnect_from_voice_channel Bot is "
-            "in use right now in a different channel. You require the blabby "
-            "role or you need to try again later when it is not in use")
-        elif isinstance(error.original, AttributeError):
-            await ctx.send("Voice::disconnect_from_VC Bot is not "
-            "connected")
+            # Submit TTS request
+            request = TTSRequest(message, **voice)
+            await audio.submit_request(request)
 
-    @connect_to_voice_channel.error
+            # Ensure AudioSource object is playing
+            if not ctx.voice_client.is_playing():
+                ctx.voice_client.play(audio)
+
+            await ctx.message.add_reaction('📣')
+
+    @connect.error
     async def connect_error(self, ctx, error):
         """
-        Local error handler for command connect.
-        If invoker does not have permission and the bot is
-        connected, warn the user that the bot is already connected
-        If invoker does not have permission to use bot, warn them
-        If invoker is not in a voice channel, warm them
-        If bot is already connected to the same voice channel as author,
-        inform invoker
-        If bot is in a different voice channel than the invoker, 
-        switch channels.
-        
+        Local error handler for Blabber's connect command.
+
         parameters:
-            ctx [commands.Context]: discord Context object
-            error [Error]: general Error object
+            ctx     [Context]: context object representing command invocation
+            error [Exception]: exception object raised from command function
         """
-        if isinstance(error, commands.CheckAnyFailure):
-            if ctx.voice_client.channel == ctx.author.voice.channel:
-                await ctx.send("Voice::connect_to_VC already connected to "
-                f"{ctx.voice_client.channel.name}")
-            else:
-                await ctx.send("Voice::connect_to_VC Voice is in use right "
-                "now in a different channel. You require the blabby role or "
-                "you need to try again later when it is not in use")
-        elif isinstance(error.original, AttributeError):
-            await ctx.send("Voice::connect_to_VC You need to be connected to "
-            "a voice channel to use this command.")
-        elif isinstance(error.original, ClientException):
-            if ctx.voice_client.channel == ctx.author.voice.channel:
-                await ctx.send("Voice::connect_to_VC already connected to "
-                f"{ctx.voice_client.channel.name}")
-            else:
-                await ctx.send("Voice::connect_to_VC swaping from "
-                f"{ctx.voice_client.channel.name} to "
-                f"{ctx.author.voice.channel.name}")
-                await ctx.voice_client.move_to(ctx.author.voice.channel)
-                
+        # Check what type of voice channel operation caused the error
+        operation = 'move' if ctx.voice_client else 'connect'
+
+        embed = Embed(
+            title=f":x: **Unable to {operation}**",
+            colour=Colour.red())
+
+        if (isinstance(error, BlabberConnectError) 
+            or isinstance(error, NotConnected)):
+            embed.description=f"{error}"
+
+        else:
+            embed.description=("**Unexpected Error**\n"
+                               "Please contact development team")
+
+        await ctx.send(embed=embed)
+
+    @disconnect.error
+    async def disconnect_error(self, ctx, error):
+        """
+        Local error handler for Blabber's disconnect command.
+
+        parameters:
+            ctx     [Context]: context object representing command invocation
+            error [Exception]: exception object raised from command function
+        """
+        embed = Embed(title=f":x: **Unable to disconnect**",colour=Colour.red())
+
+        if isinstance(error, MissingCredentials):
+            embed.description=f"{error}"
+
+        else:
+            embed.description=("**Unexpected Error**\n"
+                               "Please contact development team")
+
+        await ctx.send(embed=embed)
+
+    @say.error
+    async def say_error(self, ctx, error):
+        """
+        Local error handler for Blabber's say command.
+
+        parameters:
+            ctx     [Context]: context object representing command invocation
+            error [Exception]: exception object raised from command function
+        """
+        if isinstance(error, BlabberConnectError):
+            await self.connect_error(ctx, error)
+            return None
+
+        elif (isinstance(error, TTSMessageTooLong)
+              or isinstance(error, NotConnected)):
+            embed = Embed(
+                title=f":x: **Unable to convert to speech**",
+                description=f"{error}",
+                colour=Colour.red())
+
+        else:
+            embed = Embed(
+                title=f":x: **Unable to convert to speech**",
+                description=("**Unexpected Error**\n"
+                             "Please contact development team"),
+                colour=Colour.red())
+
+        await ctx.send(embed=embed)
+
+
 def setup(bot):
     """
     Adds Voice Cog to bot.
 
-    parameter: 
-        bot [discord.Bot]: discord Bot object
+    parameter:
+        bot [Bot]: client object representing a Discord bot
     """
     bot.add_cog(Voice(bot))

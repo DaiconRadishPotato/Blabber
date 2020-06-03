@@ -4,7 +4,7 @@
 # Contributors: Fanny Avila (Fa-Avila),
 #               Jacky Zhang (jackyeightzhang)
 # Date created: 1/6/2020
-# Date last modified: 5/3/2020
+# Date last modified: 5/24/2020
 # Python Version: 3.8.1
 # License: MIT License
 
@@ -26,7 +26,6 @@ class TTSRequest(dict):
     def __init__(
             self,
             message,
-            encoding='OGG_OPUS',
             lang_code='en-GB',
             name='en-GB-Standard-A',
             gender='FEMALE'):
@@ -66,6 +65,15 @@ class TTSRequestDispatcher():
         """
         # Send output stream to OggStream object for Opus packet extraction
         yield from OggStream(self._ostream).iter_packets()
+
+    def clear(self):
+        """
+        Re-initializes internal audio data buffer.
+        """
+        self._ostream.close()
+
+        self._io_base = SimplexIOBase()
+        self._ostream = SimplexReader(self._io_base)
 
     async def submit_request(self, request):
         """

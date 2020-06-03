@@ -31,6 +31,26 @@ class SimplexIOBase():
         # Internal Lock for synchronized access between threads
         self._lock = threading.Lock()
 
+    def has_reader(self):
+        """
+        Query to determine if a read accessor is currently attached.
+
+        returns:
+            bool: value of 'True' if a read accessor is attached
+        """
+        with self._lock:
+            return self._reader is not None
+
+    def has_writer(self):
+        """
+        Query to determine if a write accessor is currently attached.
+
+        returns:
+            bool: value of 'True' if a write accessor is attached
+        """
+        with self._lock:
+            return self._writer is not None
+        
     def attach_reader(self, reader):
         """
         Attaches a read accessor. Only one read accessor is allowed to attach
@@ -84,6 +104,7 @@ class SimplexIOBase():
         """
         with self._lock:
             if self._writer is writer:
+                self._writer = None
                 # Loop through FIFO queue until a valid writer is found
                 while not self._future_writers.empty():
                     next_writer = self._future_writers.get()
@@ -91,29 +112,7 @@ class SimplexIOBase():
                     if next_writer.is_open():
                         next_writer.write_lock.release()
                         self._writer = next_writer
-                        return None
-
-                self._writer = None
-
-    def has_reader(self):
-        """
-        Query to determine if a read accessor is currently attached.
-
-        returns:
-            bool: value of 'True' if a read accessor is attached
-        """
-        with self._lock:
-            return self._reader is not None
-
-    def has_writer(self):
-        """
-        Query to determine if a write accessor is currently attached.
-
-        returns:
-            bool: value of 'True' if a write accessor is attached
-        """
-        with self._lock:
-            return self._writer is not None
+                        break
 
 
 class SimplexReader():
