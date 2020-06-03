@@ -4,7 +4,7 @@
 # Contributor:  Jacky Zhang (jackyeightzhang),
 #               Marcos Avila (DaiconV)
 # Date created: 3/27/2020
-# Date last modified: 5/31/2020
+# Date last modified: 6/2/2020
 # Python Version: 3.8.1
 # License: MIT License
 
@@ -75,8 +75,8 @@ class Profiles(commands.Cog):
         prefix = self.prefixes[ctx.guild]
         embed = Embed(
             title=":x: **Unable to set voice**",
-            description=(f"{error}\n\n:wrench: **Use the** `>list` "
-                          "**command to search for supported voices**"),
+            description=(f"{error}\n\n:wrench: **Use** `>list` **to search "
+                          "for supported voices**"),
             colour=Colour.red())
         await ctx.send(embed=embed)
 
