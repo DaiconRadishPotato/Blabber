@@ -71,15 +71,19 @@ class Roles(commands.Cog):
         embed = Embed(
             title=f":x: **Unable to assign** `Blabby` **role**",
             colour=Colour.red())
+
         if isinstance(error, commands.BotMissingPermissions):
             embed.description = ("Blabber does not have `Manage Roles` "
                                  "permission")
+
         elif isinstance(error, commands.MissingPermissions):
             embed.description = ("`Manage Roles` permission required to use "
                                  "this command")
+
         else:
             member_name = ctx.kwargs['member_name']
             embed.description = f"`{member_name}` was not found in this server"
+
         await ctx.send(embed=embed)
 
 

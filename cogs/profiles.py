@@ -73,11 +73,15 @@ class Profiles(commands.Cog):
             error [Exception]: exception object raised from command function
         """
         prefix = self.prefixes[ctx.guild]
-        embed = Embed(
-            title=":x: **Unable to set voice**",
-            description=(f"{error}\n\n:wrench: **Use** `>list` **to search "
-                          "for supported voices**"),
-            colour=Colour.red())
+
+        embed = Embed(title=":x: **Unable to set voice**",colour=Colour.red())
+
+        if isinstance(error, VoiceNotSupported):
+            embed.description=(f"{error}\n\n:wrench: **Use** `{prefix}list` "
+                                "**to search for supported voices**")
+        else:
+            embed.description="**Unexpected Error**\n"
+            "Please contact development team"
         await ctx.send(embed=embed)
 
 

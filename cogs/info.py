@@ -287,11 +287,16 @@ class Info(commands.Cog):
         """
         prefix = self.prefixes[ctx.guild]
 
-        embed = Embed(
-            title=":x: **Unsupported Gender**",
-            description=(f"{error}\n\n:wrench: **Use** `>list gender` **to "
-                          "view all supported genders**"),
-            colour=Colour.red())
+        embed = Embed(title=":x: **Unsupported Gender**",colour=Colour.red())
+
+        if isinstance(error, GenderNotSupported):
+            embed.description=(f"{error}\n\n:wrench: **Use** "
+                               f"`{prefix}list gender`"
+                                "**to view all supported genders**")
+
+        else:
+            embed.description="Let our team know"
+
         await ctx.send(embed=embed)
 
     @list_language.error
@@ -305,11 +310,15 @@ class Info(commands.Cog):
         """
         prefix = self.prefixes[ctx.guild]
 
-        embed = Embed(
-            title=":x: **Unsupported Language**",
-            description=(f"{error}\n\n:wrench: **Use** `>list language` **to "
-                          "view all supported languages**"),
-            colour=Colour.red())
+        embed = Embed(title=":x: **Unsupported Language**",colour=Colour.red())
+
+        if isinstance(error, LanguageNotSupported):
+            embed.description=(f"{error}\n\n:wrench: **Use** "
+                               f"`{prefix}list language` "
+                                "**to view all supported languages**")
+        else:
+            embed.description="**Unexpected Error**\n"
+            "Please contact development team"
         await ctx.send(embed=embed)
 
 

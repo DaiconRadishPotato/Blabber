@@ -95,14 +95,22 @@ class Settings(commands.Cog):
             error [Exception]: exception object raised from command function
         """
         prefix = self.prefixes[ctx.guild]
+        
         embed = Embed(
             title=":x: **Unable to change prefix**",
             colour=Colour.red())
+
         if isinstance(error, commands.MissingPermissions):
-            embed.description = "`Manage Server` permission required to use this command"
-        else:
+            embed.description = ("`Manage Server` permission required to "
+                                 "use this command")
+
+        elif isinstance(error, InvalidPrefix):
             embed.description=(f"{error}\n\n:wrench: **Ensure prefix is less "
                                 "than** `5`  **characters**")
+
+        else:
+            embed.description="**Unexpected Error**\n"
+            "Please contact development team"
         await ctx.send(embed=embed)
 
 

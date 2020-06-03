@@ -167,8 +167,16 @@ class Voice(commands.Cog):
 
         embed = Embed(
             title=f":x: **Unable to {operation}**",
-            description=f"{error}",
             colour=Colour.red())
+
+        if (isinstance(error, BlabberConnectError) 
+            or isinstance(error, NotConnected)):
+            embed.description=f"{error}"
+
+        else:
+            embed.description=("**Unexpected Error**\n"
+                               "Please contact development team")
+
         await ctx.send(embed=embed)
 
     @disconnect.error
@@ -180,10 +188,15 @@ class Voice(commands.Cog):
             ctx     [Context]: context object representing command invocation
             error [Exception]: exception object raised from command function
         """
-        embed = Embed(
-            title=f":x: **Unable to disconnect**",
-            description=f"{error}",
-            colour=Colour.red())
+        embed = Embed(title=f":x: **Unable to disconnect**",colour=Colour.red())
+
+        if isinstance(error, MissingCredentials):
+            embed.description=f"{error}"
+
+        else:
+            embed.description=("**Unexpected Error**\n"
+                               "Please contact development team")
+
         await ctx.send(embed=embed)
 
     @say.error
@@ -197,12 +210,22 @@ class Voice(commands.Cog):
         """
         if isinstance(error, BlabberConnectError):
             await self.connect_error(ctx, error)
-        else:
+
+        elif (isinstance(error, TTSMessageTooLong)
+              or isinstance(error, NotConnected)):
             embed = Embed(
                 title=f":x: **Unable to convert to speech**",
                 description=f"{error}",
                 colour=Colour.red())
-            await ctx.send(embed=embed)
+
+        else:
+            embed = Embed(
+                title=f":x: **Unable to convert to speech**",
+                description=("**Unexpected Error**\n"
+                             "Please contact development team"),
+                colour=Colour.red())
+
+        await ctx.send(embed=embed)
 
 
 def setup(bot):
