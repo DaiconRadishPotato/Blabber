@@ -42,11 +42,12 @@ class Settings(commands.Cog):
                 colour=Colour.blue())
             embed.add_field(
                 name="**Prefix:**",
-                value=f"`{prefix}settings prefix`")
+                value=f"`{prefix}settings prefix`,\n`{prefix}settings pre`")
 
             await ctx.send(embed=embed)
 
-    @settings.command(name='prefix', aliases=['p'])
+    @settings.command(name='prefix', aliases=['pre'])
+    @commands.has_permissions(manage_guild=True)
     async def settings_prefix(self, ctx, prefix: str=''):
         """
         Modifies/displays prefix of a particular guild.
@@ -63,7 +64,6 @@ class Settings(commands.Cog):
 
             embed = Embed(
                 title=":gear: **Prefix Settings**",
-                description="Changes the prefix for the server",
                 colour=Colour.gold())
             embed.add_field(
                 name="**Current Prefix:**",
@@ -82,7 +82,7 @@ class Settings(commands.Cog):
                 title=( ":white_check_mark: **New server prefix is** "
                        f"`{prefix}`"),
                 colour=Colour.green())
-        
+
         await ctx.send(embed=embed)
 
     @settings_prefix.error
@@ -97,9 +97,12 @@ class Settings(commands.Cog):
         prefix = self.prefixes[ctx.guild]
         embed = Embed(
             title=":x: **Unable to change prefix**",
-            description=(f"{error}\n\n:wrench: **Ensure prefix is less "
-                          "than** `5`  **characters**"),
             colour=Colour.red())
+        if isinstance(error, commands.MissingPermissions):
+            embed.description = "`Manage Server` permission required to use this command"
+        else:
+            embed.description=(f"{error}\n\n:wrench: **Ensure prefix is less "
+                                "than** `5`  **characters**")
         await ctx.send(embed=embed)
 
 
