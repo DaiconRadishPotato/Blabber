@@ -23,7 +23,7 @@ PyNaCl==1.4.0
 python-dotenv==0.13.0
 pytz==2020.1
 requests==2.23.0
-rsa==4.1
+rsa==4.7
 six==1.15.0
 urllib3==1.25.9
 websockets==8.1
