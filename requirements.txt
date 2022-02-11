@@ -15,7 +15,7 @@ grpcio==1.29.0
 idna==2.9
 multidict==4.7.6
 mysql-connector==2.2.9
-protobuf==3.12.1
+protobuf==3.15.0
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
 pycparser==2.20
